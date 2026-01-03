@@ -26,7 +26,7 @@ commit message는 `[Type] 작성 내용` 으로 통일합니다
 2. `week{#n}/{이름}/`(예: `week2/hongyeop/{practice or homework}`) 디렉터리에서 작업합니다.
 3. 과제를 완성한 뒤에는 `main` 브랜치로 PR 합니다.
 4. PR 제목은 `[{keyword}] {제목}`(예: `[Feat] Week2 API 실습 구현 및 과제 실습 완료`) 형식으로 합니다. 커밋 컨벤션과 마찬가지입니다.
-5. Reviewers `Yeobi00`, `psb3707`, `ttr0bin`, `byunhm02` 4명을 추가해주세요.
+5. Reviewers shinae1023, whc9999, Mymyseoyoung, alissa159 4명을 추가해주세요.
 6. Assignees로는 본인을 추가해주세요.
 7. Label로 해당 주차 과제(예: `Week2`)를 필수로 선택해주세요. 추가적인 Label도 괜찮습니다.
    ![image](https://github.com/user-attachments/assets/7d3139a5-af1f-4e3b-b02e-6878dd610619)
