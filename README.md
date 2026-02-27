@@ -14,9 +14,9 @@
 * ```git remote add origin https://github.com/likelion-hongik-14th/Backend```  //저장소 내 컴퓨터 <-> 원격 연결
 * ```git pull origin main```
 * IntelliJ의 terminal에서 자신의 branch로 checkout을 해주세요
-    * ```git checkout origin [본인 이름]```  //브랜치 개념 모른다면 구글링. 자신만의 공간을 만든다고 생각하시면 됩니다.
+    * ```git checkout origin [본인 이름]``` 
     * ex) git checkout origin shinae
-* 작업은 해당 **본인 branch에서만** 진행해주세요 **(~~❌main branch❌~~)**
+* 작업은 해당 **본인 branch에서만** 진행해주세요 **(❌main branch❌)**
     * ```git branch``` : 현재 branch 확인
 
 위의 방식이 어렵다면 깃 Clone 하는 방법을 검색해보기
@@ -61,7 +61,8 @@
 * 보통 ```.idea``` 디렉토리나 ```.DS_Store(맥북의 경우)``` 이런 파일들이 추가로 올라가있는데 이런거 전부 최상위 디렉토리와 같은 레벨에 .gitignore 파일 만드시고   
   .idea/   
   .DS_Store   
-  이렇게 추가해주시면 됩니다!!
+  이렇게 추가해주시면 됩니다
+* 최상단 폴더의 .gitignore은 수정하지 말아주세요
 
 ### 📝 커밋 컨벤션
 commit message는 `[Type] 작성 내용` 으로 통일합니다
