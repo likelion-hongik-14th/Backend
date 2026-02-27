@@ -84,7 +84,9 @@ commit message는 `[Type] 작성 내용` 으로 통일합니다
 5. Reviewers shinae1023, whc9999, Mymyseoyoung, alissa159 4명을 추가해주세요.
 6. Assignees로는 본인을 추가해주세요.
 7. Label로 해당 주차 과제(예: `Week2`)를 필수로 선택해주세요. 추가적인 Label도 괜찮습니다.
-   ![image](https://github.com/user-attachments/assets/7d3139a5-af1f-4e3b-b02e-6878dd610619)
+![backend_submit_convention](https://github.com/user-attachments/assets/e79149b8-af0c-470f-8837-901578682438)
+![backend_submit_convention2](https://github.com/user-attachments/assets/a77ad496-3857-4fba-bc70-71a9c8338757)
+
 
 ‼️  `main` 브랜치로의 PR 승인을 과제 확인으로 인정합니다.
 
