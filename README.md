@@ -9,17 +9,13 @@
 4. 세션 실습은 practice 디렉터리에, 과제(강의 실습 코드)는 homework에 각각 작성을 완성하신 뒤에 `main` 브랜치로 PR합니다.
    
 ### 📤 프로젝트 열기
-* 프로젝트를 하나 생성하고 IntelliJ에서 원격 저장소를 연결해줍니다
-* ```git init``` // 저장소 생성
-* ```git remote add origin https://github.com/likelion-hongik-14th/Backend```  //저장소 내 컴퓨터 <-> 원격 연결
-* ```git pull origin main```
+* 해당 리포지토리를 clone 받습니다 git clone https://github.com/likelion-hongik-14th/Backend
+* 클론된 프로젝트 안에 아래 작업공간 생성 예시처럼 폴더를 만든 후, 그 안에 스프링 프로젝트를 복사 붙여넣기한다
 * IntelliJ의 terminal에서 자신의 branch로 checkout을 해주세요
-    * ```git checkout origin [본인 이름]``` 
-    * ex) git checkout origin shinae
+    * ```git checkout -b [본인 이름]``` 
+    * ex) git checkout -b shinae
 * 작업은 해당 **본인 branch에서만** 진행해주세요 **(❌main branch❌)**
     * ```git branch``` : 현재 branch 확인
-
-위의 방식이 어렵다면 깃 Clone 하는 방법을 검색해보기
 
 ### 🏡 작업공간 생성
 * Backend (프로젝트 루트 디렉토리)
