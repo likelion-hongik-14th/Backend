@@ -12,6 +12,12 @@ java {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
+$ git status -u
+On branch yunhyeok
+Your branch is ahead of 'origin/yunhyeok' by 1 commit.
+(use "git push" to publish your local commits)
+
+nothing to commit, working tree clean
 
 configurations {
 	compileOnly {
