@@ -3,9 +3,12 @@ package musta.homework_2nd.service;
 import musta.homework_2nd.domain.Member;
 import musta.homework_2nd.repository.MemberRepository;
 import musta.homework_2nd.repository.MemoryMemberRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 
 public class MemberService {
 

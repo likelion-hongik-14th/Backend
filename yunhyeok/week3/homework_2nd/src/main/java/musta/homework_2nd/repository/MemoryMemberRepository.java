@@ -1,8 +1,10 @@
 package musta.homework_2nd.repository;
 
 import musta.homework_2nd.domain.Member;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
 
 public class MemoryMemberRepository implements MemberRepository{
 
