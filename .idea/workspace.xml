@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="88545ddf-aa74-4a5a-8f93-00a5e93897b9" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/yunhyeok/week2/practice/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/yunhyeok/week2/practice/build.gradle" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/../../DEV_2/spring_2nd_homework/homework_2nd/homework_2nd">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/yunhyeok/week2/session">
+      <ProjectState />
+    </projectState>
+    <projectState path="$PROJECT_DIR$/yunhyeok/week3/homework_2nd">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <task path="$PROJECT_DIR$/yunhyeok/week3/homework_2nd">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/../../DEV_2/spring_2nd_homework/homework_2nd/homework_2nd">
+          <activation />
+        </task>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="homework_2nd" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="homework_2nd" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="homework_2nd" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="homework_2nd" type="f1a62948:ProjectNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="Interface" />
+        <option value="JUnit5 Test Class" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="3B9zhZ1wVx6iq6BarKRG1sUTo8M" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.homework_2nd 빌드.executor": "Run",
+    "Gradle.session 빌드.executor": "Run",
+    "JavaScript 디버그.index.html.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.Homework2ndApplication.executor": "Run",
+    "Spring Boot.SessionApplication.executor": "Run",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary": "JUnit5",
+    "com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit5": "",
+    "git-widget-placeholder": "yunhyeok",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Dev/Backend",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "모듈",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "configurable.group.tools",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="musta.homework_2nd.service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.Homework2ndApplication">
+    <configuration name="Homework2ndApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="homework_2nd.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="musta.homework_2nd.Homework2ndApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SessionApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="session.main" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="week2.session.src.main.java.musta.session.SessionApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.31033.145" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-IU-253.31033.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="88545ddf-aa74-4a5a-8f93-00a5e93897b9" name="변경" comment="" />
+      <created>1773916194117</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1773916194117</updated>
+      <workItem from="1773916195431" duration="407000" />
+      <workItem from="1773968249153" duration="4000" />
+      <workItem from="1773968615903" duration="602000" />
+      <workItem from="1773973320096" duration="47000" />
+      <workItem from="1774099309437" duration="1074000" />
+      <workItem from="1774102477681" duration="13000" />
+      <workItem from="1774520549131" duration="19000" />
+      <workItem from="1774520615184" duration="38000" />
+      <workItem from="1774520666696" duration="1572000" />
+      <workItem from="1774522308047" duration="5000" />
+      <workItem from="1774790095867" duration="116000" />
+      <workItem from="1774790248779" duration="4118000" />
+      <workItem from="1774794457805" duration="3998000" />
+      <workItem from="1774829737415" duration="17212000" />
+      <workItem from="1774918889306" duration="2920000" />
+      <workItem from="1774921888765" duration="5544000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/yunhyeok/week3/homework_2nd/src/test/java/musta/homework_2nd/Homework2ndApplicationTests.java</url>
+          <line>9</line>
+          <properties class="musta.homework_2nd.Homework2ndApplicationTests" method="contextLoads">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/yunhyeok/week3/homework_2nd/src/main/java/musta/homework_2nd/controller/HelloController.java</url>
+          <line>10</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
