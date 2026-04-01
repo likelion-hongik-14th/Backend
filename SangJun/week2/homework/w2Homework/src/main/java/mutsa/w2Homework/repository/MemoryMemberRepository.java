@@ -1,8 +1,10 @@
 package mutsa.w2Homework.repository;
 
 import mutsa.w2Homework.domain.Member;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
+
 
 public class MemoryMemberRepository implements MemberRepository{
 
