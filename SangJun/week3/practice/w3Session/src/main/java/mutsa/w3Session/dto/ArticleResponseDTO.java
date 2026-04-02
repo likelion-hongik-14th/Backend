@@ -1,9 +1,8 @@
-package mutsa._wSession.dto;
+package mutsa.w3Session.dto;
 
 
 import lombok.Getter;
-import mutsa._wSession.Application;
-import mutsa._wSession.api.Article;
+import mutsa.w3Session.api.Article;
 
 @Getter
 public class ArticleResponseDTO{

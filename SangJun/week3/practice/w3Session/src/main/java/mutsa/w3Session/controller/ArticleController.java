@@ -1,9 +1,9 @@
-package mutsa._wSession.controller;
+package mutsa.w3Session.controller;
 
 import lombok.RequiredArgsConstructor;
-import mutsa._wSession.dto.ArticleCreateRequestDTO;
-import mutsa._wSession.dto.ArticleResponseDTO;
-import mutsa._wSession.service.ArticleService;
+import mutsa.w3Session.dto.ArticleCreateRequestDTO;
+import mutsa.w3Session.dto.ArticleResponseDTO;
+import mutsa.w3Session.service.ArticleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

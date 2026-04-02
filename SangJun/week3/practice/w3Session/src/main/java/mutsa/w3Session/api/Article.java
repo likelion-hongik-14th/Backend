@@ -1,4 +1,4 @@
-package mutsa._wSession.api;
+package mutsa.w3Session.api;
 
 import lombok.Getter;
 import lombok.Setter;

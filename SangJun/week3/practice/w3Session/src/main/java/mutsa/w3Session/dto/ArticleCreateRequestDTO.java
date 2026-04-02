@@ -1,4 +1,4 @@
-package mutsa._wSession.dto;
+package mutsa.w3Session.dto;
 
 import lombok.Getter;
 @Getter

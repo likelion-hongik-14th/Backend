@@ -1,4 +1,4 @@
-package mutsa._wSession;
+package mutsa.w3Session;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

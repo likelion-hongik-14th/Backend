@@ -1,6 +1,6 @@
-package mutsa._wSession.repository;
+package mutsa.w3Session.repository;
 
-import mutsa._wSession.api.Article;
+import mutsa.w3Session.api.Article;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;

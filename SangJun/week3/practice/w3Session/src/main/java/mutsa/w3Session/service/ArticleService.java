@@ -1,10 +1,10 @@
-package mutsa._wSession.service;
+package mutsa.w3Session.service;
 
 import lombok.RequiredArgsConstructor;
-import mutsa._wSession.api.Article;
-import mutsa._wSession.dto.ArticleCreateRequestDTO;
-import mutsa._wSession.dto.ArticleResponseDTO;
-import mutsa._wSession.repository.ArticleRepository;
+import mutsa.w3Session.api.Article;
+import mutsa.w3Session.dto.ArticleCreateRequestDTO;
+import mutsa.w3Session.dto.ArticleResponseDTO;
+import mutsa.w3Session.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
 
 @Service
