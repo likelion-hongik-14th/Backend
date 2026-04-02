@@ -33,12 +33,6 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-	// 1. Spring Web: REST API 구현 및 내장 톰캣 사용을 위한 필수 의존성
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-
-	// (참고) 스프링 부트 프로젝트 생성 시 기본으로 들어가는 테스트 라이브러리
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {

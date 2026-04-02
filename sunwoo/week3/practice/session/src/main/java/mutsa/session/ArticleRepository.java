@@ -1,10 +1,12 @@
 package mutsa.session;
 
+import org.springframework.stereotype.Repository;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@org.springframework.stereotype.Repository
+@Repository
 public class ArticleRepository {
 
     // DB 역할을 대신할 Map과 자동 증가할 ID
