@@ -1,4 +1,4 @@
-package mutsa.w2Homework.controller;
+package mutsa.w3Homework.controller;
 
 
 import org.springframework.stereotype.Controller;

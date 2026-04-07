@@ -1,7 +1,6 @@
-package mutsa.w2Homework.repository;
+package mutsa.w3Homework.repository;
 
-import mutsa.w2Homework.domain.Member;
-import org.assertj.core.api.Assertions;
+import mutsa.w3Homework.domain.Member;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 

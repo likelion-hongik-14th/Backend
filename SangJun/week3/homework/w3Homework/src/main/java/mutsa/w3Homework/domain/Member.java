@@ -1,4 +1,4 @@
-package mutsa.w2Homework.domain;
+package mutsa.w3Homework.domain;
 
 public class Member {
     private Long id;

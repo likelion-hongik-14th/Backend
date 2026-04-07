@@ -1,13 +1,13 @@
-package mutsa.w2Homework;
+package mutsa.w3Homework;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class W2HomeworkApplication {
+public class W3HomeworkApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(W2HomeworkApplication.class, args);
+		SpringApplication.run(W3HomeworkApplication.class, args);
 	}
 
 }

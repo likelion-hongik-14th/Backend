@@ -1,7 +1,7 @@
-package mutsa.w2Homework.controller;
+package mutsa.w3Homework.controller;
 
-import mutsa.w2Homework.domain.Member;
-import mutsa.w2Homework.service.MemberService;
+import mutsa.w3Homework.domain.Member;
+import mutsa.w3Homework.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

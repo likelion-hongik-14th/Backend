@@ -1,10 +1,7 @@
-package mutsa.w2Homework.service;
+package mutsa.w3Homework.service;
 
-import mutsa.w2Homework.domain.Member;
-import mutsa.w2Homework.repository.MemberRepository;
-import mutsa.w2Homework.repository.MemoryMemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import mutsa.w3Homework.domain.Member;
+import mutsa.w3Homework.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;

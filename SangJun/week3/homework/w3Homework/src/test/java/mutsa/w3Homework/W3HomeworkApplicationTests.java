@@ -1,10 +1,10 @@
-package mutsa.w2Homework;
+package mutsa.w3Homework;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class W2HomeworkApplicationTests {
+class W3HomeworkApplicationTests {
 
 	@Test
 	void contextLoads() {

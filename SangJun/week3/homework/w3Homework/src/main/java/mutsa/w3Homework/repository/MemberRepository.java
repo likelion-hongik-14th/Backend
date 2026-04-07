@@ -1,6 +1,6 @@
-package mutsa.w2Homework.repository;
+package mutsa.w3Homework.repository;
 
-import mutsa.w2Homework.domain.Member;
+import mutsa.w3Homework.domain.Member;
 
 
 import java.util.List;

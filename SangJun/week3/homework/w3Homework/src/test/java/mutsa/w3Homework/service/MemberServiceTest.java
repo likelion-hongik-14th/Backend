@@ -1,7 +1,7 @@
-package mutsa.w2Homework.service;
+package mutsa.w3Homework.service;
 
-import mutsa.w2Homework.domain.Member;
-import mutsa.w2Homework.repository.MemoryMemberRepository;
+import mutsa.w3Homework.domain.Member;
+import mutsa.w3Homework.repository.MemoryMemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

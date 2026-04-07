@@ -1,7 +1,7 @@
-package mutsa.w2Homework.service;
+package mutsa.w3Homework.service;
 
-import mutsa.w2Homework.repository.MemberRepository;
-import mutsa.w2Homework.repository.MemoryMemberRepository;
+import mutsa.w3Homework.repository.MemberRepository;
+import mutsa.w3Homework.repository.MemoryMemberRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
