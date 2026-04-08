@@ -1,6 +1,7 @@
 package mutsa.w3Homework.service;
 
 import jakarta.persistence.EntityManager;
+import mutsa.w3Homework.aop.TimeTraceAop;
 import mutsa.w3Homework.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,11 @@ public class SpringConfig {
     public MemberService memberService() {
 
         return new MemberService(memberRepository);
+    }
+
+    @Bean
+    public TimeTraceAop timeTraceAop() {
+        return new TimeTraceAop();
     }
 //    @Bean
 //    public MemberRepository memberRepository() {

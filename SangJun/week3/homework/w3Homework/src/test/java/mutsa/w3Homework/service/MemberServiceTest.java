@@ -65,8 +65,4 @@ class MemberServiceTest {
 
         //then
     }
-
-    @Test
-    void fineDone() {
-    }
 }
