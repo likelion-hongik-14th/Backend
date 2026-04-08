@@ -2,11 +2,12 @@ package mutsa.w3Homework.service;
 
 import mutsa.w3Homework.domain.Member;
 import mutsa.w3Homework.repository.MemberRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
