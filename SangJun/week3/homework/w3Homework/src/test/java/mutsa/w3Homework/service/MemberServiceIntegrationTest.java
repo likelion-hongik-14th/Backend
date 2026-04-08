@@ -2,13 +2,9 @@ package mutsa.w3Homework.service;
 
 import mutsa.w3Homework.domain.Member;
 import mutsa.w3Homework.repository.MemberRepository;
-import mutsa.w3Homework.repository.MemoryMemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +26,7 @@ class MemberServiceIntegrationTest {
         //when
         Long saveId = memberService.join(member);
         //then
-        Member findMember = memberService.findone(saveId).get();
+        Member findMember = memberService.findOne(saveId).get();
         assertThat(member.getName()).isEqualTo(findMember.getName());
 
     }
