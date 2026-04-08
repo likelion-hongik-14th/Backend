@@ -1,9 +1,15 @@
 package musta.homework_2nd.controller;
 //member controller 구현
 
+//import ch.qos.logback.core.model.Model;
+import musta.homework_2nd.domain.Member;
 import musta.homework_2nd.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.Model;
+import java.util.List;
 
 
 @Controller
@@ -14,6 +20,32 @@ public class MemberController {
 
     @Autowired
     public MemberController(MemberService memberService) {
+
         this.memberService = memberService;
     }
+
+    @GetMapping("/members/new")
+    public String creatForm() {
+        return "members/createMemberForm";
+    }
+
+    @PostMapping("/members/new")
+    public String create(MemberForm form) {
+
+        Member member = new Member();
+        member.setName(form.getName());
+
+        memberService.join(member);
+
+        return "redirect:/";
+
+    }
+
+    @GetMapping(value = "/members")
+    public String list(Model model) {
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        return "members/memberList";
+    }
+
 }
