@@ -1,6 +1,7 @@
 package mutsa.w3Homework.service;
 
 import mutsa.w3Homework.repository.JdbcMemberRepository;
+import mutsa.w3Homework.repository.JdbcTemplateMemberRepository;
 import mutsa.w3Homework.repository.MemberRepository;
 import mutsa.w3Homework.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,6 @@ public class SpringConfig {
     }
     @Bean
     public MemberRepository memberRepository() {
-        return new JdbcMemberRepository(dataSource);
+        return new JdbcTemplateMemberRepository(dataSource);
     }
 }
