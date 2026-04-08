@@ -22,4 +22,5 @@ public class ArticleService {
                 .orElseThrow(() -> new IllegalArgumentException("해당 기사가 없습니다. id=" + id));
         return new ArticleResponseDto(article);
     }
+    
 }

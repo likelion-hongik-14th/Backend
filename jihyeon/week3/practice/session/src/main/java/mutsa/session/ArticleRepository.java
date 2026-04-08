@@ -24,4 +24,5 @@ public class ArticleRepository {
     public Optional<Article> findById(Long id) {
         return Optional.ofNullable(store.get(id));
     }
+
 }

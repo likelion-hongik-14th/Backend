@@ -25,4 +25,5 @@ public class ArticleController {
         ArticleResponseDto responseDto = articleService.getArticle(articleId);
         return ResponseEntity.ok(responseDto);
     }
+
 }

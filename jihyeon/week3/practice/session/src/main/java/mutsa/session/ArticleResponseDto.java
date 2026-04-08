@@ -14,4 +14,5 @@ public class ArticleResponseDto {
         this.title = article.getTitle();
         this.content = article.getContent();
     }
+
 }
