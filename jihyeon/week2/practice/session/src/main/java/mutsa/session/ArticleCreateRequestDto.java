@@ -1,3 +1,5 @@
+package mutsa.session;
+
 import lombok.Getter;
 
 @Getter
