@@ -33,6 +33,17 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// 1. Spring Web: REST API 구현 및 내장 톰캣 사용을 위한 필수 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// 2. Lombok: Getter, Setter, 생성자 등 반복 코드를 줄여주는 도구
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// (참고) 스프링 부트 프로젝트 생성 시 기본으로 들어가는 테스트 라이브러리
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
