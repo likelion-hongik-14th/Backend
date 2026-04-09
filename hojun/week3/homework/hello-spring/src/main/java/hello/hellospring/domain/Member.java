@@ -1,5 +1,8 @@
 package hello.hellospring.domain;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0f9a2779c2d81ba69f2b0ee63764d0ea67e5c9b9
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,11 +10,17 @@ import jakarta.persistence.Id;
 
 @Entity
 public class Member {
+<<<<<<< HEAD
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
+=======
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+>>>>>>> 0f9a2779c2d81ba69f2b0ee63764d0ea67e5c9b9
     public Long getId() {
         return id;
     }
