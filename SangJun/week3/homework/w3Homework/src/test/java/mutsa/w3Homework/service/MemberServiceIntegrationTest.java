@@ -1,35 +1,27 @@
 package mutsa.w3Homework.service;
 
 import mutsa.w3Homework.domain.Member;
-import mutsa.w3Homework.repository.MemoryMemberRepository;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import mutsa.w3Homework.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class MemberServiceTest {
+@SpringBootTest
+@Transactional
+class MemberServiceIntegrationTest {
 
-    MemberService memberService;
-    MemoryMemberRepository memberRepository;
+    @Autowired MemberService memberService;
+    @Autowired MemberRepository memberRepository;
 
-    @BeforeEach
-    public void beforeEach() {
-        //테스트마다 생성자
-        memberRepository = new MemoryMemberRepository();
-        memberService = new MemberService(memberRepository);
-    }
-
-    @AfterEach
-    public void afterEach() {
-        memberRepository.clearStore();
-    }
     @Test
     void join() {
         //given
         Member member = new Member();
-        member.setName("John");
+        member.setName("Sam");
 
         //when
         Long saveId = memberService.join(member);
@@ -64,5 +56,9 @@ class MemberServiceTest {
 
 
         //then
+    }
+
+    @Test
+    void fineDone() {
     }
 }

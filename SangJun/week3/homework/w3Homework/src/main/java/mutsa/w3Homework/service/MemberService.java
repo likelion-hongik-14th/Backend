@@ -2,11 +2,12 @@ package mutsa.w3Homework.service;
 
 import mutsa.w3Homework.domain.Member;
 import mutsa.w3Homework.repository.MemberRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -18,7 +19,6 @@ public class MemberService {
 
     //회원가입
     public Long join(Member member) {
-
         validateDuplicateMember(member);//중복 회원 검증
         memberRepository.save(member);
         return member.getId();
@@ -35,7 +35,7 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
-    public Optional<Member> findone(Long memberId) {
+    public Optional<Member> findOne(Long memberId) {
         return  memberRepository.findById(memberId);
     }
 }
