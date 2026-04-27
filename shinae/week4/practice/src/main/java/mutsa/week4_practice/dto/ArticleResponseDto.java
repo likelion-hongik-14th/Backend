@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import mutsa.week4_practice.domain.enums.Category;
+
+import java.util.List;
 
 @Getter
 @Builder
@@ -11,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ArticleResponseDto {
     private Long id;
+    private List<Category> categories;
     private String title;
     private String content;
     private String authorNickname;

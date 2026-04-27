@@ -45,6 +45,7 @@ public class ArticleService {
 
         return ArticleResponseDto.builder()
                 .id(article.getId())
+                .categories(article.getCategories())
                 .title(article.getTitle())
                 .content(article.getContent())
                 .authorNickname(article.getAuthor().getNickname())
@@ -62,6 +63,7 @@ public class ArticleService {
         return articleList.stream()
                 .map(article -> ArticleListResponseDto.builder()
                         .id(article.getId())
+                        .categories(article.getCategories())
                         .title(article.getTitle())
                         .authorNickname(article.getAuthor().getNickname())
                         .viewCount(article.getViewCount())
