@@ -9,7 +9,8 @@ public class ArticleResponseDto {
     private String title;
     private String content;
 
-    public ArticleResponseDto(Article article) {
+    @Builder
+    public ArticleResponseDto(Long id, String title, String content) {
         this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
