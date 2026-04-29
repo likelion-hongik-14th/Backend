@@ -1,9 +1,12 @@
-package practice.session;
+package practice.session.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import practice.session.dto.ArticleRequestDto;
+import practice.session.dto.ArticleResponseDto;
+import practice.session.service.ArticleService;
 
 @RestController
 @RequestMapping("/api/v1/articles")
@@ -12,10 +15,9 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping
-    public ResponseEntity<ArticleResponseDto> createArticle(@RequestBody ArticleCreateRequestDto requestDto){
-        ArticleResponseDto responseDto = articleService.createArticle(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    @PostMapping("/new")
+    public String createArticle(@RequestBody ArticleRequestDto requestDto){
+        return articleService.createArticle(requestDto);
     }
 
     @GetMapping("/{articleId}")
