@@ -1,6 +1,7 @@
 package musta.session;
 
 import lombok.Getter;
+import musta.session.Domain.Article;
 
 @Getter
 public class ArticleResponseDto {
@@ -10,7 +11,7 @@ public class ArticleResponseDto {
     private String content;
 
     public ArticleResponseDto(Article article) {
-        this.id = article.getId();
+        this.id = article.getArticleId();
         this.title = article.getTitle();
         this.content = article.getContent();
     }
