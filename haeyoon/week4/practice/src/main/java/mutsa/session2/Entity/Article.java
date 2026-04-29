@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import java.util.Date;
+import java.util.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
@@ -18,11 +18,14 @@ public class Article {
 
     private String title;
     private String content;
-    private Date date;
+    private LocalDateTime date;
 
-    public Article(String title, String content) {
+    @Builder
+    public Article(String title, String content, LocalDateTime date, Member member) {
         this.title = title;
         this.content = content;
+        this.date = date;
+        this.member = member;
     }
 
     @ManyToOne(fetch=FetchType.LAZY)
