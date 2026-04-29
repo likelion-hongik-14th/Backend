@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: session
+
+  datasource:
+    # 1. URL: 워크벤치에서 만든 mutsa_db 주소입니다.
+    url: jdbc:mysql://localhost:3306/mutsa_db?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    # 2. Username: 기본 관리자 계정인 root를 사용합니다.
+    username: root
+    # 3. Password: 본인이 MySQL 설치 시 설정한 비밀번호를 꼭 입력하세요!
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # 엔티티 코드를 분석해 테이블을 자동으로 업데이트합니다. (교재 28쪽 권장)
+      ddl-auto: update
+    # 실행되는 SQL 쿼리를 콘솔창에 보여줍니다.
+    show-sql: true
+    properties:
+      hibernate:
+        # SQL을 보기 좋게 정렬해서 보여줍니다.
+        format_sql: true
