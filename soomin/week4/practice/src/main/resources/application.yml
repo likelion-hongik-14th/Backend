@@ -1,0 +1,21 @@
+spring:
+  datasource: # 1. 데이터 소스(DB 연결 정보) 설정 시작
+    url: jdbc:mysql://localhost:3306/mutsa_db?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    # 2. 주소: MySQL이 설치된 내 컴퓨터(localhost)의 3306 포트에 있는 mutsa_db에 접속하겠다는 의미입니다.
+    # 3. 옵션: 한글 깨짐 방지(UTF-8)와 시간대 설정(Seoul)을 포함합니다.
+
+    username: root # 4. DB 계정명: 보통 기본값은 root입니다.
+    password: altmxjaos0113 # 5. DB 비밀번호: 본인이 MySQL 설치 시 설정한 비밀번호를 적어야 합니다.
+    driver-class-name: com.mysql.cj.jdbc.Driver # 6. 드라이버: 자바가 MySQL과 대화하기 위해 사용하는 '통역사' 클래스입니다.
+
+  jpa: # 7. JPA 관련 설정 시작
+    hibernate:
+      ddl-auto: update
+      # 8. 자동 테이블 생성: 엔티티(Java 클래스)의 구조를 보고 DB 테이블을 자동으로 수정/생성해 줍니다.
+      # 'update'는 변경된 부분만 반영하고 기존 데이터는 유지합니다. (처음엔 'create'로 쓰기도 합니다.)
+
+    show-sql: true # 9. 쿼리 출력: JPA가 실행하는 SQL 문을 콘솔창에 보여줍니다. 공부할 때 매우 유용합니다.
+
+    properties:
+      hibernate:
+        format_sql: true # 10. 가독성: 콘솔에 찍히는 SQL을 한 줄이 아닌 예쁜 구조로 정렬해서 보여줍니다.
