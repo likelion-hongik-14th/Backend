@@ -1,10 +1,11 @@
-package mutsa.w3Session.api;
+package mutsa.w3Session.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Comment {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,11 +13,11 @@ public class Comment {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
+    @JoinColumn(name = "article_id", nullable = false)
     private Article article;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     public Comment(String content, Article article, Member member) {

@@ -1,27 +1,27 @@
-package mutsa.w3Session.api;
+package mutsa.w3Session.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
-public class Article{
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //JPA에서는 빈생성자가 필요해서 무조건 필요함
+public class Article {
 
     @Id @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String content;
-    private Long date;
+    private LocalDateTime createdAt;
 
+    @Builder
     public Article(String title, String content) {
         this.title = title;
         this.content = content;
-        this.date = System.currentTimeMillis();
+        this.createdAt = LocalDateTime.now();
     }
 }

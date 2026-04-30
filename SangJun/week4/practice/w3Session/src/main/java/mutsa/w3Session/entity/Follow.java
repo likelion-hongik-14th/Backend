@@ -1,12 +1,13 @@
-package mutsa.w3Session.api;
+package mutsa.w3Session.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Follow {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +21,7 @@ public class Follow {
     @JoinColumn(name = "following_id")
     private Member following;
 
-    public Follow(Long id, Member follower, Member following) {
-        this.id = id;
+    public Follow(Member follower, Member following) {
         this.follower = follower;
         this.following = following;
     }
