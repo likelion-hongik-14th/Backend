@@ -1,6 +1,7 @@
 package musta.session;
 
 import lombok.RequiredArgsConstructor;
+import musta.session.Domain.Article;
 import org.springframework.stereotype.Service;
 
 @Service
