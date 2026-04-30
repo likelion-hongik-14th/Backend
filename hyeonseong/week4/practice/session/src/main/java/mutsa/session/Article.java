@@ -31,9 +31,4 @@ public class Article {
         this.date = LocalDate.now();
     }
 
-    public Article(String title, String content){
-        this.title = title;
-        this.content = content;
-        this.date = LocalDate.now();
-    }
 }

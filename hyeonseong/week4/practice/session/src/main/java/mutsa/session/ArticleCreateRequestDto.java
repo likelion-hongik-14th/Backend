@@ -6,4 +6,5 @@ import lombok.Getter;
 public class ArticleCreateRequestDto {
     private String title;
     private String content;
+    private Long memberId;
 }
