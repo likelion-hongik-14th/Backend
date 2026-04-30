@@ -1,8 +1,6 @@
 package mutsa.w3Session.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,8 +16,18 @@ public class Article {
     private String content;
     private LocalDateTime createdAt;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
     @Builder
-    public Article(String title, String content) {
+    public Article(Member member, Category category, String title, String content) {
+        this.member = member;
+        this.category = category;
         this.title = title;
         this.content = content;
         this.createdAt = LocalDateTime.now();
