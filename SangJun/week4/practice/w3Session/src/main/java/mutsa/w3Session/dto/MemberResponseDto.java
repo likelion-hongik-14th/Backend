@@ -1,19 +1,17 @@
 package mutsa.w3Session.dto;
 
 import lombok.Getter;
-import mutsa.w3Session.api.Member;
+import mutsa.w3Session.entity.Member;
 
 @Getter
-public class MemberResponseDTO {
+public class MemberResponseDto {
     private Long id;
     private String name;
     private String email;
-    private String pw;
 
-    public MemberResponseDTO(Member member) {
+    public MemberResponseDto(Member member) {
         this.id = member.getId();
         this.name = member.getName();
         this.email = member.getEmail();
-        this.pw = member.getPw();
     }
 }
