@@ -18,7 +18,11 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
+<<<<<<< HEAD
+.idea/
+=======
 .idea
+>>>>>>> 0f9a2779c2d81ba69f2b0ee63764d0ea67e5c9b9
 *.iws
 *.iml
 *.ipr

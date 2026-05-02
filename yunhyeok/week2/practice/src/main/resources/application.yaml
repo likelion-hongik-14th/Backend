@@ -1,3 +1,14 @@
 spring:
-  application:
-    name: session
+  datasource:
+    url: jdbc:mysql://localhost:3306/musta_db?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: "AJTwoddltkwkemf@12"
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
