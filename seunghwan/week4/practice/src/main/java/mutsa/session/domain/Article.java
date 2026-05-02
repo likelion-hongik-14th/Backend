@@ -14,19 +14,21 @@ import java.time.LocalDate;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long article_id;
+    @Column(name = "article_id")
+    private Long articleId;
 
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String content;
-    private String article_date; //
+    private LocalDate articleDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id") // 작성자
+    @JoinColumn(name = "member_id", nullable = false) // 작성자
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id") // 카테고리
+    @JoinColumn(name = "category_id", nullable = false) // 카테고리
     private Category category;
 
     public Article(String title, String content, Member member, Category category) {
@@ -34,6 +36,6 @@ public class Article {
         this.content = content;
         this.member = member;
         this.category = category;
-        this.article_date = LocalDate.now().toString();
+        this.articleDate = LocalDate.now();
     }
 }
