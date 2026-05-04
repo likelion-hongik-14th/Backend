@@ -9,22 +9,25 @@ import lombok.NoArgsConstructor;
 @Table(name = "ORDERS")
 @NoArgsConstructor
 
-public class Orders {
+public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long orderId;
+    private Long Id;
 
+    @Column(nullable = false)
     private String address;
 
+    @Column(nullable = false)
     private String state;
 
+    @Column(nullable = false)
     private Integer totalPrice;
 
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
 
 }

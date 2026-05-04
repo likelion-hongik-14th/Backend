@@ -10,22 +10,22 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 
-public class Cartitems {
+public class CartItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartItemId;
+    private Long Id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "option_id")
-    private Options option;
+    private Option option;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Products product;
+    @Column(nullable = false)
+    private Integer quantity;
+
 
 }

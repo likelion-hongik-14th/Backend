@@ -9,19 +9,23 @@ import lombok.NoArgsConstructor;
 @Table(name = " OPTIONS")
 @NoArgsConstructor
 
-public class Options {
+public class Option {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long optionId;
+    private Long Id;
 
+    @Column(nullable = false)
     private String optionName;
 
+
+    @Column(nullable = false)
     private Integer stock;
 
-    @ManyToOne
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Products product;
+    private Product product;
 
 
 }

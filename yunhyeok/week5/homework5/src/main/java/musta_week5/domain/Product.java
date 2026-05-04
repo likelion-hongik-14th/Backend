@@ -13,20 +13,23 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 
 
-public class Products {
+public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long Id;
 
+    @Column(nullable = false)
     private String productName;
 
+    @Column(nullable = false)
     private Integer price;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
 

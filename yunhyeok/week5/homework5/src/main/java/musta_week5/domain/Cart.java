@@ -15,11 +15,11 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long cartId;
+    private Long Id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
-    private Users user;
+    private User user;
 
 
 }
