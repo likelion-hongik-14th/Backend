@@ -5,7 +5,6 @@ import mutsa.w5homework.domain.Member;
 import mutsa.w5homework.dto.MemberCreateRequestDto;
 import mutsa.w5homework.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
-import mutsa.w5homework.repository.CartRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import mutsa.w5homework.repository.MemberRepository;
