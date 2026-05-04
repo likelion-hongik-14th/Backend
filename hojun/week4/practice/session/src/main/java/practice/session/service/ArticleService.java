@@ -1,7 +1,12 @@
 package practice.session.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import practice.session.dto.ArticleListResponseDto;
 import practice.session.dto.ArticleRequestDto;
 import practice.session.dto.ArticleResponseDto;
@@ -19,21 +24,30 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
     private final MemberRepository memberRepository;
 
-    public String createArticle(ArticleRequestDto requestDto) {
+    @Transactional
+    public ArticleResponseDto createArticle(ArticleRequestDto requestDto) {
         Member member = memberRepository.findById(requestDto.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
         Article article = Article.builder()
+                .member(member)
                 .title(requestDto.getTitle())
-                .categories(requestDto.getCategories())
                 .content(requestDto.getContent())
-                .author(member)
+                .categories(requestDto.getCategories())
                 .build();
-        articleRepository.save(article);
 
-        return "기사 작성 성공" + "기사 id = " + article.getId();
+        Article savedArticle = articleRepository.save(article);
+
+        return ArticleResponseDto.builder()
+                .id(savedArticle.getId())
+                .title(savedArticle.getTitle())
+                .content(savedArticle.getContent())
+                .author(member.getName())
+                .categories(savedArticle.getCategories())
+                .build();
     }
 
+    @Transactional(readOnly = true)
     public ArticleResponseDto getArticle(Long articleId){
         Article article = articleRepository.findById(articleId)
                 .orElseThrow(()-> new IllegalArgumentException("해당 기사가 존재하지 않습니다."));
@@ -43,10 +57,11 @@ public class ArticleService {
                 .categories(article.getCategories())
                 .title(article.getTitle())
                 .content(article.getContent())
-                .author(article.getAuthor().getName())
+                .author(article.getMember().getName())
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public List<ArticleListResponseDto> getArticleList(){
         List<Article> articleList = articleRepository.findAll();
 
@@ -55,7 +70,7 @@ public class ArticleService {
                         .id(article.getId())
                         .categories(article.getCategories())
                         .title(article.getTitle())
-                        .author(article.getAuthor().getName())
+                        .author(article.getMember().getName())
                         .build())
                 .toList();
     }
