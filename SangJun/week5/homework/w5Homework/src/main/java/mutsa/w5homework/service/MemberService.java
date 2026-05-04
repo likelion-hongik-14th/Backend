@@ -1,9 +1,11 @@
 package mutsa.w5homework.service;
 
+import mutsa.w5homework.domain.Cart;
 import mutsa.w5homework.domain.Member;
 import mutsa.w5homework.dto.MemberCreateRequestDto;
 import mutsa.w5homework.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
+import mutsa.w5homework.repository.CartRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import mutsa.w5homework.repository.MemberRepository;
@@ -20,6 +22,8 @@ public class MemberService {
                 .email(dto.getEmail())
                 .password(dto.getPassword())
                 .build();
+        Cart cart = new Cart(member);
+        member.createCart(cart);
         Member savedMember = memberRepository.save(member);
         return new MemberResponseDto(savedMember);
     }
