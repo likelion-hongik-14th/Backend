@@ -2,6 +2,7 @@ package mutsa.w5homework.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,7 @@ public class CartItem {
     @JoinColumn(name = "cart_id")
     private Cart cart;
 
+    @Builder
     public CartItem(Long count, Product product, Cart cart) {
         this.count = count;
         this.product = product;
