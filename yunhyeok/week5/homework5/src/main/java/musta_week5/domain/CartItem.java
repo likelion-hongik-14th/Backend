@@ -2,6 +2,8 @@ package musta_week5.domain;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,7 +11,8 @@ import lombok.NoArgsConstructor;
 @Table(name = "CARTITEMS")
 @Getter
 @NoArgsConstructor
-
+@Builder
+@AllArgsConstructor
 public class CartItem {
 
     @Id

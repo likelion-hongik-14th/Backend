@@ -1,6 +1,8 @@
 package musta_week5.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,7 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "PRODUCTS")
 @NoArgsConstructor
-
+@Builder
+@AllArgsConstructor
 
 public class Product {
 
@@ -32,6 +35,18 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public void updateProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public void updatePrice(Integer price) {
+        this.price = price;
+    }
+
+    public void updateCategory(Category category) {
+        this.category = category;
+    }
 
 
 }

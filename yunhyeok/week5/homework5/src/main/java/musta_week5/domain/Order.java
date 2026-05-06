@@ -1,13 +1,15 @@
 package musta_week5.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Table(name = "ORDERS")
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
+@Setter
 
 public class Order {
 
@@ -19,7 +21,7 @@ public class Order {
     private String address;
 
     @Column(nullable = false)
-    private String state;
+    private String status;
 
     @Column(nullable = false)
     private Integer totalPrice;
@@ -28,6 +30,10 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public void updateStatus(String status){
+        this.status = status;
+    }
 
 
 }
