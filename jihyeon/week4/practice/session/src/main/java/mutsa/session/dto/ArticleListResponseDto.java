@@ -1,4 +1,4 @@
-package mutsa.session;
+package mutsa.session.dto;
 
 import lombok.Getter;
 import mutsa.session.domain.Article;

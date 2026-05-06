@@ -1,6 +1,5 @@
-package mutsa.session;
+package mutsa.session.repository;
 
-import mutsa.session.domain.Article;
 import mutsa.session.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

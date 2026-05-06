@@ -1,4 +1,4 @@
-package mutsa.session;
+package mutsa.session.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
