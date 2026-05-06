@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class CartItemCreateRequestDto {
+    private Long cartId;
     private Long productId;
     private Long count;
-    private Long cartId;
 }
