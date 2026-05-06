@@ -1,5 +1,6 @@
 package mutsa.session.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.session.dto.ArticleCreateRequestDto;
 import mutsa.session.dto.ArticleResponseDto;
@@ -16,7 +17,7 @@ public class ArticleController {
     private final ArticleService articleService;
 
     @PostMapping
-    public ResponseEntity<ArticleResponseDto> createArticle(@RequestBody ArticleCreateRequestDto requestDto) {
+    public ResponseEntity<ArticleResponseDto> createArticle(@Valid @RequestBody ArticleCreateRequestDto requestDto) {
         ArticleResponseDto responseDto = articleService.createArticle(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
