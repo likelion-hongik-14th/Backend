@@ -1,5 +1,6 @@
 package mutsa.session5.Controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.session5.Dto.CartItemRequestDto;
 import mutsa.session5.Dto.CartItemResponseDto;
@@ -16,7 +17,7 @@ public class CartController {
 
     // 장바구니 상품 담기
     @PostMapping("/items")
-    public ResponseEntity<CartItemResponseDto> addCartItem(@RequestBody CartItemRequestDto requestDto) {
+    public ResponseEntity<CartItemResponseDto> addCartItem(@Valid @RequestBody CartItemRequestDto requestDto) {
         CartItemResponseDto response = cartService.addCartItem(requestDto);
         return ResponseEntity.ok(response);
     }
