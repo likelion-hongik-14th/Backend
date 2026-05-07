@@ -1,5 +1,6 @@
 package hello.hellospring.controller;
 
+import hello.hellospring.dto.CommentCreateRequestDto;
 import hello.hellospring.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +12,10 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     private final CommentService commentService;
 
-    // 댓글 작성: POST http://localhost:8080/api/v1/comments?articleId=1&memberId=1&content=내용
+    // 리뷰 반영: URL 노출 방지, DTO 사용
     @PostMapping
-    public ResponseEntity<String> saveComment(
-            @RequestParam Long articleId,
-            @RequestParam Long memberId,
-            @RequestParam String content) {
-
-        commentService.createComment(articleId, memberId, content);
+    public ResponseEntity<String> saveComment(@RequestBody CommentCreateRequestDto requestDto) {
+        commentService.createComment(requestDto);
         return ResponseEntity.ok("댓글 등록 완료!");
     }
 }

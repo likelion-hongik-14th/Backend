@@ -1,5 +1,6 @@
 package hello.hellospring.controller;
 
+import hello.hellospring.dto.FollowRequestDto;
 import hello.hellospring.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,10 @@ import org.springframework.web.bind.annotation.*;
 public class FollowController {
     private final FollowService followService;
 
-    // 팔로우 하기: POST http://localhost:8080/api/v1/follows?followerId=1&followingId=2
+    // 리뷰 반영: URL 노출 방지, DTO 사용
     @PostMapping
-    public ResponseEntity<String> follow(
-            @RequestParam Long followerId,
-            @RequestParam Long followingId) {
-
-        followService.follow(followerId, followingId);
+    public ResponseEntity<String> follow(@RequestBody FollowRequestDto requestDto) {
+        followService.follow(requestDto);
         return ResponseEntity.ok("팔로우 성공!");
     }
 }
