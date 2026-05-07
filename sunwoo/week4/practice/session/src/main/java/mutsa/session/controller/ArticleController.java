@@ -2,6 +2,7 @@ package mutsa.session.controller;
 
 import lombok.RequiredArgsConstructor;
 import mutsa.session.dto.ArticleCreateRequestDto;
+import mutsa.session.dto.ArticleListResponseDto;
 import mutsa.session.dto.ArticleResponseDto;
 import mutsa.session.service.ArticleService;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class ArticleController {
 
     // 기사 목록 조회
     @GetMapping("/list")
-    public ResponseEntity<List<ArticleResponseDto>> getAllArticles() {
+    public ResponseEntity<List<ArticleListResponseDto>> getAllArticles() {
         return ResponseEntity.ok(articleService.getAllArticles());
     }
 }
