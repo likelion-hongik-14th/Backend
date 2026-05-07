@@ -30,15 +30,26 @@ public class CartService {
     public CartItemResponseDto addCartItem(CartItemRequestDto requestDto) {
         Product product = productRepository.findById(requestDto.getProduct_id())
                 .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다."));
-        // 재고 확인
-        if (product.getStock() < requestDto.getQuantity()) {
-            throw new IllegalArgumentException("재고가 부족합니다.");
-        }
         // 장바구니 조회 및 생성
         Cart cart = cartRepository.findByUserId(requestDto.getUserId())
                 .orElseGet(() -> cartRepository.save(Cart.builder()
                         .userId(requestDto.getUserId())
                         .build()));
+
+        // 재고 확인
+        int currentQuantity = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getProduct_id().equals(requestDto.getProduct_id()))
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+        int totalQuantity = currentQuantity + requestDto.getQuantity();
+
+        if (totalQuantity <= 0) {
+            throw new IllegalArgumentException(("장바구니 수량은 최소 1개 이상이어야 합니다."));
+        }
+        if (totalQuantity > product.getStock()) {
+            throw new IllegalArgumentException("재고가 부족합니다.");
+        }
+
         // 기존 상품 중복 확인
         Optional<CartItem> existingItem = cartItemRepository.findByCartIdAndProductId(
                 cart.getCart_id(), product.getProduct_id());
