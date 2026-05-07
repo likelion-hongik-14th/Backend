@@ -10,6 +10,8 @@ import mutsa.session.repository.ArticleRepository;
 import mutsa.session.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,7 +29,7 @@ public class ArticleService {
                 .title(requestDto.getTitle())
                 .content(requestDto.getContent())
                 .member(member)
-                .date(System.currentTimeMillis())
+                .date(LocalDateTime.now())
                 .build();
 
         Article savedArticle = articleRepository.save(article);
@@ -39,6 +41,14 @@ public class ArticleService {
     public ArticleResponseDto getArticle(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 기사가 없습니다. id=" + id));
-        return new ArticleResponseDto(article);
+
+        return ArticleResponseDto.builder()
+                .id(article.getId())
+                .content(article.getContent())
+                .title(article.getTitle())
+                .date(article.getDate())
+                .authorName(article.getMember() != null ? article.getMember().getName():"익명")
+                .build();
+
     }
 }

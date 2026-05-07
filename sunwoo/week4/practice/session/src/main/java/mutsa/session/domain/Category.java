@@ -1,0 +1,6 @@
+package mutsa.session.domain;
+
+public enum Category {
+    POLITICS, ECONOMICS, SOCIAL, CULTURE, TECH, SCIENCE,
+    HEALTH, GLOBAL, EDUCATION, OPINION, SPORTS, ENTERTAINMENT
+}

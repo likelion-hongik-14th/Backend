@@ -15,13 +15,14 @@ public class ArticleController {
 
     private final ArticleService articleService;
 
-    @PostMapping("/new")
-    public String createArticle(@RequestBody ArticleRequestDto requestDto){
-        return articleService.createArticle(requestDto);
+    @PostMapping
+    public ResponseEntity<ArticleResponseDto> createArticle(@RequestBody ArticleRequestDto requestDto){
+        ArticleResponseDto responseDto = articleService.createArticle(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     @GetMapping("/{articleId}")
-    public ResponseEntity<ArticleResponseDto> getArticle(@PathVariable long articleId){
+    public ResponseEntity<ArticleResponseDto> getArticle(@PathVariable Long articleId){
         ArticleResponseDto responseDto = articleService.getArticle(articleId);
         return ResponseEntity.ok(responseDto);
     }

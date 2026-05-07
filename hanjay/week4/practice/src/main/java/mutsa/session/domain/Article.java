@@ -3,6 +3,8 @@ package mutsa.session.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @AllArgsConstructor
@@ -20,5 +22,5 @@ public class Article {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    private Long date;
+    private LocalDateTime date;
 }
