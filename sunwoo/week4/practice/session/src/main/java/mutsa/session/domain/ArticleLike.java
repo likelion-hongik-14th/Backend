@@ -1,11 +1,13 @@
 package mutsa.session.domain;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @NoArgsConstructor
 @Entity
+@Getter
 public class ArticleLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

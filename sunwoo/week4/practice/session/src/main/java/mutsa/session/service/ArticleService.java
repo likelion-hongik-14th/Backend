@@ -3,10 +3,12 @@ package mutsa.session.service;
 import lombok.RequiredArgsConstructor;
 import mutsa.session.domain.Article;
 import mutsa.session.dto.ArticleCreateRequestDto;
+import mutsa.session.dto.ArticleListResponseDto;
 import mutsa.session.dto.ArticleResponseDto;
 import mutsa.session.repository.ArticleRepository;
 import mutsa.session.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +26,7 @@ public class ArticleService {
     private final MemberRepository memberRepository;//DI
 
     // 기사 작성 로직
+    @Transactional
     public String createArticle(ArticleCreateRequestDto requestDto) {
         Article article = Article.builder()
                 .author(memberRepository.findById(requestDto.getMemberId()).orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + requestDto.getMemberId())))
@@ -37,6 +40,7 @@ public class ArticleService {
     }
 
     // 기사 단건 조회 로직
+    @Transactional(readOnly = true)
     public ArticleResponseDto getArticle(Long id) {
         Article article = articleRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Article not found with id: " + id));
@@ -51,15 +55,15 @@ public class ArticleService {
                 .build();
     }
 
-    public List<ArticleResponseDto> getAllArticles() {
+    @Transactional(readOnly = true)
+    public List<ArticleListResponseDto> getAllArticles() {
         List<Article> articles = articleRepository.findAll();
 
         return articles.stream()
-                .map(article -> ArticleResponseDto.builder()
+                .map(article -> ArticleListResponseDto.builder()
                         .id(article.getId())
                         .author(article.getAuthor().getName())
                         .title(article.getTitle())
-                        .content(article.getContent())
                         .date(article.getDate())
                         .category(article.getCategory())
                         .build())
