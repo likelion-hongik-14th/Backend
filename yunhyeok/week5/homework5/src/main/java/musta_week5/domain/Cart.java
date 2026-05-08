@@ -1,4 +1,4 @@
-package musta.session.Domain;
+package musta_week5.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,17 +6,20 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
+@Table(name = "CART")
 @Getter
 @NoArgsConstructor
 
-public class Category {
+public class Cart {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long Id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private CategoryType categoryType;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
+
 
 }

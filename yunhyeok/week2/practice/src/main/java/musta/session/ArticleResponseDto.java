@@ -11,7 +11,7 @@ public class ArticleResponseDto {
     private String content;
 
     public ArticleResponseDto(Article article) {
-        this.id = article.getArticleId();
+        this.id = article.getId();
         this.title = article.getTitle();
         this.content = article.getContent();
     }
