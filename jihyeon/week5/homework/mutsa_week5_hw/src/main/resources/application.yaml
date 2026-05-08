@@ -1,6 +1,9 @@
 spring:
+  application:
+    name: mutsa_week5_hw
+
   datasource:
-    url: jdbc:mysql://localhost:3306/mutsa_db
+    url: jdbc:mysql://localhost:3306/mutsa_db5
     username: root
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver

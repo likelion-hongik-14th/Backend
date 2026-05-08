@@ -1,6 +1,11 @@
-package mutsa.session;
+package mutsa.session.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import mutsa.session.dto.ArticleCreateRequestDto;
+import mutsa.session.dto.ArticleListResponseDto;
+import mutsa.session.dto.ArticleResponseDto;
+import mutsa.session.service.ArticleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +22,7 @@ public class ArticleController {
     // 1. 기사 작성 (POST)
     @PostMapping
     public ResponseEntity<ArticleResponseDto> createArticle(
-            @RequestBody ArticleCreateRequestDto requestDto) {
+            @RequestBody @Valid ArticleCreateRequestDto requestDto) {
 
         ArticleResponseDto responseDto = articleService.createArticle(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);

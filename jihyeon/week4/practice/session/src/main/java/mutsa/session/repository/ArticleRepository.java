@@ -1,4 +1,4 @@
-package mutsa.session;
+package mutsa.session.repository;
 
 import mutsa.session.domain.Article;
 import org.springframework.data.jpa.repository.JpaRepository;
