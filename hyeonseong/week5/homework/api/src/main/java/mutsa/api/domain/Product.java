@@ -36,6 +36,20 @@ public class Product {
         this.price = price;
         this.stock = stock;
         this.description = description;
-        this.status = status;
+        this.status = (status != null) ? status : ProductStatus.SELL;
+    }
+
+    // 비즈니스 로직: 재고 차감 (주문시 호출됨)
+    public void removeStock(int quantity){
+        int restStock = this.stock - quantity;
+        if (restStock < 0){
+            throw new IllegalStateException("재고가 부족합니다.");
+        }
+        this.stock = restStock;
+    }
+
+    // 비즈니스 로직: 재고 원복 (주문 취소시 호출됨)
+    public void addStock(int quantity){
+        this.stock += quantity;
     }
 }

@@ -16,7 +16,7 @@ public class ProductService {
 
     private final ProductRepository productRepository; // 의존성 주입!
 
-    // 상품 등록 기능
+    // [생성] 신규 상품 등록 기능
     @Transactional
     public ProductResponseDto createProduct(ProductRequestDto requestDto){
 
@@ -33,7 +33,7 @@ public class ProductService {
         return new ProductResponseDto(savedProduct);
     }
 
-    // 상품 조회 기능
+    // [조회] 특정 상품 상세 정보 조회 기능
     @Transactional(readOnly = true)
     public ProductResponseDto getProduct(Long id){
 
@@ -43,7 +43,7 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
-    // 전체 상품 목록 조회 기능
+    // [조회] 전체 상품 목록 조회 기능
     @Transactional(readOnly = true)
     public List<ProductResponseDto> getAllProduct(){
         return productRepository.findAll().stream()

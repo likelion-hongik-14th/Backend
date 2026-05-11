@@ -16,20 +16,20 @@ public class CartController {
 
     private final CartService cartService;
 
-    // 장바구니 상품 목록 조회 API
+    // 내 장바구니에 담긴 상품 목록 조회 API
     @GetMapping
     public ResponseEntity<CartResponseDto> getCart(){
         return ResponseEntity.ok(cartService.getCart());
     }
 
-    // 장바구니에 상품 추가 API
+    // 장바구니에 새로운 상품 추가 API
     @PostMapping
     public ResponseEntity<Void> addCartItem(@RequestBody CartItemRequestDto requestDto){
         cartService.addCartItem(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // 장바구니 상품의 수량 변경 API
+    // 장바구니에 담긴 특정 상품의 수량 변경 API
     @PatchMapping("/items/{cartItemId}")
     public ResponseEntity<Void> updateCartItemQuantity(
             @PathVariable Long cartItemId,
@@ -38,7 +38,7 @@ public class CartController {
         return ResponseEntity.ok().build();
     }
 
-    // 장바구니의 특정 상품 삭제 API
+    // 장바구니의 특정 상품 개별 삭제 API
     @DeleteMapping("/items/{cartItemId}")
     public ResponseEntity<Void> removeCartItem(@PathVariable Long cartItemId){
         cartService.removeCartItem(cartItemId);

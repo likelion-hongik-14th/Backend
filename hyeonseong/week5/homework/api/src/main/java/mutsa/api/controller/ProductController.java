@@ -17,7 +17,7 @@ public class ProductController {
 
     private final ProductService productService;
 
-    // 신규 상품 등록 API
+    // [관리자] 신규 상품 등록 API
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto){
 
