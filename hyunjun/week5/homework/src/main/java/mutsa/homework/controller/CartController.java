@@ -1,5 +1,6 @@
 package mutsa.homework.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.homework.dto.cart.AddCartItemRequestDto;
 import mutsa.homework.dto.cart.CartItemResponseDto;
@@ -20,6 +21,7 @@ public class CartController {
     @PostMapping("/items")
     public ResponseEntity<CartItemResponseDto> createCartItem(
             @RequestHeader("X-User-Id") Long userId,
+            @Valid
             @RequestBody AddCartItemRequestDto requestDto
     ) {
 

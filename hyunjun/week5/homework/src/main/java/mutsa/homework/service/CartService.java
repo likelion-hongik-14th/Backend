@@ -47,20 +47,19 @@ public class CartService {
 
         Optional<CartItem> optionalCartItem = cartItemRepository.findByCartAndProduct(cart, product);
 
-        CartItem cartItem;
+        int currentQuantity = optionalCartItem.map(CartItem::getQuantity).orElse(0);
+        int totalQuantity = currentQuantity + requestDto.quantity();
 
-        if (optionalCartItem.isPresent()) {
+        product.verifyStock(totalQuantity);
 
-            cartItem = optionalCartItem.get();
-            cartItem.increaseQuantity(requestDto.quantity());
+        CartItem resultItem = optionalCartItem
+                .map(item -> {
+                    item.increaseQuantity(requestDto.quantity());
+                    return item;
+                })
+                .orElseGet(() -> cartItemRepository.save(CartItem.create(cart, product, requestDto.quantity())));
 
-        } else {
-
-            CartItem newCartItem = CartItem.create(cart, product, requestDto.quantity());
-            cartItem = cartItemRepository.save(newCartItem);
-        }
-
-        return CartItemResponseDto.from(cartItem);
+        return CartItemResponseDto.from(resultItem);
     }
 
     public CartResponseDto getCartItems(Long userId){

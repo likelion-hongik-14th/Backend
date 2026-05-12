@@ -1,14 +1,11 @@
 package mutsa.homework.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class CartItem {
@@ -20,11 +17,11 @@ public class CartItem {
     private int quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     public static CartItem create(Cart cart, Product product, int quantity){
@@ -42,6 +39,6 @@ public class CartItem {
     public void updateQuantity(int quantity) { this.quantity = quantity; }
 
     public int calculatePrice(){
-        return product.getPrice() * quantity;
+        return this.product.getPrice() * this.quantity;
     }
 }
