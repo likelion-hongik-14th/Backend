@@ -1,24 +1,28 @@
 package mutsa.api.dto;
 
-import mutsa.api.domain.Product;
+import lombok.Builder;
 import lombok.Getter;
+import mutsa.api.domain.Product;
 import mutsa.api.domain.ProductStatus;
 
 @Getter
+@Builder
 public class ProductResponseDto {
     private Long id;
     private String name;
-    private Integer price;
-    private Integer stock;
+    private int price;
+    private int stock;
     private String description;
     private ProductStatus status;
 
-    public ProductResponseDto(Product product){
-        this.id = product.getId();
-        this.name = product.getName();
-        this.price = product.getPrice();
-        this.stock = product.getStock();
-        this.description = product.getDescription();
-        this.status = product.getStatus();
+    public static ProductResponseDto of(Product product) {
+        return ProductResponseDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .stock(product.getStock())
+                .description(product.getDescription())
+                .status(product.getStatus())
+                .build();
     }
 }

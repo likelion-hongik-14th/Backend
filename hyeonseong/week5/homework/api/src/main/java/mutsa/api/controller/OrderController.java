@@ -1,5 +1,6 @@
 package mutsa.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.api.dto.ApiResponseDto;
 import mutsa.api.dto.OrderRequestDto;
@@ -12,17 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
 
-    // 상품 즉시 주문 API
+    // 단일 상품 즉시 주문 API
     @PostMapping
-    public ResponseEntity<ApiResponseDto> createOrder(@RequestBody OrderRequestDto requestDto){
+    public ResponseEntity<ApiResponseDto> createOrder(@Valid @RequestBody OrderRequestDto requestDto){
         Long orderId = orderService.createOrder(requestDto);
-        // ApiResponseDto를 사용해 JSON 형태로 예쁘게 응답합니다.
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ApiResponseDto("주문 성공!", orderId));
     }
@@ -46,7 +46,6 @@ public class OrderController {
     @PostMapping("/{orderId}/cancel")
     public ResponseEntity<ApiResponseDto> cancelOrder(@PathVariable Long orderId){
         orderService.cancelOrder(orderId);
-        // 추가로 줄 데이터가 없으므로 data 부분에는 null을 넣습니다.
         return ResponseEntity.ok(new ApiResponseDto("주문이 정상적으로 취소되었습니다.", null));
     }
 
@@ -55,11 +54,5 @@ public class OrderController {
     public ResponseEntity<ApiResponseDto> completeDelivery(@PathVariable Long orderId) {
         orderService.completeDelivery(orderId);
         return ResponseEntity.ok(new ApiResponseDto("배송 완료 처리가 되었습니다.", null));
-    }
-
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ApiResponseDto> handleIllegalState(IllegalStateException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new ApiResponseDto("실패: " + e.getMessage(), null));
     }
 }

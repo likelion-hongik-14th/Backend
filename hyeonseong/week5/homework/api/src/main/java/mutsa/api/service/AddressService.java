@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AddressService {
 
     private final AddressRepository addressRepository;
@@ -31,7 +32,7 @@ public class AddressService {
         });
     }
 
-    // [생성] 배송지 신규 등록
+    // [생성] 새로운 배송지 등록
     @Transactional
     public void createAddress(AddressRequestDto requestDto){
         User user = getTestUser();
@@ -48,11 +49,10 @@ public class AddressService {
     }
 
     // [조회] 내 배송지 목록 전체 조회
-    @Transactional(readOnly = true)
     public List<AddressResponseDto> getAllAddresses(){
         User user = getTestUser();
         return addressRepository.findAllByUser(user).stream()
-                .map(AddressResponseDto::new)
+                .map(AddressResponseDto::of)
                 .toList();
     }
 
@@ -60,7 +60,7 @@ public class AddressService {
     @Transactional
     public void updateAddress(Long addressId, AddressRequestDto requestDto){
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(()->new IllegalArgumentException("배송지를 찾을 수 없습니다."));
+                .orElseThrow(()->new IllegalArgumentException("수정할 배송지를 찾을 수 없습니다."));
 
         address.updateAddress(
                 requestDto.getAddressName(),
@@ -74,7 +74,7 @@ public class AddressService {
     @Transactional
     public void deleteAddress(Long addressId) {
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException("삭제할 배송지를 찾을 수 없습니다."));
 
         addressRepository.delete(address);
     }

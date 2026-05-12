@@ -39,7 +39,7 @@ public class Product {
         this.status = (status != null) ? status : ProductStatus.SELL;
     }
 
-    // 비즈니스 로직: 재고 차감 (주문시 호출됨)
+    // 재고 차감 비즈니스 로직 (주문시 호출됨)
     public void removeStock(int quantity){
         int restStock = this.stock - quantity;
         if (restStock < 0){
@@ -48,8 +48,19 @@ public class Product {
         this.stock = restStock;
     }
 
-    // 비즈니스 로직: 재고 원복 (주문 취소시 호출됨)
+    // 재고 원복 비즈니스 로직 (주문 취소시 호출됨)
     public void addStock(int quantity){
         this.stock += quantity;
+    }
+
+    // 관리자용 상품 정보 수정 비즈니스 로직
+    public void updateProduct(String name, int price, int stock, String description, ProductStatus status) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.description = description;
+        if (status != null) {
+            this.status = status;
+        }
     }
 }

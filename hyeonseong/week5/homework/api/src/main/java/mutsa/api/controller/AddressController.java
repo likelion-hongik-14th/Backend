@@ -1,5 +1,6 @@
 package mutsa.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.api.dto.AddressRequestDto;
 import mutsa.api.dto.AddressResponseDto;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/addresses")
+@RequestMapping("/api/v1/addresses")
 @RequiredArgsConstructor
 public class AddressController {
 
@@ -19,7 +20,7 @@ public class AddressController {
 
     // 새로운 배송지 등록 API
     @PostMapping
-    public ResponseEntity<Void> createAddress(@RequestBody AddressRequestDto requestDto){
+    public ResponseEntity<Void> createAddress(@Valid @RequestBody AddressRequestDto requestDto){
         addressService.createAddress(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -35,15 +36,15 @@ public class AddressController {
     @PatchMapping("/{addressId}")
     public ResponseEntity<Void> updateAddress(
             @PathVariable Long addressId,
-            @RequestBody AddressRequestDto requestDto){
+            @Valid @RequestBody AddressRequestDto requestDto){
         addressService.updateAddress(addressId, requestDto);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     // 등록된 배송지 삭제 API
     @DeleteMapping("/{addressId}")
     public ResponseEntity<Void> deleteAddress(@PathVariable Long addressId) {
         addressService.deleteAddress(addressId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

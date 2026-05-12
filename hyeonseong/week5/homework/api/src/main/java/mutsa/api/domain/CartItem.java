@@ -16,7 +16,7 @@ public class CartItem {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,7 +24,7 @@ public class CartItem {
     private Product product;
 
     @Column(nullable = false)
-    private Integer quantity;
+    private int quantity;
 
     @Builder
     public CartItem(Cart cart, Product product, Integer quantity) {

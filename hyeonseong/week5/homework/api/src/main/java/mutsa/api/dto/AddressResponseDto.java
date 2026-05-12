@@ -1,9 +1,11 @@
 package mutsa.api.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import mutsa.api.domain.Address;
 
 @Getter
+@Builder
 public class AddressResponseDto {
     private Long id;
     private String addressName;
@@ -11,11 +13,13 @@ public class AddressResponseDto {
     private String address;
     private String phoneNumber;
 
-    public AddressResponseDto(Address address){
-        this.id = address.getId();
-        this.addressName = address.getAddressName();
-        this.zipcode = address.getZipcode();
-        this.address = address.getAddress();
-        this.phoneNumber = address.getPhoneNumber();
+    public static AddressResponseDto of(Address address){
+        return AddressResponseDto.builder()
+                .id(address.getId())
+                .addressName(address.getAddressName())
+                .zipcode(address.getZipcode())
+                .address(address.getAddress())
+                .phoneNumber(address.getPhoneNumber())
+                .build();
     }
 }

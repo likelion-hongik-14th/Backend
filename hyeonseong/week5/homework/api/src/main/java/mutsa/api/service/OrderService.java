@@ -12,6 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class OrderService {
 
     private final OrderRepository orderRepository;
@@ -20,12 +21,11 @@ public class OrderService {
     private final AddressRepository addressRepository;
     private final CartRepository cartRepository;
 
-    // [공통] 테스트용 유저 가져오기
     private User getTestUser(){
         return userRepository.findById(1L).orElseThrow(()->new IllegalArgumentException("유저가 없습니다."));
     }
 
-    // [생성] 상품 바로 주문하기 로직
+    // [생성] 단일 상품 바로 주문하기
     @Transactional
     public Long createOrder(OrderRequestDto requestDto){
         User user = getTestUser();
@@ -38,13 +38,12 @@ public class OrderService {
         OrderItem orderItem = OrderItem.createOrderItem(product, product.getPrice(), requestDto.getCount());
 
         Order order = Order.createOrder(user, address, List.of(orderItem));
-
         orderRepository.save(order);
 
         return order.getId();
     }
 
-    // [생성] 장바구니 전체 품목 주문 로직
+    // [생성] 장바구니 전체 품목 주문
     @Transactional
     public Long createOrderFromCart(Long addressId){
         User user = getTestUser();
@@ -71,7 +70,7 @@ public class OrderService {
         return order.getId();
     }
 
-    // [취소] 주문 취소 로직
+    // [취소] 주문 취소
     @Transactional
     public void cancelOrder(Long orderId){
         Order order = orderRepository.findById(orderId)
@@ -80,16 +79,15 @@ public class OrderService {
         order.cancel();
     }
 
-    // [조회] 내 주문 전체 내역 조회 로직
-    @Transactional(readOnly = true)
+    // [조회] 내 주문 내역 조회
     public List<OrderResponseDto> getMyOrders(){
         User user = getTestUser();
         return orderRepository.findAllByUserOrderByOrderDateDesc(user).stream()
-                .map(OrderResponseDto::new)
+                .map(OrderResponseDto::of)
                 .toList();
     }
 
-    // [상태 변경] 배송 완료 처리 로직
+    // [상태 변경] 배송 완료 처리
     @Transactional
     public void completeDelivery(Long orderId) {
         Order order = orderRepository.findById(orderId)
