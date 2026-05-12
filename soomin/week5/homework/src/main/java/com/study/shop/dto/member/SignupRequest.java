@@ -1,4 +1,4 @@
-package com.study.shop.dto;
+package com.study.shop.dto.member;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

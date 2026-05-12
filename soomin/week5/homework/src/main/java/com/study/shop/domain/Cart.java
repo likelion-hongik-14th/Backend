@@ -18,7 +18,7 @@ public class Cart {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    @JoinColumn(nullable = false, name = "member_id")
     private Member member;
 
     @Column(nullable = false)

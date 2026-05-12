@@ -2,8 +2,8 @@ package com.study.shop.service;
 
 import com.study.shop.domain.Cart;
 import com.study.shop.domain.Member;
-import com.study.shop.dto.MemberResponse;
-import com.study.shop.dto.SignupRequest;
+import com.study.shop.dto.member.MemberResponse;
+import com.study.shop.dto.member.SignupRequest;
 import com.study.shop.repository.CartRepository;
 import com.study.shop.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
