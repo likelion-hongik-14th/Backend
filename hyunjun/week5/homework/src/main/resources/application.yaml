@@ -1,17 +1,12 @@
 spring:
   application:
-    name: practice
+    name: mutsa-shop
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/mutsa_shop_db?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
-    password: '#ryu050210'
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    active: local
 
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

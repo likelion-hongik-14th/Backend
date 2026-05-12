@@ -23,22 +23,14 @@ public class ProductService {
     @Transactional
     public ProductResponseDto addProduct(AddProductRequestDto requestDto){
 
-        Optional<Product> optionalProduct = productRepository.findByName(requestDto.name());
-
-        Product product;
-
-        if (optionalProduct.isPresent()) {
-
-            product = optionalProduct.get();
-            product.increaseStock(requestDto.stock());
-            product.updatePrice(requestDto.price());
-        }else {
-
-            Product newProduct = Product.create(requestDto.name(), requestDto.price(), requestDto.stock());
-            product = productRepository.save(newProduct);
+        if(productRepository.existsByName(requestDto.name())){
+            throw new IllegalArgumentException("해당 이름의 상품이 이미 존재합니다." + requestDto.name());
         }
 
-        return ProductResponseDto.from(product);
+        Product newProduct = Product.create(requestDto.name(), requestDto.price(), requestDto.stock());
+        productRepository.save(newProduct);
+
+        return ProductResponseDto.from(newProduct);
     }
 
     public ProductResponseDto getProduct(Long productId){

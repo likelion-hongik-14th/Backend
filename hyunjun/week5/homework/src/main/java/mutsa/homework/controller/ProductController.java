@@ -1,5 +1,6 @@
 package mutsa.homework.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.homework.dto.product.AddProductRequestDto;
 import mutsa.homework.dto.product.ProductListResponseDto;
@@ -18,6 +19,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(
+            @Valid
             @RequestBody AddProductRequestDto requestDto
     ) {
         ProductResponseDto responseDto = productService.addProduct(requestDto);
