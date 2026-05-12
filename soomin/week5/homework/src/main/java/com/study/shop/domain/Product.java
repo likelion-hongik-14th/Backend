@@ -18,10 +18,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
     @Column(nullable = false)
     private String name;
 
@@ -44,8 +40,7 @@ public class Product {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public Product(Category category, String name, int price, int stockQuantity, String description, ProductStatus status) {
-        this.category = category;
+    public Product(String name, int price, int stockQuantity, String description, ProductStatus status) {
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
@@ -55,8 +50,7 @@ public class Product {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public void update(Category category, String name, int price, int stockQuantity, String description, ProductStatus status) {
-        this.category = category;
+    public void update(String name, int price, int stockQuantity, String description, ProductStatus status) {
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;

@@ -1,4 +1,4 @@
-package com.study.shop.dto;
+package com.study.shop.dto.member;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.study.shop.domain.Member;

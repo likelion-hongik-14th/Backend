@@ -1,8 +1,8 @@
 package com.study.shop.controller;
 
 import com.study.shop.service.MemberService;
-import com.study.shop.dto.MemberResponse;
-import com.study.shop.dto.SignupRequest;
+import com.study.shop.dto.member.MemberResponse;
+import com.study.shop.dto.member.SignupRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
