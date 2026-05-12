@@ -17,7 +17,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
-    private Long price;
+    private Integer price;
     private Integer stock;
 
     public void removeStock(int quantity){
