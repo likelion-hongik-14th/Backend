@@ -31,31 +31,25 @@ public class CartService {
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("사용자가 없습니다"));
 
-        Cart cart = cartRepository.findByUserId(userId)
-                .orElseGet(()-> cartRepository.save(new Cart(user)));
+        Cart cart = user.getCart();
 
         Product product = productRepository.findById(request.getProductId())
                 .orElseThrow(()-> new IllegalArgumentException("상품이 없습니다."));
 
-        CartItem existingCartItem = null;
-        for(CartItem cartItem : cart.getCartItems()){
-            if(cartItem.getProduct().getId().equals(request.getProductId())){
-                existingCartItem = cartItem;
-                break;
-            }
-        }
+        CartItem existingItem = cart.getCartItems().stream()
+                .filter(item -> item.getProduct().getId().equals(product.getId()))
+                .findFirst()
+                .orElse(null);
 
-        if(existingCartItem == null){
-            CartItem newCartItem = CartItem.builder()
+        if(existingItem != null){
+            existingItem.addQuantity(request.getQuantity());
+        } else {
+            CartItem newItem = CartItem.builder()
                     .cart(cart)
                     .product(product)
                     .quantity(request.getQuantity())
                     .build();
-            cartItemRepository.save(newCartItem);
-        } else {
-            existingCartItem.addQuantity(request.getQuantity());
         }
-        product.removeStock(request.getQuantity());
     }
 
     @Transactional(readOnly = true)
@@ -86,39 +80,24 @@ public class CartService {
     }
 
     @Transactional
-    public void updateCartItem(Long userId, Long productId, CartItemUpdateDto request){
+    public void updateCartItem(Long userId, Long cartItemId, CartItemUpdateDto request){
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 사용자입니다"));
 
-        Cart cart = user.getCart();
-        Product product = productRepository.findById(productId)
-                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 상품입니다."));
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않는 상품입니다."));
 
-        CartItem cartItem = cart.getCartItems().stream()
-                .filter(i->i.getProduct().getId().equals(productId))
-                .findFirst()
-                .orElseThrow(()-> new IllegalArgumentException("장바구니에 해당 상품이 없습니다."));
-
-        product.addStock(cartItem.getQuantity());
-        product.removeStock(request.getQuantity());
         cartItem.updateQuantity(request.getQuantity());
     }
 
     @Transactional
-    public void deleteCartItem(Long userId, Long productId) {
+    public void deleteCartItem(Long userId, Long cartItemId) {
             User user = userRepository.findById(userId)
                     .orElseThrow(()-> new IllegalArgumentException("사용자가 존재하지 않습니다."));
             Cart cart = user.getCart();
 
-            Product product = productRepository.findById(productId)
+            CartItem targetItem = cartItemRepository.findById(cartItemId)
                     .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 상품입니다."));
-
-            CartItem targetItem = cart.getCartItems().stream()
-                    .filter(i -> i.getProduct().getId().equals(productId))
-                    .findFirst()
-                    .orElseThrow(()-> new IllegalArgumentException("상품이 장바구니에 없습니다."));
-
-            product.addStock(targetItem.getQuantity());
             cart.getCartItems().remove(targetItem);
     }
 }
