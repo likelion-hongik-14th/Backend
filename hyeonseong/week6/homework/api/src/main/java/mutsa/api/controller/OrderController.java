@@ -43,14 +43,14 @@ public class OrderController {
     }
 
     // 진행 중인 주문 취소 API (배송 완료 전까지만 가능)
-    @PostMapping("/{orderId}/cancel")
+    @PatchMapping("/{orderId}/cancel")
     public ResponseEntity<ApiResponseDto> cancelOrder(@PathVariable Long orderId){
         orderService.cancelOrder(orderId);
         return ResponseEntity.ok(new ApiResponseDto("주문이 정상적으로 취소되었습니다.", null));
     }
 
     // [관리자] 주문 건 배송 완료 처리 API
-    @PostMapping("/{orderId}/delivery")
+    @PatchMapping("/{orderId}/delivery")
     public ResponseEntity<ApiResponseDto> completeDelivery(@PathVariable Long orderId) {
         orderService.completeDelivery(orderId);
         return ResponseEntity.ok(new ApiResponseDto("배송 완료 처리가 되었습니다.", null));

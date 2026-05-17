@@ -46,10 +46,18 @@ public class Product {
             throw new IllegalStateException("재고가 부족합니다.");
         }
         this.stock = restStock;
+
+        if (this.stock == 0){
+            this.status = ProductStatus.SOLD_OUT;
+        }
     }
 
     // 재고 원복 비즈니스 로직 (주문 취소시 호출됨)
     public void addStock(int quantity){
+        if (this.status == ProductStatus.SOLD_OUT && quantity > 0){
+            this.status = ProductStatus.SELL;
+        }
+
         this.stock += quantity;
     }
 

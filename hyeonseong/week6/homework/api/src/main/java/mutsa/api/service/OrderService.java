@@ -77,6 +77,11 @@ public class OrderService {
                 .orElseThrow(() -> new IllegalArgumentException("주문 내역을 찾을 수 없습니다."));
 
         order.cancel();
+
+        for (OrderItem orderItem : order.getOrderItems()){
+            Product product = orderItem.getProduct();
+            product.addStock(orderItem.getCount());
+        }
     }
 
     // [조회] 내 주문 내역 조회
