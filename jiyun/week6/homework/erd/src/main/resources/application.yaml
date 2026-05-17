@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://mutsa-db.cd40auaec1wn.ap-northeast-2.rds.amazonaws.com:3306/mutsa_db
+    username: jiyun1122
+    password: Tcclee8747!!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
