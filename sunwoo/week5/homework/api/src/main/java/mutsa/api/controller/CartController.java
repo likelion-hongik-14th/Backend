@@ -1,5 +1,6 @@
 package mutsa.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.api.dto.CartItemRequestDto;
 import mutsa.api.dto.CartItemUpdateDto;
@@ -23,14 +24,14 @@ public class CartController {
 
     //장바구니에 상품 추가
     @PostMapping("/items")
-    public ResponseEntity<Void> addCart(@RequestBody CartItemRequestDto requestDto) {
+    public ResponseEntity<Void> addCart(@RequestBody @Valid CartItemRequestDto requestDto) {
         cartService.addCart(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     //장바구니에서 상품 수량 변경
     @PatchMapping("/items/{cartItemId}")
-    public ResponseEntity<Void> updateCartItemQuantity(@PathVariable Long cartItemId, @RequestBody CartItemUpdateDto updateDto) {
+    public ResponseEntity<Void> updateCartItemQuantity(@PathVariable Long cartItemId, @RequestBody @Valid CartItemUpdateDto updateDto) {
         cartService.updateCartItemQuantity(cartItemId, updateDto);
         return ResponseEntity.ok().build();
     }
