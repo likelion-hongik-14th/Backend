@@ -1,9 +1,11 @@
 package mutsa.mutsa_week5_hw.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import mutsa.mutsa_week5_hw.domain.Product;
 
 @Getter
+@Builder // 수정
 public class ProductResponseDto {
 
     //상품 조회
@@ -12,10 +14,12 @@ public class ProductResponseDto {
     private int price;
     private int stock;
 
-    public ProductResponseDto(Product product) {
-        this.id = product.getId();
-        this.name = product.getName();
-        this.price = product.getPrice();
-        this.stock = product.getStock();
+    public static ProductResponseDto from(Product product) { // 수정
+        return ProductResponseDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .stock(product.getStock())
+                .build();
     }
 }
