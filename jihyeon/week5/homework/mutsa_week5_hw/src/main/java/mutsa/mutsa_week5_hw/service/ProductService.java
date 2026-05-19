@@ -6,10 +6,12 @@ import mutsa.mutsa_week5_hw.dto.ProductRequestDto;
 import mutsa.mutsa_week5_hw.dto.ProductResponseDto;
 import mutsa.mutsa_week5_hw.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional // 수정: 메서드 안의 DB 작업을 트랜잭션으로 묶어 처리하도록 어노테이션 추가
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -26,14 +28,14 @@ public class ProductService {
 
         Product saved = productRepository.save(product);
 
-        return new ProductResponseDto(saved);
+        return ProductResponseDto.from(saved);
     }
 
     //전체 상품 조회
     public List<ProductResponseDto> getAllProducts() {
         return productRepository.findAll()
                 .stream()
-                .map(ProductResponseDto::new)
+                .map(ProductResponseDto::from)
                 .toList();
     }
 
@@ -43,6 +45,6 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다. id=" + id));
 
-        return new ProductResponseDto(product);
+        return ProductResponseDto.from(product);
     }
 }

@@ -1,11 +1,13 @@
 package mutsa.mutsa_week5_hw.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import mutsa.mutsa_week5_hw.domain.Cart;
 
 import java.util.List;
 
 @Getter
+@Builder // 수정
 public class CartResponseDto {
 
     //장바구니 조회
@@ -13,14 +15,16 @@ public class CartResponseDto {
     private List<CartItemResponseDto> items;
     private int totalPrice;
 
-    public CartResponseDto(Cart cart) {
-        this.cartId = cart.getId();
-
-        this.items = cart.getCartItems()
-                .stream()
-                .map(CartItemResponseDto::new)
-                .toList();
-
-        this.totalPrice = cart.calculateTotalPrice();
+    public static CartResponseDto from(Cart cart) { // 수정
+        return CartResponseDto.builder()
+                .cartId(cart.getId())
+                .items(
+                        cart.getCartItems()
+                                .stream()
+                                .map(CartItemResponseDto::from)
+                                .toList()
+                )
+                .totalPrice(cart.calculateTotalPrice())
+                .build();
     }
 }

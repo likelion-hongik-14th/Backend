@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/v1/products") // 수정: 데이터 요청용 API 및 버전1임을 명시
 @RequiredArgsConstructor
 public class ProductController {
 

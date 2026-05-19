@@ -1,5 +1,6 @@
 package mutsa.mutsa_week5_hw.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.mutsa_week5_hw.dto.CartItemRequestDto;
 import mutsa.mutsa_week5_hw.dto.CartItemUpdateDto;
@@ -10,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/carts")
+@RequestMapping("/api/v1/carts") // 수정: 데이터 요청용 API 및 버전1임을 명시
 @RequiredArgsConstructor
 public class CartController {
 
@@ -25,7 +26,7 @@ public class CartController {
     // 장바구니에 상품 추가
     @PostMapping("/items")
     public ResponseEntity<CartResponseDto> addItem(
-            @RequestBody CartItemRequestDto requestDto) {
+            @RequestBody @Valid CartItemRequestDto requestDto) { // 수정: DTO에서 유효성 검사를 하도록 @Valid 추가
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -36,7 +37,7 @@ public class CartController {
     @PatchMapping("/items/{itemId}")
     public ResponseEntity<CartResponseDto> updateItemQuantity(
             @PathVariable Long itemId,
-            @RequestBody CartItemUpdateDto requestDto) {
+            @RequestBody @Valid CartItemUpdateDto requestDto) { // 수정: DTO에서 유효성 검사를 하도록 @Valid 추가
 
         return ResponseEntity.ok(
                 cartService.updateItemQuantity(itemId, requestDto)
