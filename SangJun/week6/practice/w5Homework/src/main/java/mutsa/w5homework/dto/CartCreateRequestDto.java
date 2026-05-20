@@ -3,6 +3,6 @@ package mutsa.w5homework.dto;
 import lombok.Getter;
 
 @Getter
-public class CartCreateRequsetDto {
+public class CartCreateRequestDto {
     private Long memberId;
 }

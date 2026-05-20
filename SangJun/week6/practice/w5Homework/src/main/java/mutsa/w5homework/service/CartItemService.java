@@ -12,6 +12,8 @@ import mutsa.w5homework.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CartItemService {
@@ -21,24 +23,41 @@ public class CartItemService {
 
     @Transactional
     public CartItemResponseDto createCartItem(CartItemCreateRequestDto requestDto) {
+        //[초기 검증] 스탁이 모자라거나 상품 ID가 없다면 예외처리
         if (requestDto.getCount() <= 0 || requestDto.getProductId() == null) {
             throw new IllegalArgumentException("Invalid request");
         }
 
         Cart cart = cartRepository.findById(requestDto.getCartId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
+
         Product product = productRepository.findById(requestDto.getProductId())
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        if(product.getStock() < requestDto.getCount()) {
-            throw new IllegalArgumentException("Not enough stock");
-        }
+        Optional<CartItem> existingCartItemOpt = cartItemRepository.findByCartIdAndProductId(
+                cart.getId(),
+                product.getId());
 
-        CartItem cartItem = CartItem.builder()
-                .count(requestDto.getCount())
-                .product(product)
-                .cart(cart)
-                .build();
-        CartItem cartItemSaved = cartItemRepository.save(cartItem);
-        return new  CartItemResponseDto(cartItemSaved);
+        //객체가 존재하는지 검증 후 꺼냄
+        if (existingCartItemOpt.isPresent()) {
+            CartItem existingCartItem = existingCartItemOpt.get();
+            //기존 장바구니 수량 + 추가 수량이 스탁을 초과하는 경우
+            if(product.getStock() < requestDto.getCount() + existingCartItem.getCount()){
+                throw new IllegalArgumentException("Not enough stock");
+            }
+            existingCartItem.addCount(requestDto.getCount());
+            return new CartItemResponseDto(existingCartItem);
+        }else {
+            if(product.getStock() < requestDto.getCount()){
+                throw new IllegalArgumentException("Not enough stock");
+            }
+
+            CartItem cartItem = CartItem.builder()
+                    .count(requestDto.getCount())
+                    .product(product)
+                    .cart(cart)
+                    .build();
+            CartItem cartItemSaved = cartItemRepository.save(cartItem);
+            return new  CartItemResponseDto(cartItemSaved);
+        }
     }
 }

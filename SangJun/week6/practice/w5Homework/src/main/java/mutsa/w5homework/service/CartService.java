@@ -15,7 +15,7 @@ public class CartService {
     @Transactional(readOnly = true)
     public CartResponseDto getCart(Long cartId) {
         Cart cart = cartRepository.findById(cartId)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new RuntimeException("Cart not found"));
         return new CartResponseDto(cart);
     }
 }
