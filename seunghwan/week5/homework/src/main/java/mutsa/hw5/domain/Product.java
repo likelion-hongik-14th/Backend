@@ -40,6 +40,12 @@ public class Product extends BaseEntity {
         return product;
     }
 
+    public void checkStock(int quantity) {
+        if (quantity > this.productStock) {
+            throw new RuntimeException("재고가 부족합니다. (재고: " + this.productStock + ")");
+        }
+    }
+
     public void update(ProductUpdateDto dto) {
     // PATCH로 메서드를 설정했기 때문에 일부만 수정하게 할려고
     // Setter를 쓰지 않음으로서 외부에서 값이 막 변경되는 것을 막고,

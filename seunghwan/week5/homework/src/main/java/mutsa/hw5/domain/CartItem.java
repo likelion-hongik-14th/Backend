@@ -49,4 +49,9 @@ public class CartItem extends BaseEntity {
 
         this.itemQuantity = dto.getItemQuantity();
     }
+
+    public void addQuantity(int quantity) {
+
+        this.itemQuantity += quantity;
+    }
 }

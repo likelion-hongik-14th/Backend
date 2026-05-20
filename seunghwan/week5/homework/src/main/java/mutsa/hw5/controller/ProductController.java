@@ -5,6 +5,7 @@ import mutsa.hw5.dto.product.ProductRequestDto;
 import mutsa.hw5.dto.product.ProductResponseDto;
 import mutsa.hw5.dto.product.ProductUpdateDto;
 import mutsa.hw5.service.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +21,7 @@ public class ProductController {
 
     // 상품 등록
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto dto) {
+    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductRequestDto dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(dto));
     }
 
