@@ -29,4 +29,11 @@ public class Address {
         this.phoneNumber = phoneNumber;
         this.member = member;
     }
+
+    public void update(String addressName, String zipCode, String cityAddress, String phoneNumber) {
+        this.addressName = addressName;
+        this.zipCode = zipCode;
+        this.cityAddress = cityAddress;
+        this.phoneNumber = phoneNumber;
+    }
 }
