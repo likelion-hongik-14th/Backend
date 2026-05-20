@@ -30,6 +30,9 @@ public class Product {
         this.description = description;
     }
     public void removeStock(Long count) {
+        if(this.stock < count){
+            throw new IllegalArgumentException("상품 재고가 부족합니다");
+        }
         this.stock -= count;
     }
 
