@@ -20,7 +20,7 @@ public class Cart {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
     public Cart(Member member) {
@@ -40,6 +40,9 @@ public class Cart {
     }
     public Long getTotalQuantity() {
         return cartItems.stream().mapToLong(CartItem::getCount).sum();
+    }
+    public void clearCart(){
+        this.cartItems.clear();
     }
 
 }

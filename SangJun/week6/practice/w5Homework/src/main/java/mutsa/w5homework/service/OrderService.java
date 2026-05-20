@@ -48,8 +48,7 @@ public class OrderService {
             order.addOrderItem(orderItem);
         }
         //장바구니 비우기
-        cart.getCartItems().clear();
-
+        cart.clearCart();
         Order savedOrder = orderRepository.save(order);
         return new OrderDto.Response(savedOrder);
     }

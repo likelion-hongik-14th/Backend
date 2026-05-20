@@ -24,7 +24,7 @@ public class OrderController {
     }
 
     @PutMapping("/{id}/cancle")
-    public ResponseEntity<OrderDto.Response> cancleOrder(@PathVariable Long id) {
+    public ResponseEntity<Void> cancleOrder(@PathVariable Long id) {
         orderService.cancleOrder(id);
         return ResponseEntity.ok().build();
     }
