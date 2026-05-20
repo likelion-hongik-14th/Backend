@@ -1,16 +1,14 @@
 package hello.hellospring.repository;
 
-import hello.hellospring.domain.Member;
+import hello.hellospring.Entity.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface MemberRepository {
+public interface MemberRepository extends JpaRepository<Member,Long> {
 
-    Member save(Member member);
-    Optional<Member> findById(Long id);
-    Optional<Member> findByName(String name);
-    List<Member> findAll();
+    Optional<Object> findByName(String name);
 }

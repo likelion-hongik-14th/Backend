@@ -1,4 +1,9 @@
 package hello.hellospring.dto;
 
-public class ArticleCreateRequestDTO {
+import lombok.Getter;
+
+@Getter
+public class ArticleCreateRequestDto {
+    private String title;
+    private String content;
 }
