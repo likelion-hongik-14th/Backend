@@ -28,7 +28,7 @@ public class CartItemService {
             throw new IllegalArgumentException("Invalid request");
         }
 
-        Cart cart = cartRepository.findById(requestDto.getCartId())
+        Cart cart = cartRepository.findByMemberId(requestDto.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 
         Product product = productRepository.findById(requestDto.getProductId())

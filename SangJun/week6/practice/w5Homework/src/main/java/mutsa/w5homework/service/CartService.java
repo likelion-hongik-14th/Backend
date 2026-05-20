@@ -13,8 +13,8 @@ public class CartService {
     private final CartRepository cartRepository;
 
     @Transactional(readOnly = true)
-    public CartResponseDto getCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId)
+    public CartResponseDto getCart(Long memberId) {
+        Cart cart = cartRepository.findByMemberId(memberId)
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
         return new CartResponseDto(cart);
     }
