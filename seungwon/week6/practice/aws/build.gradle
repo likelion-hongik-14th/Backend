@@ -1,0 +1,44 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '4.0.6'
+    id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.app'
+version = '0.0.1-SNAPSHOT'
+description = 'aws'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    dependencies {
+        // 기본 스프링 부트
+        implementation 'org.springframework.boot:spring-boot-starter'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+        // 🌟 1. 웹 (API 서버를 띄우기 위해 필수! 이게 있어야 EC2에서 서버가 안 꺼집니다)
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+
+        // 🌟 2. 데이터베이스 (JPA + MySQL + H2)
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        runtimeOnly 'com.mysql:mysql-connector-j' // 아까 쓰신 Aurora MySQL 접속용
+        runtimeOnly 'com.h2database:h2' // 로컬 테스트용 H2
+
+        // 🌟 3. 롬복 (Lombok)
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
