@@ -28,6 +28,10 @@ public class Cart {
         this.member = member;
     }
 
+    protected void connectMember(Member member) {
+        this.member = member;
+    }
+
     public Long getTotalPrice() {
         return cartItems.stream()
                 .mapToLong(cartItem -> cartItem

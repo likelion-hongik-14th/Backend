@@ -27,5 +27,8 @@ public class Member {
     }
     public void createCart(Cart cart) {
         this.cart = cart;
+        if(cart.getMember() != this){
+            cart.connectMember(this);
+        }
     }
 }
