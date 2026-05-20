@@ -4,6 +4,7 @@ import com.app.mutsa_shoppingmall.Entity.CartItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -40,6 +41,8 @@ public class CartDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ItemRequest {
         private Long productId;
         private int quantity;
