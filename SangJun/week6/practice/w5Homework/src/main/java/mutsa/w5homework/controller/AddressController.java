@@ -27,10 +27,16 @@ public class AddressController {
         return ResponseEntity.ok(responses);
     }
 
+    //배송지 수정
     @PutMapping("/{addressId}")
     public ResponseEntity<AddressDto.Response> updateAddress(@PathVariable Long addressId, @RequestBody AddressDto.UpdateRequest dto) {
         AddressDto.Response response = addressService.updateAddress(addressId, dto);
         return ResponseEntity.ok(response);
     }
 
+    @DeleteMapping("/{addressId}")
+    public ResponseEntity<AddressDto.Response> deleteAddress(@PathVariable Long addressId) {
+        AddressDto.Response response = addressService.deleteAddress(addressId);
+        return ResponseEntity.ok(response);
+    }
 }
