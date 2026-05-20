@@ -80,4 +80,12 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         order.cancle();
     }
+
+    //주문번호 조회
+    @Transactional(readOnly = true)
+    public OrderDto.Response getOrder(Long orderId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        return new OrderDto.Response(order);
+    }
 }
