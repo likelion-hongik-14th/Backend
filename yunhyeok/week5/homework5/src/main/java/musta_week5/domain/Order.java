@@ -15,24 +15,34 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
-    @Column(nullable = false)
-    private String address;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status;
+    private OrderStatus status;
 
     @Column(nullable = false)
     private Integer totalPrice;
 
+    @ManyToOne
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private DeliverStatus deliverStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void updateStatus(String status){
+    public void updateStatus(OrderStatus status){
         this.status = status;
+    }
+
+    public void updateDeliverStatus(DeliverStatus deliverStatus) {
+        this.deliverStatus = deliverStatus;
     }
 
 

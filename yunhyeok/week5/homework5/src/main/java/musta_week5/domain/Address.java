@@ -6,26 +6,21 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = " OPTIONS")
+@Table(name = "ADDRESSES")
 @NoArgsConstructor
-
-public class Option {
+public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String optionName;
-
+    private Integer addressId;
 
     @Column(nullable = false)
-    private Integer stock;
+    private Integer phoneNumber;
 
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
+    @Column(nullable = false)
+    private String address;
 
 }
