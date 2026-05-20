@@ -31,9 +31,17 @@ public class Address {
     }
 
     public void update(String addressName, String zipCode, String cityAddress, String phoneNumber) {
-        this.addressName = addressName;
-        this.zipCode = zipCode;
-        this.cityAddress = cityAddress;
-        this.phoneNumber = phoneNumber;
+        if (addressName != null && !addressName.trim().isEmpty()) {
+            this.addressName = addressName;
+        }
+        if (zipCode != null && !zipCode.trim().isEmpty()) {
+            this.zipCode = zipCode;
+        }
+        if (cityAddress != null && !cityAddress.trim().isEmpty()) {
+            this.cityAddress = cityAddress;
+        }
+        if (phoneNumber != null && !phoneNumber.trim().isEmpty()) {
+            this.phoneNumber = phoneNumber;
+        }
     }
 }
