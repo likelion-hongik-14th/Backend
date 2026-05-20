@@ -90,10 +90,13 @@ public class OrderService {
         Order order = orderRepository.findByOrderIdAndMemberIdWithItems(orderId, memberId)
                 .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
 
+        if (!order.getOrderStatus().canTransitionTo(dto.getStatus())) {
+            throw new RuntimeException(
+                    order.getOrderStatus() + " 상태에서 " + dto.getStatus() + " 상태로 변경할 수 없습니다."
+            );
+        }
+
         if (dto.getStatus() == OrderStatus.CANCELLED) {
-            if (order.getOrderStatus() == OrderStatus.DELIVERED) {
-                throw new RuntimeException("배송완료된 주문은 취소할 수 없습니다.");
-            }
             for (OrderItem item : order.getOrderItems()) {
                 item.getProduct().restoreStock(item.getItemQuantity());
             }

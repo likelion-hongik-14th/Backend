@@ -26,7 +26,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false)
     private String memberEmail;
 
-    @Column(nullable = true)
+    @Column
     private Long memberAge;
 
     // 정적 팩토리 메서드
