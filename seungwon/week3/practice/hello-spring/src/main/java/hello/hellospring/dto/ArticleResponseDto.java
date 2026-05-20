@@ -1,9 +1,13 @@
 package hello.hellospring.dto;
 
-import hello.hellospring.Entitiy.Article;
+import hello.hellospring.Entity.Article;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class ArticleResponseDto {
     private Long id;
     private String title;
@@ -11,7 +15,8 @@ public class ArticleResponseDto {
 
     public ArticleResponseDto(Article article) {
         this.id = article.getId();
-        this.title = article.getTitle();
-        this.content = article.getContent();
+        this.title = article.getArticleTitle();
+        this.content = article.getArticleContent();
     }
+
 }

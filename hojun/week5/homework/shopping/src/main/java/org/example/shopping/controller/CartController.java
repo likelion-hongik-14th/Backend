@@ -25,15 +25,15 @@ public class CartController {
         return cartService.getCart(userId);
     }
 
-    @PatchMapping("/{userId}/items/{productId}")
-    public String updateCartItem(@PathVariable Long userId, @PathVariable Long productId, @RequestBody CartItemUpdateDto request){
-        cartService.updateCartItem(userId, productId, request);
+    @PatchMapping("/{userId}/items/{cartItemId}")
+    public String updateCartItem(@PathVariable Long userId, @PathVariable Long cartItemId, @RequestBody CartItemUpdateDto request){
+        cartService.updateCartItem(userId, cartItemId, request);
         return "수량이 수정되었습니다.";
     }
 
-    @DeleteMapping("/{userId}/items/{productId}")
-    public String deleteCartItem(@PathVariable Long userId, @PathVariable Long productId){
-        cartService.deleteCartItem(userId, productId);
+    @DeleteMapping("/{userId}/items/{cartItemId}")
+    public String deleteCartItem(@PathVariable Long userId, @PathVariable Long cartItemId){
+        cartService.deleteCartItem(userId, cartItemId);
         return "상품이 삭제되었습니다.";
     }
 }

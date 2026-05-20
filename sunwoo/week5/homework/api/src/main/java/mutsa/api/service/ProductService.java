@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mutsa.api.domain.Product;
 import mutsa.api.dto.ProductRequestDto;
 import mutsa.api.dto.ProductResponseDto;
+import mutsa.api.exception.NotFoundException;
 import mutsa.api.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,7 @@ public class ProductService {
     //TODO: 상품 상세 조회
     @Transactional(readOnly = true)
     public ProductResponseDto getProductById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + id));
+        Product product = productRepository.findById(id).orElseThrow(() -> new NotFoundException("Product not found with id: " + id));
         return ProductResponseDto.from(product);
     }
 }

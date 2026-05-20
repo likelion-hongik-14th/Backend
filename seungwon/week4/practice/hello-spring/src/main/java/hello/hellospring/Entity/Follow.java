@@ -17,10 +17,10 @@ public class Follow {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name = "follower_id")
+    @JoinColumn(name = "follower_id")
     private Member follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn( name = "followee_id")
+    @JoinColumn(name = "followee_id")
     private Member following;
 }

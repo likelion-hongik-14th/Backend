@@ -9,6 +9,6 @@ public class CartItemResponseDto {
     private Long productId;
     private String productName;
     private int quantity;
-    private Long unitPrice;
-    private Long totalPrice;
+    private Integer unitPrice;
+    private Integer totalPrice;
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Follow {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Follow_id;
+    private Long id;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

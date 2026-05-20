@@ -1,5 +1,6 @@
 package mutsa.api.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.api.dto.ProductRequestDto;
 import mutsa.api.dto.ProductResponseDto;
@@ -18,7 +19,7 @@ public class ProductController {
 
     //상품 등록
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody @Valid ProductRequestDto requestDto) {
         ProductResponseDto responseDto = productService.createProduct(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }

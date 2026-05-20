@@ -4,11 +4,13 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+//@Service
+@Transactional
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -26,10 +28,20 @@ public class MemberService {
 //            throw new IllegalStateException("이미 존재하는 회원입니다.");
 //        }); 이렇게 할 수 도 있는데 optional을 바로 반환하는것은 좋지 않음
 
-        validateDuplicatemember(member);
+            validateDuplicatemember(member); // 중복 회원 검증
+            memberRepository.save(member);
+             return member.getId();
 
-        memberRepository.save(member);
-        return member.getId();
+//        long start = System.currentTimeMillis();
+//        try {
+//            validateDuplicatemember(member); // 중복 회원 검증
+//            memberRepository.save(member);
+//            return member.getId();
+//        } finally {
+//            long finish = System.currentTimeMillis();
+//            long timeMs = finish - start;
+//            System.out.println("join = " + timeMs + "ms");
+//        }
     }
 
     private void validateDuplicatemember(Member member) {
@@ -40,7 +52,17 @@ public class MemberService {
     }
 
     /*전체회원 조회*/
-    public List<Member> findMembers(){
+    public List<Member> findMembers() {
+
+//        long start = System.currentTimeMillis();
+//
+//        try {
+//            return memberRepository.findAll();
+//        } finally {
+//            long finish = System.currentTimeMillis();
+//            long timeMs = finish - start;
+//            System.out.println("findMembers " + timeMs + "ms");
+//        }
         return memberRepository.findAll();
     }
 

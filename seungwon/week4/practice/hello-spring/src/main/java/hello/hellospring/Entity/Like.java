@@ -11,18 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "likes")  //Like는 예약어라 테이블이라고 이름하고 같이 따로 지정해 줘야함
+@Table(name = "likes")
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne (fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
+    // 리뷰 반영: nullable = false 추가
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @ManyToOne  (fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id", nullable = false)
     private Article article;
-
 }

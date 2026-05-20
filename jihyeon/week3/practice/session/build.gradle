@@ -44,6 +44,9 @@ dependencies {
 	// (참고) 스프링 부트 프로젝트 생성 시 기본으로 들어가는 테스트 라이브러리
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	implementation 'com.mysql:mysql-connector-j'
+
 }
 
 tasks.named('test') {

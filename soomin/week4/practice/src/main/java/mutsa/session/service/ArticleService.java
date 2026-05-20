@@ -5,6 +5,7 @@ import mutsa.session.domain.Article;
 import mutsa.session.domain.Member;
 import mutsa.session.dto.ArticleCreateRequestDto;
 import mutsa.session.dto.ArticleResponseDto;
+import mutsa.session.exception.ResourceNotFoundException;
 import mutsa.session.repository.ArticleRepository;
 import mutsa.session.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,7 @@ public class ArticleService {
 
     public ArticleResponseDto getArticle(Long id) {
         Article article = articleRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 기사가 없습니다. id=" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("해당 기사가 없습니다. id=" + id));
         return new ArticleResponseDto(article);
     }
 }

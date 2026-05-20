@@ -1,5 +1,6 @@
 package hello.hellospring.controller;
 
+import hello.hellospring.dto.LikeRequestDto;
 import hello.hellospring.service.LikeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,13 +12,10 @@ import org.springframework.web.bind.annotation.*;
 public class LikeController {
     private final LikeService likeService;
 
-    // 좋아요 누르기: POST http://localhost:8080/api/v1/likes?memberId=1&articleId=1
+    // 리뷰 반영: URL 노출 방지, DTO 사용
     @PostMapping
-    public ResponseEntity<String> pushLike(
-            @RequestParam Long memberId,
-            @RequestParam Long articleId) {
-
-        likeService.pushLike(memberId, articleId);
+    public ResponseEntity<String> pushLike(@RequestBody LikeRequestDto requestDto) {
+        likeService.pushLike(requestDto);
         return ResponseEntity.ok("좋아요 완료!");
     }
 }

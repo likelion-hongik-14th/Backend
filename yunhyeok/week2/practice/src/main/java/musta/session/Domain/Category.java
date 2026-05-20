@@ -12,15 +12,11 @@ import lombok.NoArgsConstructor;
 public class Category {
 
     @Id
-    @Column(name = "category")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private String category;
-
-    private String social;
-    private String entertain;
-    private String economy;
-    private String science;
-    private String overseas;
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private CategoryType categoryType;
 
 }
