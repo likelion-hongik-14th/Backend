@@ -29,7 +29,7 @@ public class Product {
         this.stock = stock;
         this.description = description;
     }
-정    public void removeStock(Long count) {
+    public void removeStock(Long count) {
         this.stock -= count;
     }
 
