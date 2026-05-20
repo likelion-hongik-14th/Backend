@@ -1,6 +1,7 @@
 package mutsa.api.service;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.api.domain.Cart;
 import mutsa.api.domain.CartItem;
@@ -32,13 +33,25 @@ public class CartService {
     public void addCart(CartItemRequestDto requestDto) {
         Cart cart = getCart();
         Product product = productRepository.findById(requestDto.getProductId()).orElseThrow(() -> new IllegalArgumentException("Product not found with id: " + requestDto.getProductId()));
-        cart.getCartItems().stream().filter(cartItem -> cartItem.getProduct().getId().equals(requestDto.getProductId())).findFirst().ifPresentOrElse(cartItem -> {
-            cartItem.increaseQuantity(requestDto.getQuantity());
-            cartItemRepository.save(cartItem);
-        }, () -> {
-            cart.addProduct(product, requestDto.getQuantity());
-            cartRepository.save(cart);
-        });
+        cart.getCartItems().stream()
+                .filter(cartItem ->
+                        cartItem.getProduct().getId().equals(requestDto.getProductId()))
+                .findFirst()
+                .ifPresentOrElse(cartItem -> {
+                    int totalQuantity = cartItem.getQuantity() + requestDto.getQuantity();
+                    if (totalQuantity > product.getStock()) {
+                        throw new IllegalArgumentException("Requested quantity exceeds available stock. Available stock: " + product.getStock());
+                    }
+                    cartItem.increaseQuantity(requestDto.getQuantity());
+                    cartItemRepository.save(cartItem);
+                }, () -> {
+                    if (requestDto.getQuantity() > product.getStock()) {
+                        throw new IllegalArgumentException("Requested quantity exceeds available stock. Available stock: " + product.getStock());
+
+                    }
+                    cart.addProduct(product, requestDto.getQuantity());
+                    cartRepository.save(cart);
+                });
 
 
     }
@@ -56,6 +69,9 @@ public class CartService {
     public void updateCartItemQuantity(Long cartItemId, CartItemUpdateDto updateDto) {
         Cart cart = getCart();
         CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(() -> new IllegalArgumentException("CartItem not found with id: " + cartItemId));
+        if (updateDto.getQuantity() > cartItem.getProduct().getStock()) {
+            throw new IllegalArgumentException("Requested quantity exceeds available stock. Available stock: " + cartItem.getProduct().getStock());
+        }
         cartItem.updateQuantity(updateDto.getQuantity());
         cartItemRepository.save(cartItem);
     }
