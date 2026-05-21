@@ -42,6 +42,9 @@ public class Product extends BaseEntity {
     }
 
     public void checkStock(Long quantity) {
+        if (quantity <= 0) {
+            throw new RuntimeException("주문 수량은 1개 이상이어야 합니다.");
+        }
         if (quantity > this.productStock) {
             throw new RuntimeException("재고가 부족합니다. (재고: " + this.productStock + ")");
         }

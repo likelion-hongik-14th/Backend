@@ -40,7 +40,8 @@ public class OrderService {
                 address.getAddress(), address.getPhoneNumber());
 
         for (CartItem cartItem : cart.getCartItems()) {
-            Product product = cartItem.getProduct();
+            Product product = productRepository.findByIdForUpdate(cartItem.getProduct().getProductId())
+                    .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
             product.checkStock(cartItem.getItemQuantity());
             product.reduceStock(cartItem.getItemQuantity());
             order.getOrderItems().add(OrderItem.create(order, product, cartItem.getItemQuantity()));
@@ -59,7 +60,7 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
         Address address = addressRepository.findByAddressIdAndMember_MemberId(dto.getAddressId(), dto.getMemberId())
                 .orElseThrow(() -> new RuntimeException("배송지를 찾을 수 없습니다."));
-        Product product = productRepository.findById(dto.getProductId())
+        Product product = productRepository.findByIdForUpdate(dto.getProductId())
                 .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
 
         product.checkStock(dto.getItemQuantity());
