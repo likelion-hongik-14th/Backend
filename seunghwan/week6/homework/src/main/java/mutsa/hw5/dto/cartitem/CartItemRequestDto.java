@@ -12,11 +12,12 @@ public class CartItemRequestDto {
     @NotNull
     private Long productId;
 
+    @NotNull
     @Min(1)
-    private int itemQuantity;
+    private Long itemQuantity;
 
     // DTO → Entity 변환
-    // DTO에서 변환을 통해 서비스 코드가 갈끔해짐
+    // Service에서 호출하지만, 변환 로직을 DTO에 숨겨두어서 깔끔하게 유지
     public CartItem toEntity(Cart cart, Product product) {
         return CartItem.create(cart, product, this.itemQuantity);
     }
