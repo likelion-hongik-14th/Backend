@@ -27,6 +27,9 @@ public class Address extends BaseEntity {
     private Member member;
 
     @Column(nullable = false)
+    private String receiverName;
+
+    @Column(nullable = false)
     private String addressName;
 
     @Column(nullable = false)
@@ -41,10 +44,11 @@ public class Address extends BaseEntity {
     // 정적 팩토리 메서드
     // protected Address(...)와 동일한 기능이지만, create라는 이름을 통해 의도가 명확해짐
     // static을 통해 객체를 만들고 호출할 필요 없이 바로 호출
-    public static Address create(Member member, String addressName, String postalCode,
+    public static Address create(Member member, String receiverName, String addressName, String postalCode,
                                  String address, String phoneNumber) {
         Address addr = new Address();
         addr.member = member;
+        addr.receiverName = receiverName;
         addr.addressName = addressName;
         addr.postalCode = postalCode;
         addr.address = address;
@@ -56,7 +60,8 @@ public class Address extends BaseEntity {
     // PATCH로 메서드를 설정했기 때문에 일부만 수정하게 할려고
     // Setter를 쓰지 않음으로서 외부에서 값이 막 변경되는 것을 막고,
     // update라는 매서드를 씀으로서 직관적으로 업데이트 하는 것을 알 수 있음
-    public void update(String addressName, String postalCode, String address, String phoneNumber) {
+    public void update(String receiverName, String addressName, String postalCode, String address, String phoneNumber) {
+        if (receiverName != null) this.receiverName = receiverName;
         if (addressName != null) this.addressName = addressName;
         if (postalCode != null) this.postalCode = postalCode;
         if (address != null) this.address = address;

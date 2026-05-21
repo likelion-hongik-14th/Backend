@@ -48,7 +48,7 @@ public class AddressService {
     public AddressResponseDto updateAddress(Long addressId, Long memberId, AddressUpdateDto dto) {
         Address address = addressRepository.findByAddressIdAndMember_MemberId(addressId, memberId)
                 .orElseThrow(() -> new RuntimeException("배송지를 찾을 수 없습니다."));
-        address.update(dto.getAddressName(), dto.getPostalCode(), dto.getAddress(), dto.getPhoneNumber());
+        address.update(dto.getReceiverName(), dto.getAddressName(), dto.getPostalCode(), dto.getAddress(), dto.getPhoneNumber());
         return AddressResponseDto.from(address);
     }
 

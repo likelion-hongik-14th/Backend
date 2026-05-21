@@ -9,6 +9,7 @@ import mutsa.hw5.domain.Address;
 public class AddressResponseDto {
 
     private Long addressId;
+    private String receiverName;
     private String addressName;
     private String postalCode;
     private String address;
@@ -19,6 +20,7 @@ public class AddressResponseDto {
     public static AddressResponseDto from(Address address) {
         return AddressResponseDto.builder()
                 .addressId(address.getAddressId())
+                .receiverName(address.getReceiverName())
                 .addressName(address.getAddressName())
                 .postalCode(address.getPostalCode())
                 .address(address.getAddress())

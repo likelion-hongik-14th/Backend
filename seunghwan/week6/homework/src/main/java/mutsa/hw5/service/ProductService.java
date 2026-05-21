@@ -5,6 +5,7 @@ import mutsa.hw5.domain.Product;
 import mutsa.hw5.dto.product.ProductRequestDto;
 import mutsa.hw5.dto.product.ProductResponseDto;
 import mutsa.hw5.dto.product.ProductUpdateDto;
+import mutsa.hw5.repository.OrderItemRepository;
 import mutsa.hw5.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final OrderItemRepository orderItemRepository;
 
     // 상품 등록
     @Transactional // SQLD에서 나오는 ACID 중에 그 원자성을 의미
@@ -59,6 +61,9 @@ public class ProductService {
     public void deleteProduct(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+        if (orderItemRepository.existsByProduct_ProductId(productId)) {
+            throw new RuntimeException("주문 이력이 있는 상품은 삭제할 수 없습니다.");
+        }
         productRepository.delete(product);
     }
 }

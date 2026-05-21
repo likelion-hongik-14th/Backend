@@ -25,14 +25,15 @@ public class CartItem extends BaseEntity {
     // CartItem을 조회할 때 현재 이 객체를 당장 가져오는 것이 아닌 실제 사용 시 DB에서 가져 옴
     @ManyToOne(fetch = FetchType.LAZY)
     // DB에서 쓰이는 FK 컬럼명
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
     // CartItem N : Product 1을 의미
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
+    @Column(nullable = false)
     private Long itemQuantity;
 
     // 정적 팩토리 메서드

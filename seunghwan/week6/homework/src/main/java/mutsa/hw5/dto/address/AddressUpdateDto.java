@@ -6,6 +6,7 @@ import lombok.Getter;
 public class AddressUpdateDto {
 
     // null이면 수정 안 함
+    private String receiverName;
     private String addressName;
     private String postalCode;
     private String address;

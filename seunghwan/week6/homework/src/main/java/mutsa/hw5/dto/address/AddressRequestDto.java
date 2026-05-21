@@ -13,6 +13,9 @@ public class AddressRequestDto {
     private Long memberId;
 
     @NotBlank // null이랑 빈 문자열 "" 둘 다 막음
+    private String receiverName;
+
+    @NotBlank
     private String addressName;
 
     @NotBlank
@@ -27,6 +30,6 @@ public class AddressRequestDto {
     // DTO → Entity 변환
     // Service에서 호출하지만, 변환 로직을 DTO에 숨겨두어서 깔끔하게 유지
     public Address toEntity(Member member) {
-        return Address.create(member, this.addressName, this.postalCode, this.address, this.phoneNumber);
+        return Address.create(member, this.receiverName, this.addressName, this.postalCode, this.address, this.phoneNumber);
     }
 }
