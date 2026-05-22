@@ -11,7 +11,7 @@ public class OrderRequestDto {
 
     private String userId;
     private List<OrderItemDto> items;
-    private String address;
+    private Long addressId;
     private Integer totalPrice;
 
 }
