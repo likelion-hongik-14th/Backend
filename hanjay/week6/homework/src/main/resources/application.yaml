@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:mysql://mutsa-db.ch048yey2hs1.ap-northeast-2.rds.amazonaws.com/mutsa_db
+    username: hanjaylee
+    password: hj147369?
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+server:
+  port: 8080
