@@ -66,37 +66,16 @@ public class OrderService {
 
         Order savedOrder = orderRepository.save(order);
 
-        return OrderItemResponseDto.builder()
-                .orderId(savedOrder.getOrderId())
-                .productId(product.getProductId())
-                .name(orderItem.getName()) // 박제된 이름
-                .orderPrice(orderItem.getOrderPrice())
-                .orderQuantity(orderItem.getOrderQuantity())
-                .orderDate(order.getOrderDate())
-                .build();
+        return OrderItemResponseDto.of(savedOrder, orderItem);
     }
 
     // 주문 상태 관리
+    @Transactional(readOnly = true)
     public OrderResponseDto getOrderResponseDto(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
 
-        List<OrderItemResponseDto> items = order.getOrderItems().stream()
-                .map(item -> OrderItemResponseDto.builder()
-                        .orderId(order.getOrderId())
-                        .name(item.getName())
-                        .orderPrice(item.getOrderPrice())
-                        .orderQuantity(item.getOrderQuantity())
-                        .orderDate(order.getOrderDate())
-                        .totalPrice(item.getTotalPrice())
-                        .build())
-                .toList();
-
-        return OrderResponseDto.builder()
-                .orderItems(items)
-                .orderStatus(order.getOrderStatus())
-                .totalPrice(order.getTotalPrice())
-                .build();
+        return OrderResponseDto.from(order);
     }
 
     // 배송 완료

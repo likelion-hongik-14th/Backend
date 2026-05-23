@@ -35,14 +35,7 @@ public class AddressService {
 
         Address savedAddress = addressRepository.save(address);
 
-        return AddressResponseDto.builder()
-                .addressId(savedAddress.getAddressId())
-                .addressName(savedAddress.getAddressName())
-                .zipCode(savedAddress.getZipCode())
-                .baseAddress(savedAddress.getBaseAddress())
-                .detailAddress(savedAddress.getDetailAddress())
-                .phoneNumber(savedAddress.getPhoneNumber())
-                .build();
+        return AddressResponseDto.from(savedAddress);
     }
 
     // 전체 목록 조회
@@ -52,14 +45,7 @@ public class AddressService {
                 .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
 
         return addressRepository.findAllByMember(member).stream()
-                .map(address -> AddressResponseDto.builder()
-                        .addressId(address.getAddressId())
-                        .addressName(address.getAddressName())
-                        .zipCode(address.getZipCode())
-                        .baseAddress(address.getBaseAddress())
-                        .detailAddress(address.getDetailAddress())
-                        .phoneNumber(address.getPhoneNumber())
-                        .build())
+                .map(AddressResponseDto::from)
                 .toList();
     }
 
@@ -76,13 +62,6 @@ public class AddressService {
                 requestDto.getPhoneNumber()
         );
 
-        return AddressResponseDto.builder()
-                .addressId(address.getAddressId())
-                .addressName(address.getAddressName())
-                .zipCode(address.getZipCode())
-                .baseAddress(address.getBaseAddress())
-                .detailAddress(address.getDetailAddress())
-                .phoneNumber(address.getPhoneNumber())
-                .build();
+        return AddressResponseDto.from(address);
     }
 }
