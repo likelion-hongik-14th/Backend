@@ -113,4 +113,17 @@ public class OrderService {
 
         order.completeDelivery();
     }
+
+    // [상태 변경] 주문 결제 완료 처리
+    @Transactional
+    public void payOrder(Long orderId, Long userId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
+
+        if (!order.getUser().getId().equals(userId)){
+            throw new ProjectException(GeneralErrorCode.FORBIDDEN);
+        }
+
+        order.payOrder();
+    }
 }
