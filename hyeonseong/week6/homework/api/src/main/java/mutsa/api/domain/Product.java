@@ -71,4 +71,8 @@ public class Product {
             this.status = status;
         }
     }
+
+    public void markAsDeleted(){
+        this.status = ProductStatus.DELETED;
+    }
 }

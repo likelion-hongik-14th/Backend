@@ -13,7 +13,7 @@ public class OrderItemResponseDto {
 
     public static OrderItemResponseDto of(OrderItem orderItem) {
         return OrderItemResponseDto.builder()
-                .productName(orderItem.getProduct().getName())
+                .productName(orderItem.getProductName())
                 .orderPrice(orderItem.getOrderPrice())
                 .count(orderItem.getCount())
                 .build();

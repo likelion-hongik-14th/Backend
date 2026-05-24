@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mutsa.api.domain.*;
 import mutsa.api.dto.OrderRequestDto;
 import mutsa.api.dto.OrderResponseDto;
-import mutsa.api.global.apiPayload.code.AddressErrorCode;
-import mutsa.api.global.apiPayload.code.OrderErrorCode;
-import mutsa.api.global.apiPayload.code.ProductErrorCode;
-import mutsa.api.global.apiPayload.code.UserErrorCode;
+import mutsa.api.global.apiPayload.code.*;
 import mutsa.api.global.apiPayload.exception.ProjectException;
 import mutsa.api.repository.*;
 import org.springframework.stereotype.Service;
@@ -26,19 +23,21 @@ public class OrderService {
     private final AddressRepository addressRepository;
     private final CartRepository cartRepository;
 
-    private User getTestUser(){
-        return userRepository.findById(1L).orElseThrow(()-> new ProjectException(UserErrorCode.USER_NOT_FOUND));
-    }
-
     // [생성] 단일 상품 바로 주문하기
     @Transactional
-    public Long createOrder(OrderRequestDto requestDto){
-        User user = getTestUser();
+    public Long createOrder(Long userId, OrderRequestDto requestDto){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ProjectException(UserErrorCode.USER_NOT_FOUND));
 
         Product product = productRepository.findById(requestDto.getProductId())
                 .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
+
         Address address = addressRepository.findById(requestDto.getAddressId())
-                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
+
+        if (!address.getUser().getId().equals(userId)){
+            throw new ProjectException(GeneralErrorCode.FORBIDDEN);
+        }
 
         OrderItem orderItem = OrderItem.createOrderItem(product, product.getPrice(), requestDto.getCount());
 
@@ -50,14 +49,19 @@ public class OrderService {
 
     // [생성] 장바구니 전체 품목 주문
     @Transactional
-    public Long createOrderFromCart(Long addressId){
-        User user = getTestUser();
+    public Long createOrderFromCart(Long userId, Long addressId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ProjectException(UserErrorCode.USER_NOT_FOUND));
 
         Cart cart = cartRepository.findByUser(user)
                 .orElseThrow(()->new ProjectException(OrderErrorCode.CART_EMPTY));
 
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
+
+        if (!address.getUser().getId().equals(userId)) {
+            throw new ProjectException(GeneralErrorCode.FORBIDDEN);
+        }
 
         List<OrderItem> orderItems = cart.getCartItems().stream()
                 .map(cartItem -> OrderItem.createOrderItem(
@@ -77,21 +81,21 @@ public class OrderService {
 
     // [취소] 주문 취소
     @Transactional
-    public void cancelOrder(Long orderId){
+    public void cancelOrder(Long orderId, Long userId){
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
 
-        order.cancel();
-
-        for (OrderItem orderItem : order.getOrderItems()){
-            Product product = orderItem.getProduct();
-            product.addStock(orderItem.getCount());
+        if (!order.getUser().getId().equals(userId)) {
+            throw new ProjectException(GeneralErrorCode.FORBIDDEN);
         }
+
+        order.cancel();
     }
 
     // [조회] 내 주문 내역 조회
-    public List<OrderResponseDto> getMyOrders(){
-        User user = getTestUser();
+    public List<OrderResponseDto> getMyOrders(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ProjectException(UserErrorCode.USER_NOT_FOUND));
         return orderRepository.findAllByUserOrderByOrderDateDesc(user).stream()
                 .map(OrderResponseDto::of)
                 .toList();
@@ -99,9 +103,13 @@ public class OrderService {
 
     // [상태 변경] 배송 완료 처리
     @Transactional
-    public void completeDelivery(Long orderId) {
+    public void completeDelivery(Long orderId, Long userId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
+
+        if (!order.getUser().getId().equals(userId)) {
+            throw new ProjectException(GeneralErrorCode.FORBIDDEN);
+        }
 
         order.completeDelivery();
     }

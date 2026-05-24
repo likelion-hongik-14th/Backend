@@ -22,6 +22,7 @@ public class OrderItem {
     @JoinColumn(name = "order_id")
     private Order order;
 
+    private String productName; // 주문 당시 상품명
     private int orderPrice; // 주문 당시 가격 (이후 상품 가격이 바뀌어도 영수증 가격은 유지)
     private int count; // 주문 수량
 
@@ -29,6 +30,7 @@ public class OrderItem {
     public static OrderItem createOrderItem(Product product, int orderPrice, int count){
         OrderItem orderItem = new OrderItem();
         orderItem.product = product;
+        orderItem.productName = product.getName();
         orderItem.orderPrice = orderPrice;
         orderItem.count = count;
 

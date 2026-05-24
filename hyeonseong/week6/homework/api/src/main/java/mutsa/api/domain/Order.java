@@ -27,6 +27,9 @@ public class Order {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    private String addressName;
+    private String fullAddress;
+
     // 영수증(Order)이 파기되면 그 안의 품목(OrderItem)도 함께 파기됨
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
@@ -47,6 +50,10 @@ public class Order {
         Order order = new Order();
         order.user = user;
         order.address = address;
+
+        order.addressName = address.getAddressName();
+        order.fullAddress = address.getAddress();
+
         order.status = OrderStatus.ORDERED; // 처음 생성되면 상태는 '주문 완료'
         order.orderDate = LocalDateTime.now();
         for (OrderItem orderItem : orderItems) {
@@ -59,6 +66,10 @@ public class Order {
     public void cancel(){
         if (this.status == OrderStatus.DELIVERED) {
             throw new IllegalStateException("배송 완료된 상품은 취소가 불가능합니다.");
+        }
+
+        if (this.status == OrderStatus.CANCELED) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
         }
         this.status = OrderStatus.CANCELED;
 
@@ -73,5 +84,16 @@ public class Order {
             throw new IllegalStateException("취소된 주문은 배송 완료 처리가 불가능합니다.");
         }
         this.status = OrderStatus.DELIVERED;
+    }
+
+    // 비즈니스 로직: 결제 완료 처리
+    public void payOrder(){
+        if (this.status == OrderStatus.CANCELED){
+            throw new IllegalStateException("취소된 주문은 결제할 수 없습니다.");
+        }
+        if (this.status == OrderStatus.DELIVERED){
+            throw new IllegalStateException("이미 배송 완료된 주문입니다.");
+        }
+        this.status = OrderStatus.PAID;
     }
 }

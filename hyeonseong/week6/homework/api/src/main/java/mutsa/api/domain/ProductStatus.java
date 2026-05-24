@@ -2,5 +2,6 @@ package mutsa.api.domain;
 
 public enum ProductStatus {
     SELL,
-    SOLD_OUT
+    SOLD_OUT,
+    DELETED
 }

@@ -2,6 +2,7 @@ package mutsa.api.service;
 
 import lombok.RequiredArgsConstructor;
 import mutsa.api.domain.Product;
+import mutsa.api.domain.ProductStatus;
 import mutsa.api.dto.ProductRequestDto;
 import mutsa.api.dto.ProductResponseDto;
 import mutsa.api.global.apiPayload.code.ProductErrorCode;
@@ -38,9 +39,12 @@ public class ProductService {
 
     // [조회] 특정 상품 상세 정보 조회
     public ProductResponseDto getProduct(Long id){
-
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
+
+        if (product.getStatus() == ProductStatus.DELETED){
+            throw new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND);
+        }
 
         return ProductResponseDto.of(product);
     }
@@ -48,6 +52,7 @@ public class ProductService {
     // [조회] 전체 상품 목록 조회
     public List<ProductResponseDto> getAllProduct(){
         return productRepository.findAll().stream()
+                .filter(product -> product.getStatus() != ProductStatus.DELETED)
                 .map(ProductResponseDto::of)
                 .toList();
     }
@@ -57,6 +62,10 @@ public class ProductService {
     public void updateProduct(Long id, ProductRequestDto requestDto) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
+
+        if (product.getStatus() == ProductStatus.DELETED){
+            throw new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND);
+        }
 
         product.updateProduct(
                 requestDto.getName(),
@@ -73,6 +82,10 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
-        productRepository.delete(product);
+        if (product.getStatus() == ProductStatus.DELETED){
+            throw new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND);
+        }
+
+        product.markAsDeleted();
     }
 }
