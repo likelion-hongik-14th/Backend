@@ -28,12 +28,7 @@ public class ProductService {
 
         Product savedProduct = productRepository.save(product);
 
-        return ProductResponseDto.builder()
-                .productId(savedProduct.getProductId())
-                .name(savedProduct.getName())
-                .price(savedProduct.getPrice())
-                .stock(savedProduct.getStock())
-                .build();
+        return ProductResponseDto.from(savedProduct);
     }
 
     // 상품 조회
@@ -42,27 +37,13 @@ public class ProductService {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다. id=" + productId));
 
-        return ProductResponseDto.builder() // 리스트가 아닌 단일 DTO 반환
-                .productId(product.getProductId())
-                .name(product.getName())
-                .price(product.getPrice())
-                .stock(product.getStock())
-                .build();
+        return ProductResponseDto.from(product);
     }
 
     @Transactional(readOnly = true)
     public ProductListResponseDto getProducts() {
-        List<ProductResponseDto> list = productRepository.findAll().stream()
-                .map(p -> ProductResponseDto.builder()
-                        .productId(p.getProductId())
-                        .name(p.getName())
-                        .price(p.getPrice())
-                        .stock(p.getStock())
-                        .build())
-                .toList();
+        List<Product> products = productRepository.findAll();
 
-        return ProductListResponseDto.builder()
-                .products(list)
-                .build();
+        return ProductListResponseDto.from(products);
     }
 }

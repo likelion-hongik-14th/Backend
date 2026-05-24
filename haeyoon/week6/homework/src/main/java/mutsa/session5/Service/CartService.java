@@ -15,7 +15,6 @@ import mutsa.session5.Repository.CartRepository;
 import mutsa.session5.Repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,32 +68,16 @@ public class CartService {
             savedItem = cart.addProduct(product, requestDto.getQuantity());
         }
 
-        return CartItemResponseDto.builder()
-                .cartId(savedItem.getCart().getCartId())
-                .productId(savedItem.getProduct().getProductId())
-                .quantity(savedItem.getQuantity())
-                .build();
+        return CartItemResponseDto.from(savedItem);
     }
 
     // 장바구니 상품 조회
-    @Transactional
+    @Transactional(readOnly = true)
     public CartResponseDto getCartResponseDto(Long memberId) {
         Cart cart = cartRepository.findByMember_MemberId(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("장바구니가 비어있습니다."));
 
-        List<CartItemResponseDto> items = cart.getCartItems().stream()
-                .map(item -> CartItemResponseDto.builder()
-                        .cartId(cart.getCartId())
-                        .name(item.getProduct().getName())
-                        .price(item.getProduct().getPrice())
-                        .quantity(item.getQuantity())
-                        .build())
-                .toList();
-
-        return CartResponseDto.builder()
-                .cartItems(items)
-                .totalPrice(cart.calculateTotalPrice())
-                .build();
+        return CartResponseDto.from(cart);
     }
 
     // 장바구니 상품 수량 변경
@@ -110,11 +93,7 @@ public class CartService {
 
         cartItem.updateQuantity(quantity);
 
-        return CartItemResponseDto.builder()
-                .cartId(cartItem.getCart().getCartId())
-                .productId(cartItem.getProduct().getProductId())
-                .quantity(cartItem.getQuantity())
-                .build();
+        return CartItemResponseDto.from(cartItem);
     }
 
     // 장바구니 상품 삭제

@@ -24,4 +24,14 @@ public class OrderResponseDto {
     private List<OrderItemResponseDto> orderItems;
 
     private Long totalPrice;
+
+    public static OrderResponseDto from(Order order) {
+        return OrderResponseDto.builder()
+                .orderStatus(order.getOrderStatus())
+                .totalPrice(order.getTotalPrice())
+                .orderItems(order.getOrderItems().stream()
+                        .map(item -> OrderItemResponseDto.of(order, item))
+                        .toList())
+                .build();
+    }
 }

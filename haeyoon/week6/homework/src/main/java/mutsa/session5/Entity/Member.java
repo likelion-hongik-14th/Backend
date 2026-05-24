@@ -2,6 +2,7 @@ package mutsa.session5.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mutsa.session5.Dto.MemberResponseDto;
 
 @Entity
 @Getter

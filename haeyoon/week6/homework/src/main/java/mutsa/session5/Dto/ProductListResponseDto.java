@@ -1,6 +1,8 @@
 package mutsa.session5.Dto;
 
 import lombok.*;
+import mutsa.session5.Entity.Product;
+
 import java.util.List;
 
 @Getter
@@ -9,4 +11,12 @@ import java.util.List;
 @Builder
 public class ProductListResponseDto {
     private List<ProductResponseDto> products;
+
+    public static ProductListResponseDto from(List<Product> products) {
+        return ProductListResponseDto.builder()
+                .products(products.stream()
+                        .map(ProductResponseDto::from)
+                        .toList())
+                .build();
+    }
 }
