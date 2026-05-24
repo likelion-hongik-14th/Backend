@@ -4,6 +4,11 @@ import lombok.RequiredArgsConstructor;
 import mutsa.api.domain.*;
 import mutsa.api.dto.OrderRequestDto;
 import mutsa.api.dto.OrderResponseDto;
+import mutsa.api.global.apiPayload.code.AddressErrorCode;
+import mutsa.api.global.apiPayload.code.OrderErrorCode;
+import mutsa.api.global.apiPayload.code.ProductErrorCode;
+import mutsa.api.global.apiPayload.code.UserErrorCode;
+import mutsa.api.global.apiPayload.exception.ProjectException;
 import mutsa.api.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +27,7 @@ public class OrderService {
     private final CartRepository cartRepository;
 
     private User getTestUser(){
-        return userRepository.findById(1L).orElseThrow(()->new IllegalArgumentException("유저가 없습니다."));
+        return userRepository.findById(1L).orElseThrow(()-> new ProjectException(UserErrorCode.USER_NOT_FOUND));
     }
 
     // [생성] 단일 상품 바로 주문하기
@@ -31,9 +36,9 @@ public class OrderService {
         User user = getTestUser();
 
         Product product = productRepository.findById(requestDto.getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
         Address address = addressRepository.findById(requestDto.getAddressId())
-                .orElseThrow(() -> new IllegalArgumentException("배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         OrderItem orderItem = OrderItem.createOrderItem(product, product.getPrice(), requestDto.getCount());
 
@@ -49,10 +54,10 @@ public class OrderService {
         User user = getTestUser();
 
         Cart cart = cartRepository.findByUser(user)
-                .orElseThrow(()->new IllegalArgumentException("장바구니가 비어있습니다."));
+                .orElseThrow(()->new ProjectException(OrderErrorCode.CART_EMPTY));
 
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new IllegalArgumentException("배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
 
         List<OrderItem> orderItems = cart.getCartItems().stream()
                 .map(cartItem -> OrderItem.createOrderItem(
@@ -74,7 +79,7 @@ public class OrderService {
     @Transactional
     public void cancelOrder(Long orderId){
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("주문 내역을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
 
         order.cancel();
 
@@ -96,7 +101,7 @@ public class OrderService {
     @Transactional
     public void completeDelivery(Long orderId) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
 
         order.completeDelivery();
     }

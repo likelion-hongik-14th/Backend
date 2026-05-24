@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import mutsa.api.dto.CartItemRequestDto;
 import mutsa.api.dto.CartItemUpdateDto;
 import mutsa.api.dto.CartResponseDto;
+import mutsa.api.global.apiPayload.ApiResponse;
+import mutsa.api.global.apiPayload.code.CartSuccessCode;
 import mutsa.api.service.CartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,37 +21,38 @@ public class CartController {
 
     // 내 장바구니 및 담긴 상품 목록 조회 API
     @GetMapping
-    public ResponseEntity<CartResponseDto> getCart(){
-        return ResponseEntity.ok(cartService.getCart());
+    public ResponseEntity<ApiResponse<CartResponseDto>> getCart(){
+        return ResponseEntity.ok(ApiResponse.onSuccess(CartSuccessCode.CART_OK, cartService.getCart()));
     }
 
     // 장바구니에 새로운 상품 추가 API
     @PostMapping
-    public ResponseEntity<Void> addCartItem(@Valid @RequestBody CartItemRequestDto requestDto){
+    public ResponseEntity<ApiResponse<Void>> addCartItem(@Valid @RequestBody CartItemRequestDto requestDto){
         cartService.addCartItem(requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.onSuccess(CartSuccessCode.CART_ITEM_ADDED));
     }
 
     // 장바구니에 담긴 특정 상품의 수량 변경 API
     @PatchMapping("/items/{cartItemId}")
-    public ResponseEntity<Void> updateCartItemQuantity(
+    public ResponseEntity<ApiResponse<Void>> updateCartItemQuantity(
             @PathVariable Long cartItemId,
             @Valid @RequestBody CartItemUpdateDto updateDto){
         cartService.updateCartItemQuantity(cartItemId, updateDto);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponse.onSuccess(CartSuccessCode.CART_ITEM_UPDATED));
     }
 
     // 장바구니에서 특정 상품만 개별 삭제 API
     @DeleteMapping("/items/{cartItemId}")
-    public ResponseEntity<Void> removeCartItem(@PathVariable Long cartItemId){
+    public ResponseEntity<ApiResponse<Void>> removeCartItem(@PathVariable Long cartItemId){
         cartService.removeCartItem(cartItemId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponse.onSuccess(CartSuccessCode.CART_ITEM_DELETED));
     }
 
     // 장바구니 전체 비우기 API
     @DeleteMapping
-    public ResponseEntity<Void> clearCart(){
+    public ResponseEntity<ApiResponse<Void>> clearCart() {
         cartService.clearCart();
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponse.onSuccess(CartSuccessCode.CART_CLEARED));
     }
 }

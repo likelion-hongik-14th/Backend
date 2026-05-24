@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mutsa.api.domain.Product;
 import mutsa.api.dto.ProductRequestDto;
 import mutsa.api.dto.ProductResponseDto;
+import mutsa.api.global.apiPayload.code.ProductErrorCode;
+import mutsa.api.global.apiPayload.exception.ProjectException;
 import mutsa.api.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,7 @@ public class ProductService {
     public ProductResponseDto getProduct(Long id){
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않거나 판매가 종료된 상품입니다."));
+                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         return ProductResponseDto.of(product);
     }
@@ -54,7 +56,7 @@ public class ProductService {
     @Transactional
     public void updateProduct(Long id, ProductRequestDto requestDto) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("수정할 상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         product.updateProduct(
                 requestDto.getName(),
@@ -69,7 +71,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("삭제할 상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         productRepository.delete(product);
     }

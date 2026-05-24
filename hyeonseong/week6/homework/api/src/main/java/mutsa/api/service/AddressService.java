@@ -5,6 +5,8 @@ import mutsa.api.domain.Address;
 import mutsa.api.domain.User;
 import mutsa.api.dto.AddressRequestDto;
 import mutsa.api.dto.AddressResponseDto;
+import mutsa.api.global.apiPayload.code.AddressErrorCode;
+import mutsa.api.global.apiPayload.exception.ProjectException;
 import mutsa.api.repository.AddressRepository;
 import mutsa.api.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -60,7 +62,7 @@ public class AddressService {
     @Transactional
     public void updateAddress(Long addressId, AddressRequestDto requestDto){
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(()->new IllegalArgumentException("수정할 배송지를 찾을 수 없습니다."));
+                .orElseThrow(()-> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
 
         address.updateAddress(
                 requestDto.getAddressName(),
@@ -74,7 +76,7 @@ public class AddressService {
     @Transactional
     public void deleteAddress(Long addressId) {
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new IllegalArgumentException("삭제할 배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
 
         addressRepository.delete(address);
     }

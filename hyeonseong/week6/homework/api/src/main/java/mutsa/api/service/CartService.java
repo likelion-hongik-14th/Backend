@@ -8,6 +8,10 @@ import mutsa.api.domain.User;
 import mutsa.api.dto.CartItemRequestDto;
 import mutsa.api.dto.CartItemUpdateDto;
 import mutsa.api.dto.CartResponseDto;
+import mutsa.api.global.apiPayload.code.CartErrorCode;
+import mutsa.api.global.apiPayload.code.ProductErrorCode;
+import mutsa.api.global.apiPayload.code.UserErrorCode;
+import mutsa.api.global.apiPayload.exception.ProjectException;
 import mutsa.api.repository.CartItemRepository;
 import mutsa.api.repository.CartRepository;
 import mutsa.api.repository.ProductRepository;
@@ -27,7 +31,8 @@ public class CartService {
 
     // [공통] 테스트용 유저 가져오기
     private User getTestUser() {
-        return userRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("유저가 없습니다."));
+        return userRepository.findById(1L)
+                .orElseThrow(() -> new ProjectException(UserErrorCode.USER_NOT_FOUND));
     }
 
     // [공통] 내 장바구니 가져오기
@@ -48,7 +53,7 @@ public class CartService {
     public void addCartItem(CartItemRequestDto requestDto){
         Cart cart = getTestCart();
         Product product = productRepository.findById(requestDto.getProductId())
-                .orElseThrow(()->new IllegalArgumentException("담으려는 상품을 찾을 수 없습니다."));
+                .orElseThrow(()-> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         cart.addProduct(product, requestDto.getQuantity());
     }
@@ -57,7 +62,7 @@ public class CartService {
     @Transactional
     public void updateCartItemQuantity(Long cartItemId, CartItemUpdateDto updateDto){
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(()->new IllegalArgumentException("수량 변경할 상품을 찾을 수 없습니다."));
+                .orElseThrow(()-> new ProjectException(CartErrorCode.CART_ITEM_NOT_FOUND));
 
         cartItem.updateQuantity(updateDto.getQuantity());
     }
@@ -66,7 +71,7 @@ public class CartService {
     @Transactional
     public void removeCartItem(Long cartItemId){
         CartItem cartItem = cartItemRepository.findById(cartItemId)
-                .orElseThrow(()->new IllegalArgumentException("삭제할 상품을 찾을 수 없습니다."));
+                .orElseThrow(()-> new ProjectException(CartErrorCode.CART_ITEM_NOT_FOUND));
 
         cartItemRepository.delete(cartItem);
     }
