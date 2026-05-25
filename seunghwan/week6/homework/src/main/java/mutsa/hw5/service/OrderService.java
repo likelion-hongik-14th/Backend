@@ -87,8 +87,8 @@ public class OrderService {
     // 주문 상태 변경
     @Transactional
     public OrderResponseDto changeOrderStatus(Long orderId, Long memberId, OrderStatusUpdateDto dto) {
-        // 취소 시 재고 원복이 필요해서 JOIN FETCH 버전 사용
-        Order order = orderRepository.findByOrderIdAndMemberIdWithItems(orderId, memberId)
+        // 취소 시 재고 원복이 필요해서 락 + JOIN FETCH 버전 사용
+        Order order = orderRepository.findByOrderIdAndMemberIdWithItemsForUpdate(orderId, memberId)
                 .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
 
         if (!order.getOrderStatus().canTransitionTo(dto.getStatus())) {
