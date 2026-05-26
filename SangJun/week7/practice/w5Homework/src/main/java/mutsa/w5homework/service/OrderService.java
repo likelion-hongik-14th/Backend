@@ -22,14 +22,18 @@ public class OrderService {
     //장바구니 전체 주문
     @Transactional
     public OrderDto.Response createOrderFromCart(OrderDto.CartOrderRequest requestDto) {
+        //DB에 존재하는지 검증
         Member member = memberRepository.findById(requestDto.getMemberId()).orElseThrow(()
                 -> new RuntimeException("Member not found"));
         Address address = addressRepository.findById(requestDto.getAddressId()).orElseThrow(()
                 -> new RuntimeException("Address not found"));
+        if(!address.getMember().getId().equals(member.getId())) {
+            throw new IllegalArgumentException("멤버에 할당된 주소가 아닙니다.");
+        }
 
         //장바구니 가져오기
         Cart cart = member.getCart();
-        if(cart.getCartItems().isEmpty() || cart == null){
+        if(cart == null || cart.getCartItems().isEmpty()){
             throw new IllegalArgumentException("Cart is empty");
         }
 
@@ -55,12 +59,17 @@ public class OrderService {
 
     @Transactional
     public OrderDto.Response createDirectOrder(OrderDto.DirectOrderRequest dto) {
+        //실제 DB에 있는지 조회
         Member member = memberRepository.findById(dto.getMemberId()).orElseThrow(()
                 -> new RuntimeException("Member not found"));
         Address address = addressRepository.findById(dto.getAddressId()).orElseThrow(()
                 -> new RuntimeException("Address not found"));
         Product product = productRepository.findById(dto.getProductId()).orElseThrow(()
                 -> new RuntimeException("Product not found"));
+        //주소와 실제 회원이 일치하는지 검증
+        if(!address.getMember().getId().equals(member.getId())){
+            throw new RuntimeException("멤버에 할당된 주소가 아닙니다.");
+        }
         Order order = Order.builder()
                 .member(member)
                 .address(address)
