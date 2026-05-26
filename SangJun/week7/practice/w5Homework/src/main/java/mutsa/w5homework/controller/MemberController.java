@@ -1,5 +1,6 @@
 package mutsa.w5homework.controller;
 
+import jakarta.validation.Valid;
 import mutsa.w5homework.dto.MemberCreateRequestDto;
 import mutsa.w5homework.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,8 @@ public class MemberController {
 
     private final MemberService memberService;
 
-//    @PostMapping
-//    public ResponseEntity<ApiResponse<MemberResponseDto>> createMember(@RequestBody MemberCreateRequestDto requestDto) {
-//        MemberResponseDto responseDto = memberService.createMember(requestDto);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(onSuccess("회원 가입에 성공했습니다.", responseDto));
-//    }
-
         @PostMapping
-    public ApiResponse<MemberResponseDto> createMember(@RequestBody MemberCreateRequestDto requestDto) {
+    public ApiResponse<MemberResponseDto> createMember(@Valid @RequestBody MemberCreateRequestDto requestDto) {
         MemberResponseDto responseDto = memberService.createMember(requestDto);
             return onSuccess("회원가입에 성공했습니다.", responseDto);
     }

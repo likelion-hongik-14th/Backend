@@ -1,5 +1,6 @@
 package mutsa.w5homework.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.w5homework.dto.OrderDto;
 import mutsa.w5homework.service.OrderService;
@@ -14,12 +15,12 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/cart")
-    public ResponseEntity<OrderDto.Response> createOrderFromCart(@RequestBody OrderDto.CartOrderRequest dto) {
+    public ResponseEntity<OrderDto.Response> createOrderFromCart(@Valid @RequestBody OrderDto.CartOrderRequest dto) {
             return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrderFromCart(dto));
     }
 
     @PostMapping("/direct")
-    public ResponseEntity<OrderDto.Response> createDirectOrder(@RequestBody OrderDto.DirectOrderRequest dto) {
+    public ResponseEntity<OrderDto.Response> createDirectOrder(@Valid @RequestBody OrderDto.DirectOrderRequest dto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createDirectOrder(dto));
     }
 

@@ -1,5 +1,6 @@
 package mutsa.w5homework.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.w5homework.dto.ProductCreateRequestDto;
 import mutsa.w5homework.dto.ProductResponseDto;
@@ -17,7 +18,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public ResponseEntity<ProductResponseDto> createProduct(@RequestBody ProductCreateRequestDto requestDto) {
+    public ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody ProductCreateRequestDto requestDto) {
         ProductResponseDto responseDto = productService.createProduct(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }

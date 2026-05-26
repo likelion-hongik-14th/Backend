@@ -23,11 +23,6 @@ public class CartItemService {
 
     @Transactional
     public CartItemResponseDto createCartItem(CartItemCreateRequestDto requestDto) {
-        //[초기 검증] 스탁이 모자라거나 상품 ID가 없다면 예외처리
-        if (requestDto.getCount() <= 0 || requestDto.getProductId() == null) {
-            throw new IllegalArgumentException("Invalid request");
-        }
-
         Cart cart = cartRepository.findByMemberId(requestDto.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Cart not found"));
 

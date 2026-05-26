@@ -1,5 +1,7 @@
 package mutsa.w5homework.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import mutsa.w5homework.domain.Order;
@@ -11,15 +13,21 @@ public class OrderDto {
     @Getter
     @NoArgsConstructor
     public static class CartOrderRequest{
+        @NotNull
         private Long memberId;
+        @NotNull
         private Long addressId;
     }
     @Getter
     @NoArgsConstructor
     public static class DirectOrderRequest{
+        @NotNull
         private Long memberId;
+        @NotNull
         private Long productId;
+        @Min(value = 1)
         private Long count;
+        @NotNull
         private Long addressId;
     }
 

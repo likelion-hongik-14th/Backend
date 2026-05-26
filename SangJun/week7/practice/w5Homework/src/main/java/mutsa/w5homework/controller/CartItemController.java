@@ -1,5 +1,6 @@
 package mutsa.w5homework.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.w5homework.dto.CartItemCreateRequestDto;
 import mutsa.w5homework.dto.CartItemResponseDto;
@@ -18,7 +19,7 @@ public class CartItemController {
     private final CartItemService cartItemService;
 
     @PostMapping
-    public ResponseEntity<CartItemResponseDto> createCartItem(@RequestBody CartItemCreateRequestDto requestDto) {
+    public ResponseEntity<CartItemResponseDto> createCartItem(@Valid @RequestBody CartItemCreateRequestDto requestDto) {
         CartItemResponseDto responseDto = cartItemService.createCartItem(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
