@@ -42,7 +42,7 @@ public class ProductController {
     @PatchMapping("/{productId}")
     public ResponseEntity<ApiResponse<ProductResponseDto>> updateProduct(
             @PathVariable Long productId,
-            @RequestBody ProductUpdateDto dto) {
+            @Valid @RequestBody ProductUpdateDto dto) {
         return ResponseEntity.ok(ApiResponse.onSuccess("상품이 수정되었습니다.", productService.updateProduct(productId, dto)));
     }
 
