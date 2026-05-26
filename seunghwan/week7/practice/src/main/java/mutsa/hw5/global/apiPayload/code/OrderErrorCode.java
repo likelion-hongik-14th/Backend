@@ -6,9 +6,9 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum CartErrorCode implements BaseErrorCode {
-    CART_NOT_FOUND(HttpStatus.NOT_FOUND, "CART404_1", "장바구니를 찾을 수 없습니다."),
-    CART_EMPTY(HttpStatus.BAD_REQUEST, "CART400_1", "장바구니가 비어있습니다.");
+public enum OrderErrorCode implements BaseErrorCode {
+    ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER404_1", "주문을 찾을 수 없습니다."),
+    INVALID_STATUS_TRANSITION(HttpStatus.BAD_REQUEST, "ORDER400_1", "해당 상태로 변경할 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

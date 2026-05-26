@@ -6,6 +6,9 @@ import mutsa.hw5.domain.Member;
 import mutsa.hw5.dto.address.AddressRequestDto;
 import mutsa.hw5.dto.address.AddressResponseDto;
 import mutsa.hw5.dto.address.AddressUpdateDto;
+import mutsa.hw5.global.apiPayload.code.AddressErrorCode;
+import mutsa.hw5.global.apiPayload.code.MemberErrorCode;
+import mutsa.hw5.global.apiPayload.exception.ProjectException;
 import mutsa.hw5.repository.AddressRepository;
 import mutsa.hw5.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +31,7 @@ public class AddressService {
     @Transactional // SQLD에서 나오는 ACID 중에 그 원자성을 의미
     public AddressResponseDto createAddress(AddressRequestDto dto) {
         Member member = memberRepository.findById(dto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
         Address address = addressRepository.save(dto.toEntity(member));
         return AddressResponseDto.from(address);
     }
@@ -37,7 +40,7 @@ public class AddressService {
     @Transactional(readOnly = true) // "readOnly = true"의 의미: DB를 조회만 하고 변경은 안 한다는 뜻
     public List<AddressResponseDto> getAddresses(Long memberId) {
         memberRepository.findById(memberId)
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
         return addressRepository.findAllByMember_MemberId(memberId).stream()
                 .map(AddressResponseDto::from)
                 .collect(Collectors.toList());
@@ -47,7 +50,7 @@ public class AddressService {
     @Transactional
     public AddressResponseDto updateAddress(Long addressId, Long memberId, AddressUpdateDto dto) {
         Address address = addressRepository.findByAddressIdAndMember_MemberId(addressId, memberId)
-                .orElseThrow(() -> new RuntimeException("배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
         address.update(dto.getReceiverName(), dto.getAddressName(), dto.getPostalCode(), dto.getAddress(), dto.getPhoneNumber());
         return AddressResponseDto.from(address);
     }
@@ -56,7 +59,7 @@ public class AddressService {
     @Transactional
     public void deleteAddress(Long addressId, Long memberId) {
         Address address = addressRepository.findByAddressIdAndMember_MemberId(addressId, memberId)
-                .orElseThrow(() -> new RuntimeException("배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
         addressRepository.delete(address);
     }
 }
