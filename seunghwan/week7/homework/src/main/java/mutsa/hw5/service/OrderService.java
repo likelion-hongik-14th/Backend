@@ -1,0 +1,107 @@
+package mutsa.hw5.service;
+
+import lombok.RequiredArgsConstructor;
+import mutsa.hw5.domain.*;
+import mutsa.hw5.dto.order.OrderCartRequestDto;
+import mutsa.hw5.dto.order.OrderDirectRequestDto;
+import mutsa.hw5.dto.order.OrderResponseDto;
+import mutsa.hw5.dto.order.OrderStatusUpdateDto;
+import mutsa.hw5.global.apiPayload.code.*;
+import mutsa.hw5.global.apiPayload.exception.ProjectException;
+import mutsa.hw5.repository.*;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+// final 필드들의 생성자를 자동 생성
+// Spring이 이 생성자를 보고 Repository들을 자동으로 주입해줌 (의존성 주입)
+@RequiredArgsConstructor
+public class OrderService {
+
+    private final OrderRepository orderRepository;
+    private final MemberRepository memberRepository;
+    private final AddressRepository addressRepository;
+    private final CartRepository cartRepository;
+    private final ProductRepository productRepository;
+
+    // 장바구니 주문
+    @Transactional // SQLD에서 나오는 ACID 중에 그 원자성을 의미
+    public OrderResponseDto orderFromCart(OrderCartRequestDto dto) {
+        Member member = memberRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
+        Address address = addressRepository.findByAddressIdAndMember_MemberId(dto.getAddressId(), dto.getMemberId())
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
+        Cart cart = cartRepository.findByMemberIdWithItems(dto.getMemberId())
+                .orElseThrow(() -> new ProjectException(CartErrorCode.CART_NOT_FOUND));
+
+        if (cart.getCartItems().isEmpty()) {
+            throw new ProjectException(CartErrorCode.CART_EMPTY);
+        }
+
+        Order order = Order.create(member, address.getReceiverName(), address.getPostalCode(),
+                address.getAddress(), address.getPhoneNumber());
+
+        for (CartItem cartItem : cart.getCartItems()) {
+            Product product = productRepository.findByIdForUpdate(cartItem.getProduct().getProductId())
+                    .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
+            product.checkStock(cartItem.getItemQuantity());
+            product.reduceStock(cartItem.getItemQuantity());
+            order.getOrderItems().add(OrderItem.create(order, product, cartItem.getItemQuantity()));
+        }
+
+        orderRepository.save(order);
+        cart.getCartItems().clear();
+
+        return OrderResponseDto.from(order);
+    }
+
+    // 즉시 주문
+    @Transactional
+    public OrderResponseDto orderDirect(OrderDirectRequestDto dto) {
+        Member member = memberRepository.findById(dto.getMemberId())
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
+        Address address = addressRepository.findByAddressIdAndMember_MemberId(dto.getAddressId(), dto.getMemberId())
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
+        Product product = productRepository.findByIdForUpdate(dto.getProductId())
+                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
+
+        product.checkStock(dto.getItemQuantity());
+        product.reduceStock(dto.getItemQuantity());
+
+        Order order = Order.create(member, address.getReceiverName(), address.getPostalCode(),
+                address.getAddress(), address.getPhoneNumber());
+        order.getOrderItems().add(OrderItem.create(order, product, dto.getItemQuantity()));
+        orderRepository.save(order);
+
+        return OrderResponseDto.from(order);
+    }
+
+    // 주문 상세 조회
+    @Transactional(readOnly = true) // "readOnly = true"의 의미: DB를 조회만 하고 변경은 안 한다는 뜻
+    public OrderResponseDto getOrder(Long orderId, Long memberId) {
+        Order order = orderRepository.findByOrderIdAndMemberIdWithItems(orderId, memberId)
+                .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
+        return OrderResponseDto.from(order);
+    }
+
+    // 주문 상태 변경
+    @Transactional
+    public OrderResponseDto changeOrderStatus(Long orderId, Long memberId, OrderStatusUpdateDto dto) {
+        // 취소 시 재고 원복이 필요해서 락 + JOIN FETCH 버전 사용
+        Order order = orderRepository.findByOrderIdAndMemberIdWithItemsForUpdate(orderId, memberId)
+                .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
+
+        if (!order.getOrderStatus().canTransitionTo(dto.getStatus())) {
+            throw new ProjectException(OrderErrorCode.INVALID_STATUS_TRANSITION);
+        }
+
+        if (dto.getStatus() == OrderStatus.CANCELLED) {
+            for (OrderItem item : order.getOrderItems()) {
+                item.getProduct().restoreStock(item.getItemQuantity());
+            }
+        }
+
+        order.changeStatus(dto.getStatus());
+        return OrderResponseDto.from(order);
+    }
+}
