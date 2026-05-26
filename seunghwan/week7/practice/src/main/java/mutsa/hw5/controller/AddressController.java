@@ -37,7 +37,7 @@ public class AddressController {
     public ResponseEntity<ApiResponse<AddressResponseDto>> updateAddress(
             @PathVariable Long addressId,
             @RequestParam Long memberId,
-            @RequestBody AddressUpdateDto dto) {
+            @Valid @RequestBody AddressUpdateDto dto) {
         return ResponseEntity.ok(ApiResponse.onSuccess("배송지가 수정되었습니다.", addressService.updateAddress(addressId, memberId, dto)));
     }
 

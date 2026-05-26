@@ -12,7 +12,7 @@ public class ProductRequestDto {
     private String productName;
 
     @NotNull
-    @Min(0) // 음수 거부
+    @Min(1) // 0원 상품 방지
     private Long productPrice;
 
     @NotNull

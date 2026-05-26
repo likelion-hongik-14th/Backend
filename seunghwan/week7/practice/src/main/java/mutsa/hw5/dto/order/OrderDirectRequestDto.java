@@ -8,12 +8,15 @@ import lombok.Getter;
 public class OrderDirectRequestDto {
 
     @NotNull
+    @Min(1)
     private Long memberId;
 
     @NotNull
+    @Min(1)
     private Long addressId;
 
     @NotNull
+    @Min(1)
     private Long productId;
 
     @NotNull
