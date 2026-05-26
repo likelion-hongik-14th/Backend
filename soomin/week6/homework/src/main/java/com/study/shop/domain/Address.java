@@ -37,6 +37,9 @@ public class Address {
     private String phoneNumber;
 
     @Column(nullable = false)
+    private boolean deleted = false;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
@@ -59,6 +62,11 @@ public class Address {
         this.address = address;
         this.detailAddress = detailAddress;
         this.phoneNumber = phoneNumber;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void delete() {
+        this.deleted = true;
         this.updatedAt = LocalDateTime.now();
     }
 

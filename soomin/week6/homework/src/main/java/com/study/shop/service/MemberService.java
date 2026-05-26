@@ -2,6 +2,8 @@ package com.study.shop.service;
 
 import com.study.shop.domain.Cart;
 import com.study.shop.domain.Member;
+import com.study.shop.dto.member.LoginRequest;
+import com.study.shop.dto.member.LoginResponse;
 import com.study.shop.dto.member.MemberResponse;
 import com.study.shop.dto.member.SignupRequest;
 import com.study.shop.repository.CartRepository;
@@ -35,5 +37,25 @@ public class MemberService {
         cartRepository.save(cart);
 
         return new MemberResponse(savedMember);
+    }
+
+    @Transactional(readOnly = true)
+    public LoginResponse login(LoginRequest request) {
+        Member member = memberRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다."));
+
+        if (!member.getPassword().equals(request.getPassword())) {
+            throw new IllegalArgumentException("이메일 또는 비밀번호가 일치하지 않습니다.");
+        }
+
+        return new LoginResponse(member);
+    }
+
+    @Transactional(readOnly = true)
+    public MemberResponse getMember(Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다. id=" + memberId));
+
+        return new MemberResponse(member);
     }
 }

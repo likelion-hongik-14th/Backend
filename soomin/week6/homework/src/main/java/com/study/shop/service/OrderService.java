@@ -7,9 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -97,15 +96,30 @@ public class OrderService {
     public List<OrderResponse> getOrders(Long memberId) {
         findMember(memberId);
 
-        return orderRepository.findAllByMemberIdOrderByOrderedAtDesc(memberId)
+        List<Order> orders = orderRepository.findAllByMemberIdOrderByOrderedAtDesc(memberId);
+
+        if (orders.isEmpty()) {
+            return List.of();
+        }
+
+        List<Long> orderIds = orders.stream()
+                .map(Order::getId)
+                .toList();
+
+        Map<Long, List<OrderItem>> orderItemMap = orderItemRepository.findAllByOrderIdIn(orderIds)
                 .stream()
-                .map(order -> new OrderResponse(
-                        order,
-                        orderItemRepository.findAllByOrderId(order.getId())
-                                .stream()
-                                .map(OrderItemResponse::new)
-                                .toList()
-                ))
+                .collect(Collectors.groupingBy(orderItem -> orderItem.getOrder().getId()));
+
+        return orders.stream()
+                .map(order -> {
+                    List<OrderItemResponse> items = orderItemMap
+                            .getOrDefault(order.getId(), Collections.emptyList())
+                            .stream()
+                            .map(OrderItemResponse::new)
+                            .toList();
+
+                    return new OrderResponse(order, items);
+                })
                 .toList();
     }
 
@@ -137,9 +151,13 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderStatusResponse updateOrderStatus(Long orderId, UpdateOrderStatusRequest request) {
+    public OrderStatusResponse updateOrderStatus(Long memberId, Long orderId, UpdateOrderStatusRequest request) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("주문을 찾을 수 없습니다. id=" + orderId));
+
+        if (!order.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("다른 회원의 주문 상태는 변경할 수 없습니다.");
+        }
 
         order.updateStatus(request.getStatus());
 
@@ -152,7 +170,7 @@ public class OrderService {
     }
 
     private Address findAddress(Long memberId, Long addressId) {
-        return addressRepository.findByIdAndMemberId(addressId, memberId)
+        return addressRepository.findByIdAndMemberIdAndDeletedFalse(addressId, memberId)
                 .orElseThrow(() -> new IllegalArgumentException("배송지를 찾을 수 없습니다. id=" + addressId));
     }
 
