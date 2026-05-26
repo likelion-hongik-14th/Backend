@@ -50,8 +50,8 @@ public class Order {
     }
 
     public void cancle(){
-        if(this.orderStatus == OrderStatus.DELIVERED || this.orderStatus == OrderStatus.DELIVERING){
-            throw new IllegalArgumentException("배송중입니다.");
+        if(this.orderStatus == OrderStatus.DELIVERED || this.orderStatus == OrderStatus.DELIVERING || this.orderStatus == OrderStatus.CANCELED){
+            throw new IllegalArgumentException("취소 가능한 상태가 아닙니다.");
         }
         this.orderStatus = OrderStatus.CANCELED;
         //원복
