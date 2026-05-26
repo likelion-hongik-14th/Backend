@@ -33,6 +33,9 @@ public class Product {
         if(this.stock < count){
             throw new IllegalArgumentException("상품 재고가 부족합니다");
         }
+        if(count == null || count < 0){
+            throw new IllegalArgumentException("허용되지 않은 재고 범위입니다.");
+        }
         this.stock -= count;
     }
 
