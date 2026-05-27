@@ -6,6 +6,7 @@ import mutsa.mutsa_week5_hw.dto.OrderDirectRequestDto;
 import mutsa.mutsa_week5_hw.dto.OrderFromCartRequestDto;
 import mutsa.mutsa_week5_hw.dto.OrderResponseDto;
 import mutsa.mutsa_week5_hw.service.OrderService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,23 @@ public class OrderController {
         return orderService.createOrderFromCart(memberId, dto);
     }
 
+    // 결제 완료 처리
+    @PatchMapping("/{orderId}/pay")
+    public ResponseEntity<OrderResponseDto> payOrder(
+            @RequestParam Long memberId,
+            @PathVariable Long orderId
+    ) {
+        return ResponseEntity.ok(orderService.payOrder(memberId, orderId));
+    }
+
+    // 배송 완료 처리
+    @PatchMapping("/{orderId}/deliver")
+    public ResponseEntity<OrderResponseDto> deliverOrder(
+            @RequestParam Long memberId,
+            @PathVariable Long orderId
+    ) {
+        return ResponseEntity.ok(orderService.deliverOrder(memberId, orderId));
+    }
 
     // 주문 목록 조회
     @GetMapping
@@ -52,19 +70,21 @@ public class OrderController {
     // 주문 단건 조회
     @GetMapping("/{orderId}")
     public OrderResponseDto getOrder(
+            @RequestParam Long memberId,
             @PathVariable Long orderId
     ) {
 
-        return orderService.getOrder(orderId);
+        return orderService.getOrder(memberId, orderId);
     }
 
 
     // 주문 취소
     @PatchMapping("/{orderId}/cancel")
     public void cancelOrder(
+            @RequestParam Long memberId,
             @PathVariable Long orderId
     ) {
 
-        orderService.cancelOrder(orderId);
+        orderService.cancelOrder(memberId, orderId);
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Cart {
 
     @Id
@@ -23,10 +25,12 @@ public class Cart {
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems = new ArrayList<>();
 
-    public static Cart createCart(Member member) { //수정: member를 넣은 상태로 cart 생성
-        Cart cart = new Cart();
-        cart.member = member;
-        return cart;
+    public static Cart createCart(Member member) {
+
+        return Cart.builder()
+                .member(member)
+                .cartItems(new ArrayList<>())
+                .build();
     }
 
     public CartItem addProduct(Product product, int quantity) { // 수정: 장바구니에 같은 상품을 두 번 담았을 때 cartitem이 두개 생기는 문제 해결

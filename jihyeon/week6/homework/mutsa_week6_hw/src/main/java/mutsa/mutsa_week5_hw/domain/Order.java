@@ -48,6 +48,7 @@ public class Order {
         return Order.builder()
                 .member(member)
                 .status(OrderStatus.ORDERED)
+                .orderItems(new ArrayList<>())
                 .orderedAt(LocalDateTime.now())
                 .deliveryName(address.getName())
                 .deliveryZipcode(address.getZipcode())
@@ -62,10 +63,42 @@ public class Order {
         orderItem.setOrder(this);
     }
 
+    // 결제 완료 메서드
+    public void pay() {
+        if (this.status == OrderStatus.CANCELED) {
+            throw new IllegalStateException("취소된 주문은 결제할 수 없습니다.");
+        }
+        if (this.status == OrderStatus.DELIVERED) {
+            throw new IllegalStateException("배송 완료된 주문은 상태를 변경할 수 없습니다.");
+        }
+        if (this.status == OrderStatus.PAID) {
+            throw new IllegalStateException("이미 결제 완료된 주문입니다.");
+        }
+        this.status = OrderStatus.PAID;
+    }
+
+    // 배송 완료 메서드
+    public void deliver() {
+        if (this.status == OrderStatus.CANCELED) {
+            throw new IllegalStateException("취소된 주문은 배송 완료 처리할 수 없습니다.");
+        }
+        if (this.status == OrderStatus.DELIVERED) {
+            throw new IllegalStateException("이미 배송 완료된 주문입니다.");
+        }
+        if (this.status == OrderStatus.ORDERED) {
+            throw new IllegalStateException("결제 완료 후 배송 완료 처리할 수 있습니다.");
+        }
+        this.status = OrderStatus.DELIVERED;
+    }
+
     // 주문 취소 메서드
     public void cancel() {
         if (this.status == OrderStatus.DELIVERED) {
             throw new IllegalStateException("배송 완료된 주문은 취소할 수 없습니다.");
+        }
+
+        if (this.status == OrderStatus.CANCELED) {
+            throw new IllegalStateException("이미 취소된 주문입니다.");
         }
 
         this.status = OrderStatus.CANCELED;

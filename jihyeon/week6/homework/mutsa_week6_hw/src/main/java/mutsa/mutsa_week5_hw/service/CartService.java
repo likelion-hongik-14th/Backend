@@ -24,26 +24,21 @@ public class CartService {
 
     // 장바구니 조회
     @Transactional(readOnly = true) // 수정: 조회 전용 메서드
-    public CartResponseDto getCart() { // 수정: getOrCreateCart() 메서드로 빼기
+    public CartResponseDto getCart(Long memberId) { // 수정: getOrCreateCart() 메서드로 빼기
 
-        Cart cart = getOrCreateCart();
+        Cart cart = getOrCreateCart(memberId);
 
         return CartResponseDto.from(cart);
     }
 
     // 상품 추가
     @Transactional
-    public CartResponseDto addItem(CartItemRequestDto requestDto) {
+    public CartResponseDto addItem(Long memberId, CartItemRequestDto requestDto) {
 
-        Member member = memberRepository.findById(1L)
-                .orElseThrow(() -> new IllegalArgumentException("회원 없음"));
-
-        Cart cart = getOrCreateCart();
+        Cart cart = getOrCreateCart(memberId);
 
         Product product = productRepository.findById(requestDto.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException("상품 없음"));
-
-        product.decreaseStock(requestDto.getQuantity());
 
         cart.addProduct(product, requestDto.getQuantity());
         cartRepository.save(cart);
@@ -53,14 +48,14 @@ public class CartService {
 
     // 수량 변경
     @Transactional
-    public CartResponseDto updateItemQuantity(Long itemId, CartItemUpdateDto requestDto) {
+    public CartResponseDto updateItemQuantity(Long memberId, Long itemId, CartItemUpdateDto requestDto) {
 
-        Cart cart = getOrCreateCart();
+        Cart cart = getOrCreateCart(memberId);
 
         CartItem item = cart.getCartItems().stream()
                 .filter(ci -> ci.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow();
+                .orElseThrow(() -> new IllegalArgumentException("장바구니 아이템 없음"));
 
         item.increaseQuantity(requestDto.getQuantity());
 
@@ -69,20 +64,20 @@ public class CartService {
 
     // 삭제
     @Transactional
-    public void deleteItem(Long itemId) {
+    public void deleteItem(Long memberId, Long itemId) {
 
-        Cart cart = getOrCreateCart();
+        Cart cart = getOrCreateCart(memberId);
 
         cart.getCartItems().removeIf(ci -> ci.getId().equals(itemId));
     }
 
     // 수정: 장바구니 조회 또는 생성하는 getOrCreateCart() 메서드 추가
-    private Cart getOrCreateCart() {
+    private Cart getOrCreateCart(Long memberId) {
 
-        Member member = memberRepository.findById(1L)
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원 없음"));
 
-        return cartRepository.findFirstBy()
+        return cartRepository.findByMemberId(member.getId())
                 .orElseGet(() ->
                         cartRepository.save(Cart.createCart(member)));
     }
