@@ -12,7 +12,7 @@ import mutsa.hw5.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service // Spring에게 이 클래스가 서비스 클래스라는 걸 명시
 // final 필드들의 생성자를 자동 생성
 // Spring이 이 생성자를 보고 Repository들을 자동으로 주입해줌 (의존성 주입)
 @RequiredArgsConstructor
