@@ -49,7 +49,7 @@ public class ProductController {
     @Operation(summary = "상품 단일 조회", description = "특정 상품을 조회합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상품 조회 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PRODUCT404_1", description = "상품을 찾을 수 없습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "PRODUCT404_1: 상품을 찾을 수 없습니다.")
     })
     @GetMapping("/{productId}")
     public ResponseEntity<ApiResponse<ProductResponseDto>> getProduct(@PathVariable Long productId) {
@@ -60,7 +60,7 @@ public class ProductController {
     @Operation(summary = "상품 수정", description = "특정 상품의 정보를 수정합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상품 수정 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PRODUCT404_1", description = "상품을 찾을 수 없습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "PRODUCT404_1: 상품을 찾을 수 없습니다.")
     })
     @PatchMapping("/{productId}")
     public ResponseEntity<ApiResponse<ProductResponseDto>> updateProduct(
@@ -73,8 +73,8 @@ public class ProductController {
     @Operation(summary = "상품 삭제", description = "특정 상품을 삭제합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "상품 삭제 성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PRODUCT404_1", description = "상품을 찾을 수 없습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "PRODUCT400_1", description = "주문 이력이 있는 상품은 삭제할 수 없습니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "PRODUCT404_1: 상품을 찾을 수 없습니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "PRODUCT400_1: 주문 이력이 있는 상품은 삭제할 수 없습니다.")
     })
     @DeleteMapping("/{productId}")
     public ResponseEntity<ApiResponse<Void>> deleteProduct(@PathVariable Long productId) {
