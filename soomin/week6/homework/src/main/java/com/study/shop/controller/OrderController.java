@@ -60,9 +60,10 @@ public class OrderController {
 
     @PatchMapping("/{orderId}/status")
     public ResponseEntity<OrderStatusResponse> updateOrderStatus(
+            @RequestParam Long memberId,
             @PathVariable Long orderId,
             @Valid @RequestBody UpdateOrderStatusRequest request
     ) {
-        return ResponseEntity.ok(orderService.updateOrderStatus(orderId, request));
+        return ResponseEntity.ok(orderService.updateOrderStatus(memberId, orderId, request));
     }
 }

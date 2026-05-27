@@ -43,7 +43,7 @@ public class AddressService {
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("회원을 찾을 수 없습니다. id=" + memberId));
 
-        return addressRepository.findAllByMemberId(memberId)
+        return addressRepository.findAllByMemberIdAndDeletedFalse(memberId)
                 .stream()
                 .map(AddressResponse::new)
                 .toList();
@@ -51,7 +51,7 @@ public class AddressService {
 
     @Transactional
     public AddressResponse updateAddress(Long memberId, Long addressId, AddressRequest request) {
-        Address address = addressRepository.findByIdAndMemberId(addressId, memberId)
+        Address address = addressRepository.findByIdAndMemberIdAndDeletedFalse(addressId, memberId)
                 .orElseThrow(() -> new IllegalArgumentException("배송지를 찾을 수 없습니다. id=" + addressId));
 
         address.update(
@@ -67,10 +67,10 @@ public class AddressService {
 
     @Transactional
     public void deleteAddress(Long memberId, Long addressId) {
-        Address address = addressRepository.findByIdAndMemberId(addressId, memberId)
+        Address address = addressRepository.findByIdAndMemberIdAndDeletedFalse(addressId, memberId)
                 .orElseThrow(() -> new IllegalArgumentException("배송지를 찾을 수 없습니다. id=" + addressId));
 
-        addressRepository.delete(address);
+        address.delete();
     }
 
 }

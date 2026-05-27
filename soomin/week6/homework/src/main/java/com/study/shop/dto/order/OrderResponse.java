@@ -11,7 +11,13 @@ public class OrderResponse {
 
     private Long orderId;
     private Long memberId;
-    private Long addressId;
+
+    private String addressName;
+    private String zipCode;
+    private String address;
+    private String detailAddress;
+    private String phoneNumber;
+
     private String status;
     private int totalPrice;
     private LocalDateTime orderedAt;
@@ -20,7 +26,13 @@ public class OrderResponse {
     public OrderResponse(Order order, List<OrderItemResponse> items) {
         this.orderId = order.getId();
         this.memberId = order.getMember().getId();
-        this.addressId = order.getAddress().getId();
+
+        this.addressName = order.getAddressName();
+        this.zipCode = order.getZipCode();
+        this.address = order.getAddress();
+        this.detailAddress = order.getDetailAddress();
+        this.phoneNumber = order.getPhoneNumber();
+
         this.status = order.getStatus().name();
         this.totalPrice = order.getTotalPrice();
         this.orderedAt = order.getOrderedAt();
