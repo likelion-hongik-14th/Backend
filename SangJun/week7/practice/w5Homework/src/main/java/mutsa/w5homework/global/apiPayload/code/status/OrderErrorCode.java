@@ -11,6 +11,6 @@ public enum OrderErrorCode implements BaseErrorCode {
     ORDER_NOT_FOUND(HttpStatus.NOT_FOUND, "ORDER4001", "유효하지 않은 주문번호입니다.");
 
     private final HttpStatus httpStatus;
-    private final String errorCode;
+    private final String code;
     private final String message;
 }
