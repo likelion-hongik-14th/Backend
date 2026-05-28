@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import mutsa.w5homework.global.apiPayload.code.BaseErrorCode;
-import mutsa.w5homework.global.apiPayload.code.GeneralSuccessCode;
+import mutsa.w5homework.global.apiPayload.code.status.GeneralSuccessCode;
 
 @Getter
 @AllArgsConstructor

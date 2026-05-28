@@ -1,7 +1,8 @@
-package mutsa.w5homework.global.apiPayload.code;
+package mutsa.w5homework.global.apiPayload.code.status;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import mutsa.w5homework.global.apiPayload.code.BaseSuccessCode;
 import org.springframework.http.HttpStatus;
 
 @AllArgsConstructor
