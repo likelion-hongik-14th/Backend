@@ -1,5 +1,6 @@
 package mutsa.homework.global.apiPayload.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import mutsa.homework.global.apiPayload.GlobalResponse;
 import mutsa.homework.global.apiPayload.code.BaseErrorCode;
 import mutsa.homework.global.apiPayload.code.GeneralErrorCode;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -43,8 +45,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<GlobalResponse<String>> handleUndefinedException(
             Exception e
     ) {
+
+        log.error("예기치 않은 오류 발생: ", e);
+
         BaseErrorCode errorCode = GeneralErrorCode.INTERNAL_SERVER_ERROR;
+
         return ResponseEntity.status(errorCode.getHttpStatus())
-                .body(GlobalResponse.onFailure(errorCode, e.getMessage()));
+                .body(GlobalResponse.onFailure(errorCode, errorCode.getMessage()));
     }
 }

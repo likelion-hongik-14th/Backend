@@ -114,6 +114,11 @@ public interface OrderApiDocs {
                     responseCode = "400",
                     description = "취소 불가(ORDER_400_1)",
                     content = @Content(schema = @Schema(implementation = GlobalResponse.class))
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "중복 취소(ORDER_409_1)",
+                    content = @Content(schema = @Schema(implementation = GlobalResponse.class))
             )
     })
     ResponseEntity<GlobalResponse<Void>> cancelOrder(

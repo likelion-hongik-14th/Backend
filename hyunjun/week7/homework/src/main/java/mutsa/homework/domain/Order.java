@@ -54,6 +54,10 @@ public class Order extends BaseTimeEntity {
             throw new ProjectException(OrderErrorCode.CANCEL_NOT_ALLOWED);
         }
 
+        if(this.status == OrderStatus.CANCELED) {
+            throw new ProjectException(OrderErrorCode.ALREADY_CANCELED);
+        }
+
         this.status = OrderStatus.CANCELED;
 
         for (OrderItem orderItem : this.orderItems) {

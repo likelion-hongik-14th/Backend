@@ -38,7 +38,7 @@ public class OrderService {
 
         address.validateUser(userId);
 
-        Product product = productRepository.findById(requestDto.productId())
+        Product product = productRepository.findByIdWithPessimisticLock(requestDto.productId())
                 .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         Order newOrder = Order.create(user, address);
