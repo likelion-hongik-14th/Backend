@@ -1,0 +1,39 @@
+package com.study.shop.global.config;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.*;
+
+
+@Configuration
+public class SwaggerConfig {
+
+    @Bean
+    public OpenAPI swagger() {
+        io.swagger.v3.oas.models.info.Info info = new Info().title("멋쟁이사자처럼 14기").description("백엔드 쇼핑몰 swagger").version("0.0.1");
+
+        // JWT 토큰 헤더 방식
+        String securityScheme = "JWT TOKEN";
+        io.swagger.v3.oas.models.security.SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityScheme);
+
+        Components components = new Components()
+                .addSecuritySchemes(securityScheme, new io.swagger.v3.oas.models.security.SecurityScheme()
+                        .name(securityScheme)
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("Bearer")
+                        .bearerFormat("JWT"));
+
+        return new OpenAPI()
+                .info(info)
+                .addServersItem(new Server().url("/"))
+                .addSecurityItem(securityRequirement)
+                .components(components);
+    }
+}
+
