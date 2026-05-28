@@ -5,6 +5,8 @@ import mutsa.w5homework.domain.Member;
 import mutsa.w5homework.dto.MemberCreateRequestDto;
 import mutsa.w5homework.dto.MemberResponseDto;
 import lombok.RequiredArgsConstructor;
+import mutsa.w5homework.global.apiPayload.code.status.MemberErrorCode;
+import mutsa.w5homework.global.exception.GeneralException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import mutsa.w5homework.repository.MemberRepository;
@@ -30,7 +32,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberResponseDto getMember(Long id) {
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Member not found"));
+                .orElseThrow(() -> new GeneralException(MemberErrorCode.MEMBER_NOT_FOUND));
 
         return new MemberResponseDto(member);
     }

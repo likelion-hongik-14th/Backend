@@ -42,9 +42,6 @@ public class AddressController {
 
     @DeleteMapping("/{addressId}")
     public ApiResponse<Void> deleteAddress(@PathVariable Long addressId) {
-        //유효한 주소Id인지 검증
-        Address address = addressRepository.findById(addressId).orElseThrow(()
-                -> new RuntimeException("Address not found"));
         AddressDto.Response response = addressService.deleteAddress(addressId);
         return ApiResponse.onSuccess("주소록 삭제 성공", null);
     }

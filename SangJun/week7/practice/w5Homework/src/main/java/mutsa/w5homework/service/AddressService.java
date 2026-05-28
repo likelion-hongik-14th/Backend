@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mutsa.w5homework.domain.Address;
 import mutsa.w5homework.domain.Member;
 import mutsa.w5homework.dto.AddressDto;
+import mutsa.w5homework.global.apiPayload.code.status.AddressErrorCode;
+import mutsa.w5homework.global.exception.GeneralException;
 import mutsa.w5homework.repository.AddressRepository;
 import mutsa.w5homework.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -46,7 +48,7 @@ public class AddressService {
     @Transactional
     public AddressDto.Response updateAddress(Long addressId, AddressDto.UpdateRequest dto){
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(()-> new RuntimeException("Address not found"));
+                .orElseThrow(() -> new GeneralException(AddressErrorCode.ADDRESS_NOT_FOUND));
         address.update(dto.getAddressName(), dto.getZipCode(), dto.getCityAddress(), dto.getPhoneNumber());
         return new AddressDto.Response(address);
     }
@@ -55,7 +57,7 @@ public class AddressService {
     @Transactional
     public AddressDto.Response deleteAddress(Long addressId){
         Address address = addressRepository.findById(addressId)
-                .orElseThrow(()-> new RuntimeException("Address not found"));
+                .orElseThrow(()-> new GeneralException(AddressErrorCode.ADDRESS_NOT_FOUND));
         addressRepository.delete(address);
         return new AddressDto.Response(address);
     }

@@ -26,8 +26,8 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MemberResponseDto> getMember(@PathVariable Long id) {
+    public ApiResponse<MemberResponseDto> getMember(@PathVariable Long id) {
         MemberResponseDto responseDto = memberService.getMember(id);
-        return ResponseEntity.ok(responseDto);
+        return onSuccess("회원 조회에 성공했습니다.", responseDto);
     }
 }
