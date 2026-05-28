@@ -6,6 +6,7 @@ import mutsa.mutsa_week5_hw.dto.AddressRequestDto;
 import mutsa.mutsa_week5_hw.dto.AddressUpdateDto;
 import mutsa.mutsa_week5_hw.dto.AddressResponseDto;
 import mutsa.mutsa_week5_hw.service.AddressService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,22 +41,25 @@ public class AddressController {
 
     // 배송지 수정
     @PatchMapping("/{addressId}")
-    public AddressResponseDto updateAddress(
+    public ResponseEntity<AddressResponseDto> updateAddress(
+            @RequestParam Long memberId,  // ✅ 추가
             @PathVariable Long addressId,
-            @RequestBody AddressUpdateDto dto
-    ) {
+            @RequestBody @Valid AddressUpdateDto dto) {
 
-        return addressService.updateAddress(addressId, dto);
+        return ResponseEntity.ok(
+                addressService.updateAddress(memberId, addressId, dto)
+        );
     }
 
 
     // 배송지 삭제
     @DeleteMapping("/{addressId}")
-    public void deleteAddress(
-            @PathVariable Long addressId
-    ) {
+    public ResponseEntity<Void> deleteAddress(
+            @RequestParam Long memberId,
+            @PathVariable Long addressId) {
 
-        addressService.deleteAddress(addressId);
+        addressService.deleteAddress(memberId, addressId);
+        return ResponseEntity.noContent().build();
     }
 
 }

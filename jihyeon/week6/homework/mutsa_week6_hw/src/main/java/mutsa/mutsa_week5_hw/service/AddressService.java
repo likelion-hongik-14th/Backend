@@ -58,13 +58,18 @@ public class AddressService {
 
     // 배송지 수정
     @Transactional
-    public AddressResponseDto updateAddress(Long addressId,
+    public AddressResponseDto updateAddress(Long memberId,
+                                            Long addressId,
                                             AddressUpdateDto dto) {
 
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() ->
                         new IllegalArgumentException("배송지가 존재하지 않습니다.")
                 );
+
+        if (!address.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("해당 회원의 배송지가 아닙니다.");
+        }
 
         address.update(
                 dto.getName(),
@@ -79,12 +84,16 @@ public class AddressService {
 
     // 배송지 삭제
     @Transactional
-    public void deleteAddress(Long addressId) {
+    public void deleteAddress(Long memberId, Long addressId) {
 
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() ->
                         new IllegalArgumentException("배송지가 존재하지 않습니다.")
                 );
+
+        if (!address.getMember().getId().equals(memberId)) {
+            throw new IllegalArgumentException("해당 회원의 배송지가 아닙니다.");
+        }
 
         addressRepository.delete(address);
     }

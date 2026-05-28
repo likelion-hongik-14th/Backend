@@ -19,35 +19,39 @@ public class CartController {
 
     // 장바구니 조회
     @GetMapping
-    public ResponseEntity<CartResponseDto> getCart() {
-        return ResponseEntity.ok(cartService.getCart());
+    public ResponseEntity<CartResponseDto> getCart(@RequestParam Long memberId) {
+        return ResponseEntity.ok(cartService.getCart(memberId));
     }
 
     // 장바구니에 상품 추가
     @PostMapping("/items")
     public ResponseEntity<CartResponseDto> addItem(
+            @RequestParam Long memberId,
             @RequestBody @Valid CartItemRequestDto requestDto) { // 수정: DTO에서 유효성 검사를 하도록 @Valid 추가
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(cartService.addItem(requestDto));
+                .body(cartService.addItem(memberId, requestDto));
     }
 
     // 장바구니 상품 수량 변경
     @PatchMapping("/items/{itemId}")
     public ResponseEntity<CartResponseDto> updateItemQuantity(
+            @RequestParam Long memberId,
             @PathVariable Long itemId,
             @RequestBody @Valid CartItemUpdateDto requestDto) { // 수정: DTO에서 유효성 검사를 하도록 @Valid 추가
 
         return ResponseEntity.ok(
-                cartService.updateItemQuantity(itemId, requestDto)
+                cartService.updateItemQuantity(memberId, itemId, requestDto)
         );
     }
 
     // 장바구니 상품 삭제
     @DeleteMapping("/items/{itemId}")
-    public ResponseEntity<Void> deleteItem(@PathVariable Long itemId) {
-        cartService.deleteItem(itemId);
+    public ResponseEntity<Void> deleteItem(
+            @RequestParam Long memberId,
+            @PathVariable Long itemId) {
+        cartService.deleteItem(memberId, itemId);
         return ResponseEntity.noContent().build();
 
     }

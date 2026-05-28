@@ -1,5 +1,6 @@
 package mutsa.mutsa_week5_hw.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.mutsa_week5_hw.dto.ProductRequestDto;
 import mutsa.mutsa_week5_hw.dto.ProductResponseDto;
@@ -20,7 +21,7 @@ public class ProductController {
     //새로운 상품 생성
     @PostMapping
     public ResponseEntity<ProductResponseDto> createProduct(
-            @RequestBody ProductRequestDto requestDto) {
+            @RequestBody @Valid ProductRequestDto requestDto) {
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -39,5 +40,11 @@ public class ProductController {
 
         ProductResponseDto responseDto = productService.getProduct(id);
         return ResponseEntity.ok(responseDto);
+    }
+
+    //상품 삭제
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
     }
 }
