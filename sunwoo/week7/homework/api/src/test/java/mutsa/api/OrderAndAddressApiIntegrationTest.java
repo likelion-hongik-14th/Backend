@@ -1,0 +1,309 @@
+package mutsa.api;
+
+import mutsa.api.domain.Address;
+import mutsa.api.domain.Cart;
+import mutsa.api.domain.Product;
+import mutsa.api.domain.Users;
+import mutsa.api.enums.OrderStatus;
+import mutsa.api.repository.AddressRepository;
+import mutsa.api.repository.CartItemRepository;
+import mutsa.api.repository.CartRepository;
+import mutsa.api.repository.OrdersRepository;
+import mutsa.api.repository.ProductRepository;
+import mutsa.api.repository.UsersRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@SpringBootTest
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+class OrderAndAddressApiIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @Autowired
+    private UsersRepository usersRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
+    private CartItemRepository cartItemRepository;
+
+    @Autowired
+    private OrdersRepository ordersRepository;
+
+    @BeforeEach
+    void setUp() {
+        ordersRepository.deleteAll();
+        cartItemRepository.deleteAll();
+        cartRepository.deleteAll();
+        addressRepository.deleteAll();
+        productRepository.deleteAll();
+        usersRepository.deleteAll();
+    }
+
+    @Test
+    void addressApiCreatesListsUpdatesAndDeletesAddress() throws Exception {
+        Users user = saveUser("tester", "tester@example.com", "password");
+
+        MvcResult createResult = mockMvc.perform(post("/api/users/{userId}/addresses", user.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "name": "집",
+                                  "zipCode": "12345",
+                                  "address": "서울시 강남구 테헤란로 123",
+                                  "phoneNumber": "010-1234-5678"
+                                }
+                """))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.result.name").value("집"))
+                .andExpect(jsonPath("$.result.zipCode").value("12345"))
+                .andReturn();
+
+        Long addressId = readLong(createResult, "id");
+
+        mockMvc.perform(get("/api/users/{userId}/addresses", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result[0].id").value(addressId))
+                .andExpect(jsonPath("$.result[0].name").value("집"));
+
+        mockMvc.perform(patch("/api/users/{userId}/addresses/{addressId}", user.getId(), addressId)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "name": "회사",
+                                  "zipCode": "54321",
+                                  "address": "서울시 중구 세종대로 10",
+                                  "phoneNumber": "010-9999-8888"
+                                }
+                """))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.name").value("회사"))
+                .andExpect(jsonPath("$.result.zipCode").value("54321"));
+
+        mockMvc.perform(delete("/api/users/{userId}/addresses/{addressId}", user.getId(), addressId))
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/users/{userId}/addresses", user.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result").isEmpty());
+    }
+
+    @Test
+    void directOrderApiCreatesOrderAndCancelRestoresStock() throws Exception {
+        Users user = saveUser("tester", "tester@example.com", "password");
+        Address address = addressRepository.save(Address.create(user, "집", "12345", "서울시 강남구 테헤란로 123", "010-1234-5678"));
+        Product product = productRepository.save(Product.create("무선 마우스", 25000, 10, "가벼운 무선 마우스"));
+
+        MvcResult orderResult = mockMvc.perform(post("/api/users/{userId}/orders/direct", user.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "addressId": %d,
+                                  "productId": %d,
+                                  "quantity": 2
+                                }
+                """.formatted(address.getId(), product.getId())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.result.userId").value(user.getId()))
+                .andExpect(jsonPath("$.result.addressId").value(address.getId()))
+                .andExpect(jsonPath("$.result.orderStatus").value(OrderStatus.ORDER_COMPLETED.name()))
+                .andExpect(jsonPath("$.result.totalPrice").value(50000))
+                .andExpect(jsonPath("$.result.orderItems[0].productName").value("무선 마우스"))
+                .andExpect(jsonPath("$.result.orderItems[0].orderPrice").value(25000))
+                .andExpect(jsonPath("$.result.orderItems[0].quantity").value(2))
+                .andReturn();
+
+        Long orderId = readLong(orderResult, "orderId");
+        assertEquals(8, productRepository.findById(product.getId()).orElseThrow().getStock());
+
+        mockMvc.perform(patch("/api/users/{userId}/orders/{orderId}/cancel", user.getId(), orderId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.orderStatus").value(OrderStatus.CANCELED.name()));
+
+        assertEquals(10, productRepository.findById(product.getId()).orElseThrow().getStock());
+    }
+
+    @Test
+    void cartOrderApiCreatesOrderAndClearsCart() throws Exception {
+        Users user = saveUser("tester", "tester@example.com", "password");
+        Address address = addressRepository.save(Address.create(user, "집", "12345", "서울시 강남구 테헤란로 123", "010-1234-5678"));
+        Product product = productRepository.save(Product.create("기계식 키보드", 30000, 5, "청축 키보드"));
+        Cart cart = Cart.builder()
+                .users(user)
+                .cartItems(new ArrayList<>())
+                .build();
+        cart.addProduct(product, 3);
+        cartRepository.save(cart);
+
+        mockMvc.perform(post("/api/users/{userId}/orders/cart", user.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "addressId": %d
+                                }
+                """.formatted(address.getId())))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.result.orderStatus").value(OrderStatus.ORDER_COMPLETED.name()))
+                .andExpect(jsonPath("$.result.totalPrice").value(90000))
+                .andExpect(jsonPath("$.result.orderItems[0].productName").value("기계식 키보드"))
+                .andExpect(jsonPath("$.result.orderItems[0].quantity").value(3));
+
+        assertEquals(2, productRepository.findById(product.getId()).orElseThrow().getStock());
+        assertTrue(cartItemRepository.findAll().isEmpty());
+    }
+
+    @Test
+    void cartApiKeepsCartsSeparatedByUser() throws Exception {
+        Users firstUser = saveUser("first", "first@example.com", "password");
+        Users secondUser = saveUser("second", "second@example.com", "password");
+        Product product = productRepository.save(Product.create("텀블러", 15000, 10, "스테인리스 텀블러"));
+
+        mockMvc.perform(post("/api/users/{userId}/cart/items", firstUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "productId": %d,
+                                  "quantity": 1
+                                }
+                                """.formatted(product.getId())))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/users/{userId}/cart/items", secondUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "productId": %d,
+                                  "quantity": 2
+                                }
+                                """.formatted(product.getId())))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(get("/api/users/{userId}/cart", firstUser.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.totalPrice").value(15000))
+                .andExpect(jsonPath("$.result.cartItems[0].quantity").value(1));
+
+        mockMvc.perform(get("/api/users/{userId}/cart", secondUser.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.result.totalPrice").value(30000))
+                .andExpect(jsonPath("$.result.cartItems[0].quantity").value(2));
+
+        assertEquals(2, cartRepository.findAll().size());
+    }
+
+    @Test
+    void apiReturnsDomainErrorCodes() throws Exception {
+        Users user = saveUser("tester", "tester@example.com", "password");
+        Address address = addressRepository.save(Address.create(user, "집", "12345", "서울시 강남구 테헤란로 123", "010-1234-5678"));
+        Product product = productRepository.save(Product.create("노트북 파우치", 18000, 1, "13인치 파우치"));
+
+        mockMvc.perform(get("/api/products/{productId}", 99999L))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("PRODUCT_4041"));
+
+        mockMvc.perform(get("/api/users/{userId}/addresses", 99999L))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("USER_4041"));
+
+        mockMvc.perform(post("/api/users/{userId}/cart/items", user.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "productId": %d,
+                                  "quantity": 2
+                                }
+                                """.formatted(product.getId())))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("CART_4002"));
+
+        mockMvc.perform(post("/api/users/{userId}/orders/direct", user.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "addressId": %d,
+                                  "productId": %d,
+                                  "quantity": 2
+                                }
+                                """.formatted(address.getId(), product.getId())))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.code").value("PRODUCT_4001"));
+    }
+
+    @Test
+    void cartOrderDoesNotFallbackToAnotherUsersCart() throws Exception {
+        Users cartOwner = saveUser("cart-owner", "cart-owner@example.com", "password");
+        Users orderUser = saveUser("order-user", "order-user@example.com", "password");
+        Address address = addressRepository.save(Address.create(orderUser, "집", "12345", "서울시 강남구 테헤란로 123", "010-1234-5678"));
+        Product product = productRepository.save(Product.create("헤드셋", 45000, 4, "게이밍 헤드셋"));
+        Cart cart = Cart.builder()
+                .users(cartOwner)
+                .cartItems(new ArrayList<>())
+                .build();
+        cart.addProduct(product, 2);
+        cartRepository.save(cart);
+
+        mockMvc.perform(post("/api/users/{userId}/orders/cart", orderUser.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "addressId": %d
+                                }
+                                """.formatted(address.getId())))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.code").value("CART_4041"));
+
+        assertTrue(ordersRepository.findAll().isEmpty());
+        assertEquals(1, cartItemRepository.findAll().size());
+        assertEquals(4, productRepository.findById(product.getId()).orElseThrow().getStock());
+    }
+
+    private Users saveUser(String name, String email, String password) {
+        Users user = BeanUtils.instantiateClass(Users.class);
+        ReflectionTestUtils.setField(user, "name", name);
+        ReflectionTestUtils.setField(user, "email", email);
+        ReflectionTestUtils.setField(user, "password", password);
+        return usersRepository.save(user);
+    }
+
+    private Long readLong(MvcResult result, String fieldName) throws Exception {
+        String response = result.getResponse().getContentAsString();
+        Pattern pattern = Pattern.compile("\"" + fieldName + "\"\\s*:\\s*(\\d+)");
+        Matcher matcher = pattern.matcher(response);
+        if (!matcher.find()) {
+            throw new IllegalArgumentException("Field not found in response: " + fieldName);
+        }
+        return Long.parseLong(matcher.group(1));
+    }
+}

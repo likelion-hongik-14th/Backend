@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: api
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/shopping_api?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: sunwoo
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
