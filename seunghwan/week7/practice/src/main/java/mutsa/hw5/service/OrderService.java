@@ -6,6 +6,8 @@ import mutsa.hw5.dto.order.OrderCartRequestDto;
 import mutsa.hw5.dto.order.OrderDirectRequestDto;
 import mutsa.hw5.dto.order.OrderResponseDto;
 import mutsa.hw5.dto.order.OrderStatusUpdateDto;
+import mutsa.hw5.global.apiPayload.code.*;
+import mutsa.hw5.global.apiPayload.exception.ProjectException;
 import mutsa.hw5.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +28,14 @@ public class OrderService {
     @Transactional // SQLD에서 나오는 ACID 중에 그 원자성을 의미
     public OrderResponseDto orderFromCart(OrderCartRequestDto dto) {
         Member member = memberRepository.findById(dto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
         Address address = addressRepository.findByAddressIdAndMember_MemberId(dto.getAddressId(), dto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
         Cart cart = cartRepository.findByMemberIdWithItems(dto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("장바구니를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(CartErrorCode.CART_NOT_FOUND));
 
         if (cart.getCartItems().isEmpty()) {
-            throw new RuntimeException("장바구니가 비어있습니다.");
+            throw new ProjectException(CartErrorCode.CART_EMPTY);
         }
 
         Order order = Order.create(member, address.getReceiverName(), address.getPostalCode(),
@@ -41,7 +43,7 @@ public class OrderService {
 
         for (CartItem cartItem : cart.getCartItems()) {
             Product product = productRepository.findByIdForUpdate(cartItem.getProduct().getProductId())
-                    .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+                    .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
             product.checkStock(cartItem.getItemQuantity());
             product.reduceStock(cartItem.getItemQuantity());
             order.getOrderItems().add(OrderItem.create(order, product, cartItem.getItemQuantity()));
@@ -57,11 +59,11 @@ public class OrderService {
     @Transactional
     public OrderResponseDto orderDirect(OrderDirectRequestDto dto) {
         Member member = memberRepository.findById(dto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("회원을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(MemberErrorCode.MEMBER_NOT_FOUND));
         Address address = addressRepository.findByAddressIdAndMember_MemberId(dto.getAddressId(), dto.getMemberId())
-                .orElseThrow(() -> new RuntimeException("배송지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND));
         Product product = productRepository.findByIdForUpdate(dto.getProductId())
-                .orElseThrow(() -> new RuntimeException("상품을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
         product.checkStock(dto.getItemQuantity());
         product.reduceStock(dto.getItemQuantity());
@@ -80,7 +82,7 @@ public class OrderService {
     @Transactional(readOnly = true) // "readOnly = true"의 의미: DB를 조회만 하고 변경은 안 한다는 뜻
     public OrderResponseDto getOrder(Long orderId, Long memberId) {
         Order order = orderRepository.findByOrderIdAndMemberIdWithItems(orderId, memberId)
-                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
         return OrderResponseDto.from(order);
     }
 
@@ -89,12 +91,10 @@ public class OrderService {
     public OrderResponseDto changeOrderStatus(Long orderId, Long memberId, OrderStatusUpdateDto dto) {
         // 취소 시 재고 원복이 필요해서 락 + JOIN FETCH 버전 사용
         Order order = orderRepository.findByOrderIdAndMemberIdWithItemsForUpdate(orderId, memberId)
-                .orElseThrow(() -> new RuntimeException("주문을 찾을 수 없습니다."));
+                .orElseThrow(() -> new ProjectException(OrderErrorCode.ORDER_NOT_FOUND));
 
         if (!order.getOrderStatus().canTransitionTo(dto.getStatus())) {
-            throw new RuntimeException(
-                    order.getOrderStatus() + " 상태에서 " + dto.getStatus() + " 상태로 변경할 수 없습니다."
-            );
+            throw new ProjectException(OrderErrorCode.INVALID_STATUS_TRANSITION);
         }
 
         if (dto.getStatus() == OrderStatus.CANCELLED) {

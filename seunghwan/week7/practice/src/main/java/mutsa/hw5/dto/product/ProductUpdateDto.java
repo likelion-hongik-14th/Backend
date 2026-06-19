@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class ProductUpdateDto {
     private String productName;
-    @Min(0)
+    @Min(1)
     private Long productPrice;
     @Min(0)
     private Long productStock;
