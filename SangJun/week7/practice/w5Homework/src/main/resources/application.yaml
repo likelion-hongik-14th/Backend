@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: w5Homework
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: jdbc:mysql://mutsa-db.cj6iy2ouw106.ap-northeast-2.rds.amazonaws.com:3306/mutsa_db?useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
