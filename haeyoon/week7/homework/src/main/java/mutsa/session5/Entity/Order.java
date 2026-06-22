@@ -2,6 +2,8 @@ package mutsa.session5.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mutsa.session5.global.apipayload.exception.OrderException;
+import mutsa.session5.global.apipayload.exception.code.OrderErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -53,10 +55,10 @@ public class Order {
 
     public void updateStatus(OrderStatus newStatus) {
         if (this.orderStatus == OrderStatus.ORDERCANCELED) {
-            throw new IllegalStateException("이미 취소된 주문은 상태를 변경할 수 없습니다.");
+            throw new OrderException(OrderErrorCode.INVALID_ORDER_STATUS);
         }
         if (this.orderStatus == OrderStatus.DELIVERED) {
-            throw new IllegalStateException("이미 배송 완료된 상품은 취소할 수 없습니다.");
+            throw new OrderException(OrderErrorCode.INVALID_ORDER_STATUS);
         }
 
         this.orderStatus = newStatus;

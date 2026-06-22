@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import mutsa.session5.Dto.AddressRequestDto;
 import mutsa.session5.Dto.AddressResponseDto;
 import mutsa.session5.Service.AddressService;
+import mutsa.session5.global.apipayload.ApiResponse;
+import mutsa.session5.global.apipayload.exception.code.AddressSuccessCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +37,13 @@ public class AddressController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<AddressResponseDto> addAddress(@RequestBody AddressRequestDto requestDto) {
-        return ResponseEntity.ok(addressService.addAddress(requestDto));
+    public ResponseEntity<ApiResponse<AddressResponseDto>> addAddress(@RequestBody AddressRequestDto requestDto) {
+        AddressResponseDto response = addressService.addAddress(requestDto);
+        AddressSuccessCode successCode = AddressSuccessCode.CREATE_ADDRESS_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 
     // 전체 목록 조회
@@ -54,8 +61,13 @@ public class AddressController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<List<AddressResponseDto>> getAddressList(@PathVariable Long memberId) {
-        return ResponseEntity.ok(addressService.getAddressList(memberId));
+    public ResponseEntity<ApiResponse<List<AddressResponseDto>>> getAddressList(@PathVariable Long memberId) {
+        List<AddressResponseDto> response = addressService.getAddressList(memberId);
+        AddressSuccessCode successCode = AddressSuccessCode.GET_ADDRESS_LIST_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 
     // 기존 배송지 정보 수정
@@ -69,13 +81,18 @@ public class AddressController {
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "404",
-                    description = "수정할 배송지 정보를 찾을 수 없습니다. (ORDER_404_2)",
+                    description = "배송지 주소 정보를 찾을 수 없습니다. (ADDRESS_404_1)",
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<AddressResponseDto> updateAddress(
+    public ResponseEntity<ApiResponse<AddressResponseDto>> updateAddress(
             @PathVariable Long addressId,
             @RequestBody AddressRequestDto requestDto) {
-        return ResponseEntity.ok(addressService.updateAddress(addressId, requestDto));
+        AddressResponseDto response = addressService.updateAddress(addressId, requestDto);
+        AddressSuccessCode successCode = AddressSuccessCode.UPDATE_ADDRESS_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 }

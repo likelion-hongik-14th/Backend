@@ -1,7 +1,7 @@
 package mutsa.session5.Dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 import mutsa.session5.Entity.Order;
 
@@ -17,7 +17,7 @@ public class OrderItemRequestDto {
     private Long productId;
     private String name;
     private Long orderPrice;
-    @PositiveOrZero(message = "주문 수량은 0개 이상이어야 합니다.")
+    @Min(value = 1, message = "주문 수량은 1개 이상이어야 합니다.")
     private int orderQuantity;
     private Order.OrderStatus orderStatus;
 

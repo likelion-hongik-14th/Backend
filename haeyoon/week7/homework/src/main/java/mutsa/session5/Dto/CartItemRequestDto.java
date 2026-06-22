@@ -1,8 +1,7 @@
 package mutsa.session5.Dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 @Getter
@@ -17,6 +16,6 @@ public class CartItemRequestDto {
     private Long productId;
     private String name;
     private Long price;
-    @PositiveOrZero(message = "수량은 0개 이상이어야 합니다.")
+    @Min(value = 1, message = "수량은 1개 이상이어야 합니다.")
     private int quantity;
 }
