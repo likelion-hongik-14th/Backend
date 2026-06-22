@@ -12,6 +12,7 @@ import mutsa.session5.Dto.CartResponseDto;
 import mutsa.session5.Service.CartService;
 import mutsa.session5.global.apipayload.ApiResponse;
 import mutsa.session5.global.apipayload.exception.code.CartSuccessCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,9 +42,13 @@ public class CartController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<CartItemResponseDto> addCartItem(@Valid @RequestBody CartItemRequestDto requestDto) {
+    public ResponseEntity<ApiResponse<CartItemResponseDto>> addCartItem(@Valid @RequestBody CartItemRequestDto requestDto) {
         CartItemResponseDto response = cartService.addCartItem(requestDto);
-        return ApiResponse.onSuccess(CartSuccessCode.ADD_ITEM_SUCCESS.getMessage(), response);
+        CartSuccessCode successCode = CartSuccessCode.ADD_ITEM_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 
     // 장바구니 상품 조회
@@ -61,9 +66,13 @@ public class CartController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<CartResponseDto> getCartResponseDto(@RequestParam Long userId) {
+    public ResponseEntity<ApiResponse<CartResponseDto>> getCartResponseDto(@RequestParam Long userId) {
         CartResponseDto response = cartService.getCartResponseDto(userId);
-        return ApiResponse.onSuccess(CartSuccessCode.GET_CART_SUCCESS.getMessage(), response);
+        CartSuccessCode successCode = CartSuccessCode.GET_CART_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 
     // 장바구니 상품 수량 변경
@@ -86,11 +95,13 @@ public class CartController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<CartItemResponseDto> updateCartItemQuantity(
-            @PathVariable Long itemId,
-            @RequestBody CartItemRequestDto requestDto) {
-        CartItemResponseDto response = cartService.updateCartItemQuantity(itemId, requestDto.getQuantity());
-        return ApiResponse.onSuccess(CartSuccessCode.UPDATE_QUANTITY_SUCCESS.getMessage(), response);
+    public ResponseEntity<ApiResponse<CartItemResponseDto>> updateCartItemQuantity(@RequestParam Long memberId, @PathVariable Long itemId, @RequestBody CartItemRequestDto requestDto) {
+        CartItemResponseDto response = cartService.updateCartItemQuantity(memberId, itemId, requestDto.getQuantity());
+        CartSuccessCode successCode = CartSuccessCode.UPDATE_QUANTITY_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 
     // 장바구니 상품 삭제
@@ -108,8 +119,12 @@ public class CartController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<Void> deleteCartItem(@PathVariable Long itemId) {
-        cartService.deleteCartItem(itemId);
-        return ApiResponse.onSuccess(CartSuccessCode.DELETE_ITEM_SUCCESS.getMessage());
+    public ResponseEntity<ApiResponse<Void>> deleteCartItem(@RequestParam Long memberId, @PathVariable Long itemId) {
+        cartService.deleteCartItem(memberId, itemId);
+        CartSuccessCode successCode = CartSuccessCode.DELETE_ITEM_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode));
     }
 }

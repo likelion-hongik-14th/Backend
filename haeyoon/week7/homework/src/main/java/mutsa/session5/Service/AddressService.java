@@ -7,10 +7,10 @@ import mutsa.session5.Entity.Address;
 import mutsa.session5.Entity.Member;
 import mutsa.session5.Repository.AddressRepository;
 import mutsa.session5.Repository.MemberRepository;
+import mutsa.session5.global.apipayload.exception.AddressException;
 import mutsa.session5.global.apipayload.exception.MemberException;
-import mutsa.session5.global.apipayload.exception.OrderException;
+import mutsa.session5.global.apipayload.exception.code.AddressErrorCode;
 import mutsa.session5.global.apipayload.exception.code.MemberErrorCode;
-import mutsa.session5.global.apipayload.exception.code.OrderErrorCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,8 +55,9 @@ public class AddressService {
 
     // 기존 배송지 정보 수정
     public AddressResponseDto updateAddress(Long addressId, AddressRequestDto requestDto) {
-        Address address = addressRepository.findById(addressId)
-                .orElseThrow(() -> new OrderException(OrderErrorCode.ADDRESS_NOT_FOUND));
+        Address address = addressRepository
+                .findByAddressIdAndMember_MemberId(addressId, requestDto.getMemberId())
+                .orElseThrow(() -> new AddressException(AddressErrorCode.ADDRESS_NOT_FOUND));
 
         address.updateAddress(
                 requestDto.getAddressName(),

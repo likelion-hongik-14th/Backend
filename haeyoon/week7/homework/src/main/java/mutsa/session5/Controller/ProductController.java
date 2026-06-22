@@ -37,9 +37,13 @@ public class ProductController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<ProductResponseDto> createProduct(@Valid @RequestBody ProductRequestDto requestDto) {
+    public ResponseEntity<ApiResponse<ProductResponseDto>> createProduct(@Valid @RequestBody ProductRequestDto requestDto) {
         ProductResponseDto response = productService.createProduct(requestDto);
-        return ApiResponse.onSuccess(ProductSuccessCode.CREATE_PRODUCT_SUCCESS.getMessage(), response);
+        ProductSuccessCode successCode = ProductSuccessCode.CREATE_PRODUCT_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 
     // 상품 조회
@@ -57,9 +61,13 @@ public class ProductController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<ProductResponseDto> getProduct(@PathVariable Long productId) {
+    public ResponseEntity<ApiResponse<ProductResponseDto>> getProduct(@PathVariable Long productId) {
         ProductResponseDto response = productService.getProduct(productId);
-        return ApiResponse.onSuccess(ProductSuccessCode.GET_PRODUCT_SUCCESS.getMessage(), response);
+        ProductSuccessCode successCode = ProductSuccessCode.GET_PRODUCT_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
     @GetMapping
     @Operation(summary = "상품 전체 목록 조회", description = "현재 등록되어 있는 모든 상품의 리스트를 한눈에 조회")
@@ -70,8 +78,12 @@ public class ProductController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<ProductListResponseDto> getProducts() {
+    public ResponseEntity<ApiResponse<ProductListResponseDto>> getProducts() {
         ProductListResponseDto response = productService.getProducts(); // 서비스의 전체 조회 호출
-        return ApiResponse.onSuccess(ProductSuccessCode.GET_PRODUCT_LIST_SUCCESS.getMessage(), response);
+        ProductSuccessCode successCode = ProductSuccessCode.GET_PRODUCT_LIST_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 }

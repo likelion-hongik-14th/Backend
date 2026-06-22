@@ -4,11 +4,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mutsa.session5.Dto.OrderItemRequestDto;
 import mutsa.session5.Dto.OrderItemResponseDto;
 import mutsa.session5.Dto.OrderResponseDto;
 import mutsa.session5.Service.OrderService;
+import mutsa.session5.global.apipayload.ApiResponse;
+import mutsa.session5.global.apipayload.exception.code.OrderSuccessCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +37,13 @@ public class OrderController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<OrderItemResponseDto> createOrder(@RequestBody OrderItemRequestDto requestDto) {
-        return ResponseEntity.ok(orderService.createOrder(requestDto));
+    public ResponseEntity<ApiResponse<OrderItemResponseDto>> createOrder(@Valid @RequestBody OrderItemRequestDto requestDto) {
+        OrderItemResponseDto response = orderService.createOrder(requestDto);
+        OrderSuccessCode successCode = OrderSuccessCode.CREATE_ORDER_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 
     // 결제 완료
@@ -49,7 +57,7 @@ public class OrderController {
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
                     responseCode = "400",
-                    description = "현재 주문 상태에서는 결제를 승인할 수 없습니다. (ORDER_400_1)",
+                    description = "현재 주문 상태에서는 결제를 확인하거나 변경할 수 없습니다. (ORDER_400_1)",
                     content = @Content(mediaType = "application/json")
             ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(
@@ -58,9 +66,13 @@ public class OrderController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<String> confirmPayment(@PathVariable Long orderId) {
-        orderService.confirmPayment(orderId);
-        return ResponseEntity.ok("결제가 확인되어 주문이 확정되었습니다.");
+    public ResponseEntity<ApiResponse<Void>> confirmPayment(@RequestParam Long memberId, @PathVariable Long orderId) {
+        orderService.confirmPayment(memberId, orderId);
+        OrderSuccessCode successCode = OrderSuccessCode.CONFIRM_PAYMENT_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode));
     }
 
     // 배송 완료
@@ -78,9 +90,13 @@ public class OrderController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<String> completeDelivery(@PathVariable Long orderId) {
-        orderService.completeDelivery(orderId);
-        return ResponseEntity.ok("배송 완료 처리가 되었습니다.");
+    public ResponseEntity<ApiResponse<Void>> completeDelivery(@RequestParam Long memberId, @PathVariable Long orderId) {
+        orderService.completeDelivery(memberId, orderId);
+        OrderSuccessCode successCode = OrderSuccessCode.COMPLETE_DELIVERY_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode));
     }
     // 주문 취소
     @PatchMapping("/{orderId}/cancel")
@@ -97,9 +113,13 @@ public class OrderController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId) {
-        orderService.cancelOrder(orderId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponse<Void>> cancelOrder(@RequestParam Long memberId, @PathVariable Long orderId) {
+        orderService.cancelOrder(memberId, orderId);
+        OrderSuccessCode successCode = OrderSuccessCode.CANCEL_ORDER_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode));
     }
 
     // 주문 조회
@@ -117,7 +137,12 @@ public class OrderController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ResponseEntity<OrderResponseDto> getOrder(@PathVariable Long orderId) {
-        return ResponseEntity.ok(orderService.getOrderResponseDto(orderId));
+    public ResponseEntity<ApiResponse<OrderResponseDto>> getOrder(@RequestParam Long memberId, @PathVariable Long orderId) {
+        OrderResponseDto response = orderService.getOrderResponseDto(memberId, orderId);
+        OrderSuccessCode successCode = OrderSuccessCode.GET_ORDER_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode));
     }
 }

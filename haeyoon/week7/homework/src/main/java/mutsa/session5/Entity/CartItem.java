@@ -2,6 +2,8 @@ package mutsa.session5.Entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mutsa.session5.global.apipayload.exception.CartException;
+import mutsa.session5.global.apipayload.exception.code.CartErrorCode;
 
 @Entity
 @Getter
@@ -35,7 +37,7 @@ public class CartItem {
 
     public void updateQuantity(int quantity) {
         if (quantity < 1) {
-            throw new IllegalArgumentException("수량은 1개 이상이어야 합니다.");
+            throw new CartException(CartErrorCode.INVALID_QUANTITY);
         }
         this.quantity = quantity;
     }
