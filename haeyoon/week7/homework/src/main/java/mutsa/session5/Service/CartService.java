@@ -88,8 +88,9 @@ public class CartService {
 
     // 장바구니 상품 수량 변경
     @Transactional
-    public CartItemResponseDto updateCartItemQuantity(Long cartItemId, int quantity) {
-        CartItem cartItem = cartItemRepository.findById(cartItemId)
+    public CartItemResponseDto updateCartItemQuantity(Long memberId, Long cartItemId, int quantity) {
+        CartItem cartItem = cartItemRepository
+                .findByCartItemIdAndCart_Member_MemberId(cartItemId, memberId)
                 .orElseThrow(() -> new CartException(CartErrorCode.CART_ITEM_NOT_FOUND));
 
         // 재고 확인
@@ -104,10 +105,11 @@ public class CartService {
 
     // 장바구니 상품 삭제
     @Transactional
-    public void deleteCartItem(Long cartItemId) {
-        if (!cartItemRepository.existsById(cartItemId)) {
-            throw new CartException(CartErrorCode.CART_ITEM_NOT_FOUND);
-        }
-        cartItemRepository.deleteById(cartItemId);
+    public void deleteCartItem(Long memberId, Long cartItemId) {
+        CartItem cartItem = cartItemRepository
+                .findByCartItemIdAndCart_Member_MemberId(cartItemId, memberId)
+                .orElseThrow(() -> new CartException(CartErrorCode.CART_ITEM_NOT_FOUND));
+
+        cartItemRepository.delete(cartItem);
     }
 }

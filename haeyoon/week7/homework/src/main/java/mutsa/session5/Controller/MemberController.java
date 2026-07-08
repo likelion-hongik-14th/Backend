@@ -10,6 +10,7 @@ import mutsa.session5.Dto.MemberResponseDto;
 import mutsa.session5.Service.MemberService;
 import mutsa.session5.global.apipayload.ApiResponse;
 import mutsa.session5.global.apipayload.exception.code.MemberSuccessCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,8 +35,12 @@ public class MemberController {
                     content = @Content(mediaType = "application/json")
             )
     })
-    public ApiResponse<MemberResponseDto> createMember(@RequestBody MemberRequestDto requestDto) {
+    public ResponseEntity<ApiResponse<MemberResponseDto>> createMember(@RequestBody MemberRequestDto requestDto) {
         MemberResponseDto response = memberService.saveMember(requestDto);
-        return ApiResponse.onSuccess(MemberSuccessCode.CREATE_MEMBER_SUCCESS.getMessage(), response);
+        MemberSuccessCode successCode = MemberSuccessCode.CREATE_MEMBER_SUCCESS;
+
+        return ResponseEntity
+                .status(successCode.getHttpStatus())
+                .body(ApiResponse.onSuccess(successCode, response));
     }
 }

@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
+import mutsa.session5.global.apipayload.exception.ProductException;
+import mutsa.session5.global.apipayload.exception.code.ProductErrorCode;
 
 @Entity
 @Getter
@@ -26,7 +28,7 @@ public class Product {
     public void removeStock(int quantity) {
         int presentStock = this.stock - quantity;
         if (presentStock < 0) {
-            throw new RuntimeException("재고가 부족합니다.");
+            throw new ProductException(ProductErrorCode.OUT_OF_STOCK);
         }
         this.stock = presentStock;
     }

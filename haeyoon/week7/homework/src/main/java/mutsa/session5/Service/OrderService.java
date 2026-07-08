@@ -77,15 +77,16 @@ public class OrderService {
 
     // 주문 상태 관리
     @Transactional(readOnly = true)
-    public OrderResponseDto getOrderResponseDto(Long orderId) {
-        Order order = orderRepository.findById(orderId)
+    public OrderResponseDto getOrderResponseDto(Long memberId, Long orderId) {
+        Order order = orderRepository
+                .findByOrderIdAndMember_MemberId(orderId, memberId)
                 .orElseThrow(() -> new OrderException(OrderErrorCode.ORDER_NOT_FOUND));
 
         return OrderResponseDto.from(order);
     }
 
     // 배송 완료
-    public void completeDelivery(Long orderId) {
+    public void completeDelivery(Long memberId, Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderException(OrderErrorCode.ORDER_NOT_FOUND));
 
@@ -93,7 +94,7 @@ public class OrderService {
     }
 
     // 결제 완료
-    public void confirmPayment(Long orderId) {
+    public void confirmPayment(Long memberId, Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderException(OrderErrorCode.ORDER_NOT_FOUND));
 
@@ -105,7 +106,7 @@ public class OrderService {
     }
 
     // 주문 취소
-    public void cancelOrder(Long orderId) {
+    public void cancelOrder(Long memberId, Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new OrderException(OrderErrorCode.ORDER_NOT_FOUND));
 

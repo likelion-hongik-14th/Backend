@@ -2,11 +2,12 @@ package mutsa.session5.global.apipayload.exception.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import mutsa.session5.global.apipayload.code.BaseSuccessCode;
 import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum OrderSuccessCode {
+public enum OrderSuccessCode implements BaseSuccessCode {
     CREATE_ORDER_SUCCESS(HttpStatus.CREATED, "ORDER_201", "주문이 완료되었습니다."),
     GET_ORDER_SUCCESS(HttpStatus.OK, "ORDER_200_1", "주문 상세 내역 조회가 완료되었습니다."),
     COMPLETE_DELIVERY_SUCCESS(HttpStatus.OK, "ORDER_200_2", "배송 완료 처리되었습니다."),
