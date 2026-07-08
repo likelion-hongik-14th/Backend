@@ -1,9 +1,11 @@
-package mutsa.mutsa_week5_hw.global.config;
+package mutsa.mutsa_week5_hw.global;
 
+import mutsa.mutsa_week5_hw.global.code.BaseErrorCode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import mutsa.mutsa_week5_hw.global.code.GeneralSuccessCode;
 
 @Getter
 @AllArgsConstructor

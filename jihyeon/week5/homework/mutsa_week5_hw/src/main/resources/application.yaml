@@ -3,9 +3,9 @@ spring:
     name: mutsa_week5_hw
 
   datasource:
-    url: jdbc:mysql://localhost:3306/mutsa_db5
-    username: root
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://mutsa-db.c1a8oim0y4wy.ap-northeast-2.rds.amazonaws.com:3306/mutsa_db5
+    username: j1dong
+    password: romance2521
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

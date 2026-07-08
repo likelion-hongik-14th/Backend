@@ -1,4 +1,4 @@
-package mutsa.mutsa_week5_hw.global;
+package mutsa.mutsa_week5_hw.global.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

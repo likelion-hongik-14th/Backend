@@ -5,6 +5,8 @@ import mutsa.mutsa_week5_hw.domain.*;
 import mutsa.mutsa_week5_hw.dto.OrderDirectRequestDto;
 import mutsa.mutsa_week5_hw.dto.OrderFromCartRequestDto;
 import mutsa.mutsa_week5_hw.dto.OrderResponseDto;
+import mutsa.mutsa_week5_hw.global.code.GeneralCode;
+import mutsa.mutsa_week5_hw.global.exception.GeneralException;
 import mutsa.mutsa_week5_hw.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,18 +31,15 @@ public class OrderService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("회원이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.MEMBER_NOT_FOUND));
 
         Product product = productRepository.findById(dto.getProductId())
                 .orElseThrow(() ->
-                        new IllegalArgumentException("상품이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.PRODUCT_NOT_FOUND));
 
         Address address = addressRepository.findById(dto.getAddressId())
                 .orElseThrow(() ->
-                        new IllegalArgumentException("배송지가 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ADDRESS_NOT_FOUND));
 
         Order order = Order.createOrder(member, address);
 
@@ -62,22 +61,19 @@ public class OrderService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("회원이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.MEMBER_NOT_FOUND));
 
         Cart cart = cartRepository.findByMemberId(memberId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("장바구니가 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.CART_NOT_FOUND));
 
         if (cart.getCartItems().isEmpty()) {
-            throw new IllegalStateException("장바구니에 상품이 없습니다.");
+            throw new GeneralException(GeneralCode.CART_EMPTY);
         }
 
         Address address = addressRepository.findById(dto.getAddressId())
                 .orElseThrow(() ->
-                        new IllegalArgumentException("배송지가 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ADDRESS_NOT_FOUND));
 
         Order order = Order.createOrder(member, address);
 
@@ -105,11 +101,10 @@ public class OrderService {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("주문이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
         if (!order.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("해당 회원의 주문이 아닙니다.");
+            throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
         }
 
         order.pay();
@@ -123,11 +118,10 @@ public class OrderService {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("주문이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
         if (!order.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("해당 회원의 주문이 아닙니다.");
+            throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
         }
 
         order.deliver();
@@ -150,11 +144,10 @@ public class OrderService {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("주문이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
         if (!order.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("해당 회원의 주문이 아닙니다.");
+            throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
         }
 
         return OrderResponseDto.from(order);
@@ -167,11 +160,10 @@ public class OrderService {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("주문이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
         if (!order.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("해당 회원의 주문이 아닙니다.");
+            throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
         }
 
         order.cancel();

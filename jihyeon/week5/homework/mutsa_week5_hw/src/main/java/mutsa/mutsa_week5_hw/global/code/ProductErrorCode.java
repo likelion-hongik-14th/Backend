@@ -1,4 +1,4 @@
-package mutsa.mutsa_week5_hw.global;
+package mutsa.mutsa_week5_hw.global.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
