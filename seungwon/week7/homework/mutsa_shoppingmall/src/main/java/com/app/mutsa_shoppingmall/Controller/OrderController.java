@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @Tag(name = "Order", description = "주문 API")
 @RestController
@@ -39,7 +40,7 @@ public class OrderController {
             @ApiResponse(responseCode = "404", description = "PRODUCT_4041 - 상품을 찾을 수 없습니다.")
     })
     @PostMapping
-    public ResponseEntity<OrderDto.Response> orderDirect(@RequestBody OrderDto.CreateRequest request) {
+    public ResponseEntity<OrderDto.Response> orderDirect(@Valid @RequestBody OrderDto.CreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(orderService.orderDirect(request));
     }

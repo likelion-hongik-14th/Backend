@@ -32,11 +32,13 @@ public class Order {
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public void cancel() {
+        if (this.status == OrderStatus.CANCEL) {
+            throw new GeneralException(ErrorCode.ORDER_ALREADY_CANCELED);
+        }
         if (this.status == OrderStatus.DELIVERY_COMPLETE) {
             throw new GeneralException(ErrorCode.ORDER_CANCEL_FORBIDDEN);
         }
         this.status = OrderStatus.CANCEL;
-
         for (OrderItem item : orderItems) {
             item.getProduct().increaseStock(item.getQuantity());
         }

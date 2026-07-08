@@ -3,10 +3,12 @@ package com.app.mutsa_shoppingmall.DTO;
 import com.app.mutsa_shoppingmall.Entity.Order;
 import com.app.mutsa_shoppingmall.Entity.OrderItem;
 import com.app.mutsa_shoppingmall.Entity.OrderStatus;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,8 +20,13 @@ public class OrderDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateRequest {
+
+        @NotNull(message = "상품 ID는 필수입니다.")
         private Long productId;
-        private int quantity;
+
+        @NotNull(message = "수량은 필수입니다.")
+        @Min(value = 1, message = "수량은 1 이상이어야 합니다.")
+        private Integer quantity;
     }
 
     @Getter
