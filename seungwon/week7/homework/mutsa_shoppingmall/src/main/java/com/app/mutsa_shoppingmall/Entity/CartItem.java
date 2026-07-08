@@ -1,5 +1,7 @@
 package com.app.mutsa_shoppingmall.Entity;
 
+import com.app.mutsa_shoppingmall.exception.ErrorCode;
+import com.app.mutsa_shoppingmall.exception.GeneralException;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CartItem {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +28,9 @@ public class CartItem {
     private Product product;
 
     public void update(int quantity, String color) {
+        if (quantity <= 0) {
+            throw new GeneralException(ErrorCode.INVALID_QUANTITY);
+        }
         this.quantity = quantity;
         this.color = color;
     }

@@ -1,16 +1,14 @@
 spring:
   application:
     name: mutsa_shoppingmall
-
   datasource:
     url: jdbc:mysql://localhost:3306/mutsa_shop?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    username: root
-    password: bsw0722!!
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     hibernate:
-      ddl-auto: update  # 기존 데이터 유지하면서 테이블 수정
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:

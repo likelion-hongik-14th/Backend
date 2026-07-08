@@ -23,8 +23,12 @@ public enum ErrorCode {
     // Stock
     STOCK_NOT_ENOUGH(HttpStatus.BAD_REQUEST, "PRODUCT_4003", "재고가 부족합니다."),
 
+    ORDER_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "ORDER_4003", "이미 취소된 주문입니다."),
+    INVALID_QUANTITY(HttpStatus.BAD_REQUEST, "COMMON_4001", "수량은 1 이상이어야 합니다."),
+
     // Address
     ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, "ADDRESS_4041", "배송지를 찾을 수 없습니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;

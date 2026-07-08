@@ -22,6 +22,9 @@ public class Product {
     private String description;
 
     public void decreaseStock(int quantity) {
+        if (quantity <= 0) {
+            throw new GeneralException(ErrorCode.INVALID_QUANTITY);
+        }
         if (this.stock < quantity) {
             throw new GeneralException(ErrorCode.STOCK_NOT_ENOUGH);
         }
@@ -29,6 +32,9 @@ public class Product {
     }
 
     public void increaseStock(int quantity) {
+        if (quantity <= 0) {
+            throw new GeneralException(ErrorCode.INVALID_QUANTITY);
+        }
         this.stock += quantity;
     }
 }

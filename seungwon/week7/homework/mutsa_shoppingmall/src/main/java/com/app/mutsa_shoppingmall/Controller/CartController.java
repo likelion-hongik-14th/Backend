@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 @Tag(name = "Cart", description = "장바구니 API")
 @RestController
@@ -34,7 +35,7 @@ public class CartController {
             @ApiResponse(responseCode = "404", description = "PRODUCT_4041 - 상품을 찾을 수 없습니다.")
     })
     @PostMapping("/items")
-    public ResponseEntity<CartDto.ItemResponse> addCartItem(@RequestBody CartDto.ItemRequest request) {
+    public ResponseEntity<CartDto.ItemResponse> addCartItem(@Valid @RequestBody CartDto.ItemRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cartService.addCartItem(request));
     }
@@ -47,7 +48,7 @@ public class CartController {
     @PatchMapping("/items/{itemId}")
     public ResponseEntity<CartDto.ItemResponse> updateCartItem(
             @PathVariable Long itemId,
-            @RequestBody CartDto.ItemRequest request) {
+            @Valid @RequestBody CartDto.ItemRequest request) {
         return ResponseEntity.ok(cartService.updateCartItem(itemId, request));
     }
 
