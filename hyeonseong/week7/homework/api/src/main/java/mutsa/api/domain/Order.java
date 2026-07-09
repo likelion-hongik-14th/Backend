@@ -58,15 +58,18 @@ public class Order {
 
     // Order 생성 공식 창구, 생성 메소드
     public static Order createOrder(User user, Address address, List<OrderItem> orderItems){
-        Order order = new Order();
-        order.user = user;
-        order.address = address;
 
-        order.addressName = address.getAddressName();
-        order.fullAddress = address.getAddress();
+        if (orderItems == null || orderItems.isEmpty()) {
+            throw new IllegalArgumentException("주문할 상품 항목이 최소 하나 이상 필요합니다.");
+        }
 
-        order.status = OrderStatus.ORDERED; // 처음 생성되면 상태는 '주문 완료'
-        order.orderDate = LocalDateTime.now();
+        Order order = Order.builder()
+                .user(user)
+                .address(address)
+                .status(OrderStatus.ORDERED)
+                .orderDate(LocalDateTime.now())
+                .build();
+
         for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
