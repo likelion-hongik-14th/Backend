@@ -46,9 +46,7 @@ public class AddressService {
                 .orElseThrow(()-> new ProjectException(UserErrorCode.USER_NOT_FOUND));
 
         List<Address> addresses = user.getAddresses();
-        if(addresses.isEmpty()){
-            throw new ProjectException(AddressErrorCode.ADDRESS_NOT_FOUND);
-        }
+
         return addresses.stream()
                 .map(address -> new AddressResponseDto(
                         address.getAddress(),
