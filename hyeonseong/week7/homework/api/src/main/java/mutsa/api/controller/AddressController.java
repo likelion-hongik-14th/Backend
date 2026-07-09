@@ -26,16 +26,16 @@ public class AddressController {
 
     // 새로운 배송지 등록 API
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "배송지 등록", description = "새로운 배송지 정보를 등록합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "ADDRESS201_1", description = "배송지가 성공적으로 등록되었습니다.")
     })
-    public ResponseEntity<ApiResponse<Void>> createAddress(
+    public ApiResponse<Void> createAddress(
             @RequestParam Long userId,
             @Valid @RequestBody AddressRequestDto requestDto){
         addressService.createAddress(userId, requestDto);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponse.onSuccess(AddressSuccessCode.ADDRESS_CREATED));
+        return ApiResponse.onSuccess(AddressSuccessCode.ADDRESS_CREATED);
     }
 
     // 내 배송지 목록 전체 조회 API
