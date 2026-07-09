@@ -52,7 +52,7 @@ public class AddressController {
     @Operation(summary = "배송지 수정", description = "기존 배송지 정보를 수정합니다. (소유자 검증 포함)")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "ADDRESS200_2", description = "배송지 정보가 수정되었습니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "FORBIDDEN", description = "해당 배송지의 소유자가 아닙니다.")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "ADDRESS403_1", description = "해당 배송지의 소유자가 아닙니다.")
     })
     public ResponseEntity<ApiResponse<Void>> updateAddress(
             @RequestParam Long userId,

@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @AllArgsConstructor
 public enum AddressErrorCode implements BaseErrorCode {
-    ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, "ADDRESS404_1", "배송지를 찾을 수 없습니다.");
+    ADDRESS_NOT_FOUND(HttpStatus.NOT_FOUND, "ADDRESS404_1", "배송지를 찾을 수 없습니다."),
+    ADDRESS_FORBIDDEN(HttpStatus.FORBIDDEN, "ADDRESS403_1", "해당 배송지의 소유자가 아닙니다.");
 
     private final HttpStatus httpStatus;
     private final String code;
