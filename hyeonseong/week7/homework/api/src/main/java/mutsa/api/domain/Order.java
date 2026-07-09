@@ -105,9 +105,15 @@ public class Order {
         if (this.status == OrderStatus.CANCELED){
             throw new IllegalStateException("취소된 주문은 결제할 수 없습니다.");
         }
+
         if (this.status == OrderStatus.DELIVERED){
             throw new IllegalStateException("이미 배송 완료된 주문입니다.");
         }
+
+        if (this.status == OrderStatus.PAID) {
+            throw new IllegalStateException("이미 결제 완료된 주문입니다.");
+        }
+
         this.status = OrderStatus.PAID;
     }
 }
