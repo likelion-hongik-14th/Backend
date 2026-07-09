@@ -2,6 +2,7 @@ package mutsa.api.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -38,6 +39,16 @@ public class Order {
     private OrderStatus status;
 
     private LocalDateTime orderDate;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    private Order(User user, Address address, OrderStatus status, LocalDateTime orderDate) {
+        this.user = user;
+        this.address = address;
+        this.addressName = address.getAddressName();
+        this.fullAddress = address.getAddress();
+        this.status = status;
+        this.orderDate = orderDate;
+    }
 
     // 양방향 연관관계 편의 메소드
     public void addOrderItem(OrderItem orderItem){
