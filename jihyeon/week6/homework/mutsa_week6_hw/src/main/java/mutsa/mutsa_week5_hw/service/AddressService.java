@@ -6,6 +6,8 @@ import mutsa.mutsa_week5_hw.domain.Member;
 import mutsa.mutsa_week5_hw.dto.AddressRequestDto;
 import mutsa.mutsa_week5_hw.dto.AddressResponseDto;
 import mutsa.mutsa_week5_hw.dto.AddressUpdateDto;
+import mutsa.mutsa_week5_hw.global.code.GeneralCode;
+import mutsa.mutsa_week5_hw.global.exception.GeneralException;
 import mutsa.mutsa_week5_hw.repository.AddressRepository;
 import mutsa.mutsa_week5_hw.repository.MemberRepository;
 import org.springframework.stereotype.Service;
@@ -29,8 +31,8 @@ public class AddressService {
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("회원이 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.MEMBER_NOT_FOUND));
+
 
         Address address = Address.builder()
                 .name(dto.getName())
@@ -64,11 +66,10 @@ public class AddressService {
 
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("배송지가 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ADDRESS_NOT_FOUND));
 
         if (!address.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("해당 회원의 배송지가 아닙니다.");
+            throw new GeneralException(GeneralCode.ADDRESS_FORBIDDEN);
         }
 
         address.update(
@@ -88,11 +89,10 @@ public class AddressService {
 
         Address address = addressRepository.findById(addressId)
                 .orElseThrow(() ->
-                        new IllegalArgumentException("배송지가 존재하지 않습니다.")
-                );
+                        new GeneralException(GeneralCode.ADDRESS_NOT_FOUND));
 
         if (!address.getMember().getId().equals(memberId)) {
-            throw new IllegalArgumentException("해당 회원의 배송지가 아닙니다.");
+            throw new GeneralException(GeneralCode.ADDRESS_FORBIDDEN);
         }
 
         addressRepository.delete(address);

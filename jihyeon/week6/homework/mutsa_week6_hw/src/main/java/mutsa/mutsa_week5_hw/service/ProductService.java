@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mutsa.mutsa_week5_hw.domain.Product;
 import mutsa.mutsa_week5_hw.dto.ProductRequestDto;
 import mutsa.mutsa_week5_hw.dto.ProductResponseDto;
+import mutsa.mutsa_week5_hw.global.code.GeneralCode;
+import mutsa.mutsa_week5_hw.global.exception.GeneralException;
 import mutsa.mutsa_week5_hw.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,13 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional // 수정: 메서드 안의 DB 작업을 트랜잭션으로 묶어 처리하도록 어노테이션 추가
+@Transactional(readOnly = true) // 수정: 메서드 안의 DB 작업을 트랜잭션으로 묶어 처리하도록 어노테이션 추가
 @RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
 
     //새로운 상품 생성
+    @Transactional
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
 
         Product product = Product.builder()
@@ -43,7 +46,7 @@ public class ProductService {
     public ProductResponseDto getProduct(Long id) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다. id=" + id));
+                .orElseThrow(() -> new GeneralException(GeneralCode.PRODUCT_NOT_FOUND));
 
         return ProductResponseDto.from(product);
     }
@@ -52,7 +55,7 @@ public class ProductService {
     @Transactional
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("상품 없음"));
+                .orElseThrow(() -> new GeneralException(GeneralCode.PRODUCT_NOT_FOUND));
 
         productRepository.delete(product);
     }

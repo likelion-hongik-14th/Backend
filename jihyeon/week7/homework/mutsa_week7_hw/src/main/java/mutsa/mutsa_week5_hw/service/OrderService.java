@@ -103,9 +103,8 @@ public class OrderService {
                 .orElseThrow(() ->
                         new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
-        if (!order.getMember().getId().equals(memberId)) {
-            throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
-        }
+        // 공통 검증 메서드 호출
+        validateOrderOwnership(order, memberId);
 
         order.pay();
 
@@ -120,9 +119,8 @@ public class OrderService {
                 .orElseThrow(() ->
                         new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
-        if (!order.getMember().getId().equals(memberId)) {
-            throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
-        }
+        // 공통 검증 메서드 호출
+        validateOrderOwnership(order, memberId);
 
         order.deliver();
 
@@ -146,9 +144,8 @@ public class OrderService {
                 .orElseThrow(() ->
                         new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
-        if (!order.getMember().getId().equals(memberId)) {
-            throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
-        }
+        // 공통 검증 메서드 호출
+        validateOrderOwnership(order, memberId);
 
         return OrderResponseDto.from(order);
     }
@@ -162,10 +159,18 @@ public class OrderService {
                 .orElseThrow(() ->
                         new GeneralException(GeneralCode.ORDER_NOT_FOUND));
 
+        // 공통 검증 메서드 호출
+        validateOrderOwnership(order, memberId);
+
+        order.cancel();
+    }
+
+    /**
+     * 주문 소유자 검증 공통 메서드
+     */
+    private void validateOrderOwnership(Order order, Long memberId) {
         if (!order.getMember().getId().equals(memberId)) {
             throw new GeneralException(GeneralCode.ORDER_FORBIDDEN);
         }
-
-        order.cancel();
     }
 }

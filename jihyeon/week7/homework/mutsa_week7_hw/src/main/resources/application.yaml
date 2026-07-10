@@ -1,11 +1,11 @@
 spring:
   application:
-    name: mutsa_week5_hw
+    name: mutsa_week7_hw
 
   datasource:
-    url: jdbc:mysql://localhost:3306/mutsa_db5
+    url: jdbc:mysql://localhost:3306/mutsa_db5?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
     username: root
-    password: ${DB_PASSWORD}
+    password: romance2521*
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

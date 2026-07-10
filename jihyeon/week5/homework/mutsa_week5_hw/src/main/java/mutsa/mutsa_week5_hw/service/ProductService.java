@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import mutsa.mutsa_week5_hw.domain.Product;
 import mutsa.mutsa_week5_hw.dto.ProductRequestDto;
 import mutsa.mutsa_week5_hw.dto.ProductResponseDto;
+import mutsa.mutsa_week5_hw.global.code.ProductErrorCode;
+import mutsa.mutsa_week5_hw.global.exception.ProjectException;
 import mutsa.mutsa_week5_hw.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,27 @@ public class ProductService {
 
     //새로운 상품 생성
     public ProductResponseDto createProduct(ProductRequestDto requestDto) {
+
+        // 상품 가격 검증
+        if (requestDto.getPrice() < 0) {
+            throw new ProjectException(
+                    ProductErrorCode.INVALID_PRODUCT_PRICE
+            );
+        }
+
+        // 중복 상품 검증
+        if (productRepository.existsByName(requestDto.getName())) {
+            throw new ProjectException(
+                    ProductErrorCode.PRODUCT_ALREADY_EXISTS
+            );
+        }
+
+        // 재고 검증
+        if (requestDto.getStock() < 0) {
+            throw new ProjectException(
+                    ProductErrorCode.OUT_OF_STOCK
+            );
+        }
 
         Product product = Product.builder()
                 .name(requestDto.getName())
@@ -43,7 +66,8 @@ public class ProductService {
     public ProductResponseDto getProduct(Long id) {
 
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("상품이 존재하지 않습니다. id=" + id));
+                .orElseThrow(() -> new ProjectException(
+                        ProductErrorCode.PRODUCT_NOT_FOUND));
 
         return ProductResponseDto.from(product);
     }

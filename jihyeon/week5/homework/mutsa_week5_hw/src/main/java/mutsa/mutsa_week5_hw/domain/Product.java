@@ -2,6 +2,8 @@ package mutsa.mutsa_week5_hw.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mutsa.mutsa_week5_hw.global.code.ProductErrorCode;
+import mutsa.mutsa_week5_hw.global.exception.ProjectException;
 
 @Entity
 @Getter
@@ -24,9 +26,15 @@ public class Product {
     private int stock;
 
     public void decreaseStock(int quantity) {
+
+        if (this.stock < quantity) {
+            throw new ProjectException(
+                    ProductErrorCode.OUT_OF_STOCK
+            );
+        }
+
         this.stock -= quantity;
     }
-
     public void increaseStock(int quantity) {
         this.stock += quantity;
     }

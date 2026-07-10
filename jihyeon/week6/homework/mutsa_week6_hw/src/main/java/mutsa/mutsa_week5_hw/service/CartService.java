@@ -8,6 +8,8 @@ import mutsa.mutsa_week5_hw.domain.Product;
 import mutsa.mutsa_week5_hw.dto.CartItemRequestDto;
 import mutsa.mutsa_week5_hw.dto.CartItemUpdateDto;
 import mutsa.mutsa_week5_hw.dto.CartResponseDto;
+import mutsa.mutsa_week5_hw.global.code.GeneralCode;
+import mutsa.mutsa_week5_hw.global.exception.GeneralException;
 import mutsa.mutsa_week5_hw.repository.CartRepository;
 import mutsa.mutsa_week5_hw.repository.MemberRepository;
 import mutsa.mutsa_week5_hw.repository.ProductRepository;
@@ -38,7 +40,7 @@ public class CartService {
         Cart cart = getOrCreateCart(memberId);
 
         Product product = productRepository.findById(requestDto.getProductId())
-                .orElseThrow(() -> new IllegalArgumentException("상품 없음"));
+                .orElseThrow(() -> new GeneralException(GeneralCode.PRODUCT_NOT_FOUND));
 
         cart.addProduct(product, requestDto.getQuantity());
         cartRepository.save(cart);
@@ -55,7 +57,7 @@ public class CartService {
         CartItem item = cart.getCartItems().stream()
                 .filter(ci -> ci.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("장바구니 아이템 없음"));
+                .orElseThrow(() -> new GeneralException(GeneralCode.CART_ITEM_NOT_FOUND));
 
         item.increaseQuantity(requestDto.getQuantity());
 
@@ -75,7 +77,7 @@ public class CartService {
     private Cart getOrCreateCart(Long memberId) {
 
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("회원 없음"));
+                .orElseThrow(() -> new GeneralException(GeneralCode.MEMBER_NOT_FOUND));
 
         return cartRepository.findByMemberId(member.getId())
                 .orElseGet(() ->

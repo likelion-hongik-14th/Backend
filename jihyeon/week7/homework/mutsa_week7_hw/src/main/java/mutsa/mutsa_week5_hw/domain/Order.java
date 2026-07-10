@@ -2,6 +2,9 @@ package mutsa.mutsa_week5_hw.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mutsa.mutsa_week5_hw.global.code.GeneralCode;
+import mutsa.mutsa_week5_hw.global.exception.GeneralException;
+import org.h2.api.ErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -94,11 +97,11 @@ public class Order {
     // 주문 취소 메서드
     public void cancel() {
         if (this.status == OrderStatus.DELIVERED) {
-            throw new IllegalStateException("배송 완료된 주문은 취소할 수 없습니다.");
+            throw new GeneralException(GeneralCode.ORDER_CANCEL_NOT_ALLOWED);
         }
 
         if (this.status == OrderStatus.CANCELED) {
-            throw new IllegalStateException("이미 취소된 주문입니다.");
+            throw new GeneralException(GeneralCode.ORDER_ALREADY_CANCELED);
         }
 
         this.status = OrderStatus.CANCELED;
