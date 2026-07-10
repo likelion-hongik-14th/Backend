@@ -7,7 +7,6 @@ import org.example.shopping.dto.user.UserRequestDto;
 import org.example.shopping.dto.user.UserResponseDto;
 import org.example.shopping.global.apiPayload.code.domain.UserErrorCode;
 import org.example.shopping.global.apiPayload.exception.ProjectException;
-import org.example.shopping.repository.OrderRepository;
 import org.example.shopping.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class UserService {
     private final UserRepository userRepository;
-    private final OrderRepository orderRepository;
 
     @Transactional
     public Long signup(UserRequestDto request){
@@ -56,5 +54,4 @@ public class UserService {
         }
         userRepository.deleteById(userId);
     }
-
 }

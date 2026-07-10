@@ -42,8 +42,8 @@ public class ProductController {
     @Operation(summary = "전체 상품 조회")
     @GetMapping
     @ApiResponses(value = {@io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "SUCCESS", description = "전체 상품 조회가 완료되었습니다.", content = @Content(mediaType = "application/json"))})
-    public ResponseEntity<ApiResponse<List<ProductRequestDto>>> getAllProducts(){
-        List<ProductRequestDto> products = productService.getProducts();
+    public ResponseEntity<ApiResponse<List<ProductResponseDto>>> getAllProducts(){
+        List<ProductResponseDto> products = productService.getProducts();
         return ResponseEntity
                 .ok(ApiResponse.onSuccess("전체 상품 조회가 완료되었습니다.", products));
     }
