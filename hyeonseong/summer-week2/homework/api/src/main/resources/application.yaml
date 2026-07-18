@@ -11,6 +11,34 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 42a89d96f6270c255eb364bd2094213d
+            client-secret: TER3Yt1bZdiEptq972j1dDJyvJ6iI93M
+            client-authentication-method: client_secret_post
+            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
+            authorization-grant-type: authorization_code
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - profile_image
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web.client: DEBUG
+app:
+  jwt:
+    secret: "my-super-secret-key-for-mutsa-summer-session-jwt"
+    expiration: 3600000
 
 server:
   port: 8080
